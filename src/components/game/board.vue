@@ -45,7 +45,6 @@ export default {
       ),
       (doc) => {
         this.matches = doc.docs;
-        console.log(this.matches);
       }
     );
   },

@@ -43,7 +43,6 @@ export default {
   methods: {
     async getDecks() {
       this.decks = await getDecks();
-      console.log(this.decks);
     },
   },
 };

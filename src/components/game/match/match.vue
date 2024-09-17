@@ -1,72 +1,61 @@
 <template>
-  <div>
-    <div class="px-4">
-      <div class="flex flex-col gap-4">
-        <div class="border rounded flex p-4 items-center items-center flex-col">
-          <p class="font-bold">Cards</p>
-          <p>{{ deck.length }} left</p>
-        </div>
-        <Button>Draw cards</Button>
+  <div v-if="isLoading" class="flex items-center justify-center min-h-[100vh]">
+    <Loading />
+  </div>
+  <div v-if="!isLoading" class="min-h-[100vh] flex flex-col">
+    <TopBar :match="match" :player="player" :opponent="opponent" />
+    <div class="relative flex-1 flex">
+      <OpponentTable :opponent="opponent" />
+      <div class="flex-1 items-center flex">
+        <Turn :match="match" :player="player" :opponent="opponent" />
       </div>
+      <PlayerTable :player="player" :match="match" :opponent="opponent" />
     </div>
   </div>
 </template>
 
 <script>
-import { Button } from "@/components/ui/button";
+import Loading from "@/components/ui/loading.vue";
+import TopBar from "@/components/game/match/ui/top-bar.vue";
+import OpponentTable from "@/components/game/match/ui/opponent-table.vue";
+import PlayerTable from "@/components/game/match/ui/player-table.vue";
+import Turn from "@/components/game/match/ui/turn.vue";
+
 export default {
   components: {
-    Button,
+    Loading,
+    TopBar,
+    OpponentTable,
+    PlayerTable,
+    Turn,
   },
   props: {
     match: {
       type: Object,
     },
+    player: {
+      type: Object,
+    },
+    opponent: {
+      type: Object,
+    },
+    isLoading: {
+      type: Boolean,
+    },
   },
   computed: {
+    deck() {
+      return this.player.deck;
+    },
     account() {
       return this.$store.state.account;
-    },
-    player() {
-      return this.match
-        .data()
-        .players.find((player) => player.id === this.account.id);
-    },
-    opponent() {
-      return this.match
-        .data()
-        .players.find((player) => player.id !== this.account.id);
     },
     opponentHand() {
       return this.opponent.hand;
     },
-    deck() {
-      return this.player.deck;
-    },
     hand() {
       return this.player.hand ?? [];
     },
-  },
-  methods: {
-    draw() {
-      if (!this.player.hand) {
-        for (let a = 1; a < 8; a++) {
-          const card = this.doDrawCard();
-          this.player.hand.push(card);
-        }
-      } else {
-        const card = this.doDrawCard();
-        this.player.hand.push(card);
-      }
-    },
-    doDrawCard() {
-      const cardAmount = this.deck.length;
-      const index = Math.floor(Math.random() * cardAmount + 1);
-      const card = this.deck.splice(index, 1);
-      return card;
-    },
-    discard() {},
-    play() {},
   },
 };
 </script>

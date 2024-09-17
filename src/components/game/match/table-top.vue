@@ -1,7 +1,13 @@
 <template>
   <SelectingDeck v-if="isSelectingDeck" @toggleDeck="toggleDeck" />
   <WaitingPlayer v-if="isWaiting" />
-  <Match v-if="isReady" :match="match" />
+  <Match
+    v-if="isReady"
+    :isLoading="isLoading"
+    :match="match"
+    :player="player"
+    :opponent="opponent"
+  />
   <Win v-if="hasPlayerWon" />
   <Lose v-if="hasPlayerLose" />
 </template>
@@ -16,6 +22,7 @@ import WaitingPlayer from "@/components/game/match/waiting-player.vue";
 import Match from "@/components/game/match/match.vue";
 import Win from "@/components/game/match/win.vue";
 import Lose from "@/components/game/match/lose.vue";
+import { getAccount } from "@/utils/account";
 
 export default {
   props: {
@@ -32,6 +39,16 @@ export default {
     Win,
   },
   computed: {
+    player() {
+      return this.match
+        .data()
+        .players.find((player) => player.id === this.account.id);
+    },
+    opponent() {
+      return this.match
+        .data()
+        .players.find((player) => player.id !== this.account.id);
+    },
     account() {
       return this.$store.state.account;
     },
@@ -77,6 +94,7 @@ export default {
   data() {
     return {
       turns: null,
+      isLoading: true,
     };
   },
   async mounted() {
@@ -89,6 +107,14 @@ export default {
         this.turns = doc.docs;
       }
     );
+
+    this.player.data = this.account.data();
+    const opponentAccount = await getAccount({
+      id: this.opponent.id,
+      setStore: false,
+    });
+    this.opponent.data = opponentAccount.data();
+    this.isLoading = false;
   },
   methods: {
     toggleDeck(deck) {
