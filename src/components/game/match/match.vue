@@ -2,7 +2,7 @@
   <div v-if="isLoading" class="flex items-center justify-center min-h-[100vh]">
     <Loading />
   </div>
-  <div v-if="!isLoading" class="min-h-[100vh] flex flex-col">
+  <div v-if="!isLoading" class="min-h-[100vh] flex flex-col w-full">
     <TopBar :match="match" :player="player" :opponent="opponent" />
     <div class="relative flex-1 flex">
       <OpponentTable :opponent="opponent" />

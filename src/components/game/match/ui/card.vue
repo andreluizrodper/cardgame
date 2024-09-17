@@ -1,22 +1,7 @@
 <template>
   <div class="border rounded bg-white w-full relative">
     <div v-if="isTurn">
-      <div
-        class="absolute h-40 justify-center top-0 left-0 right-0 flex gap-2 flex-col"
-      >
-        <div class="flex justify-center w-full">
-          <Button @click="discardCard" size="xs">Discard</Button>
-        </div>
-        <div class="flex justify-center w-full">
-          <Button @click="toggleCardHand" size="xs">Back to hand</Button>
-        </div>
-        <div class="flex justify-center w-full">
-          <Button @click="toggleCardSide" size="xs">
-            {{ card.side === "down" ? "Face down" : "Face up" }}
-          </Button>
-        </div>
-      </div>
-      <div class="bg-stone-200 h-40" />
+      <div class="bg-stone-200 h-40 w-48" />
       <div class="p-4 flex flex-col">
         <div class="text-base text-left">{{ card.name }}</div>
         <div class="flex gap-2">
@@ -30,7 +15,7 @@
       </div>
     </div>
     <div v-if="!isTurn && !card.side" class="flex flex-col h-62">
-      <div class="bg-stone-200 h-40" />
+      <div class="bg-stone-200 h-40 w-48" />
       <div class="p-4 flex flex-col">
         <div class="text-base text-left">{{ card.name }}</div>
         <div class="flex gap-2">

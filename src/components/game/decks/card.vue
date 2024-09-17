@@ -1,6 +1,6 @@
 <template>
   <button @click="toggleCard" class="border rounded bg-white min-w-40">
-    <div class="bg-stone-200 h-40" />
+    <div class="bg-stone-200 h-40 w-28" />
     <div class="p-4 flex flex-col">
       <div class="text-base text-left">{{ card.name }}</div>
       <div class="flex gap-2">

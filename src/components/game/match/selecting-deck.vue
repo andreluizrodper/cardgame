@@ -41,6 +41,10 @@ export default {
   methods: {
     async getDecks() {
       this.decks = await getDecks();
+
+      if (this.decks.length === 1) {
+        this.$emit("toggleDeck", this.decks[0].data().cards);
+      }
     },
     toggleDeck(deck) {
       this.$emit("toggleDeck", deck.data().cards);

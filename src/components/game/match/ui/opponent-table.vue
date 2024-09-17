@@ -3,14 +3,41 @@
     class="absolute z-30 left-0 right-0 top-0 bg-gray-100 pb-4"
     :class="expanded ? 'pb-2' : ''"
   >
+    <div>
+      <div
+        v-if="opponent.data"
+        class="w-full relative py-2 flex justify-center text-sm"
+      >
+        <div class="flex w-full justify-between px-4">
+          <div>
+            {{ opponent.data.name }}
+          </div>
+          <div class="flex gap-2">
+            <span class="flex gap-1 items-center">
+              <Heart size="16" /> {{ opponent.health }}
+            </span>
+            <span class="flex gap-1 items-center">
+              <Layers3 size="16" />
+              {{ opponent.deck.length }}
+            </span>
+          </div>
+        </div>
+        <div class="absolute bottom-0 left-0 right-0 h-0.5 flex justify-end">
+          <div
+            class="h-0.5 bg-red-500"
+            :style="{ width: `${(opponent.health / 20) * 100}%` }"
+          />
+        </div>
+      </div>
+    </div>
     <div
-      class="grid grid-cols-2 px-1 overflow-hidden max-h-96 rotate-180"
+      class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 px-1 overflow-hidden max-h-96"
       :class="expanded ? 'overflow-y-auto' : 'overflow-y-hidden'"
     >
       <div
         v-for="(card, index) in cards"
         :key="index"
-        class="mx-1 drop-shadow"
+        class="mx-1 drop-shadow flex justify-center"
         :class="expanded ? 'my-1 min-h-36' : 'h-12 -mb-4 overflow-hidden'"
       >
         <Card v-if="card.name" :card="card" />
@@ -30,15 +57,17 @@
 </template>
 
 <script>
-import { ChevronDown, ChevronUp } from "lucide-vue-next";
+import { ChevronDown, ChevronUp, Heart, Layers3 } from "lucide-vue-next";
 import Card from "@/components/game/match/ui/card.vue";
 import EmptyCard from "@/components/game/match/ui/empty-card.vue";
 
 export default {
   components: {
     Card,
+    Heart,
     ChevronDown,
     ChevronUp,
+    Layers3,
     EmptyCard,
   },
   props: {

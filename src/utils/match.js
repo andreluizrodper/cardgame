@@ -47,10 +47,17 @@ const getMatches = async () => {
   return matchDocs.docs;
 };
 
+const getWaitingMatches = async () => {
+  const queryParams = [where("status", "==", "waiting")];
+  const qmatchs = query(collection(firestore, "match"), ...queryParams);
+  const matchDocs = await getDocs(qmatchs);
+  return matchDocs.docs;
+};
+
 const getMatch = async (id) => {
   const matchRef = doc(firestore, "match", id);
   const match = await getDoc(matchRef);
   return match;
 };
 
-export { createMatch, updateMatch, getMatches, getMatch };
+export { createMatch, updateMatch, getMatches, getMatch, getWaitingMatches };

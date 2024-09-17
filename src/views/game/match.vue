@@ -5,8 +5,12 @@
   <div v-if="match">
     <Waiting v-if="match.data().status === 'waiting'" :match="match" />
     <TableTop
-      v-if="match.data().status === 'playing' || match.data().status === 'done'"
+      v-if="
+        ['playing', 'done'].includes(match.data().status) && player && opponent
+      "
       :match="match"
+      :player="player"
+      :opponent="opponent"
     />
     <div v-if="match.data().status === 'forfeit'">
       This match is not available anymore
@@ -21,6 +25,7 @@ import TableTop from "@/components/game/match/table-top.vue";
 import { updateMatch } from "@/utils/match";
 import { doc, onSnapshot } from "firebase/firestore";
 import { firestore } from "@/utils/firebase";
+import { getAccount } from "@/utils/account";
 
 export default {
   components: {
@@ -32,6 +37,16 @@ export default {
     account() {
       return this.$store.state.account;
     },
+    player() {
+      return this.match
+        .data()
+        .players.find((player) => player.id === this.account.id);
+    },
+    opponent() {
+      return this.match
+        .data()
+        .players.find((player) => player.id !== this.account.id);
+    },
   },
   data() {
     return {
@@ -40,7 +55,7 @@ export default {
     };
   },
   async mounted() {
-    onSnapshot(doc(firestore, "match", this.$route.params.id), (doc) => {
+    onSnapshot(doc(firestore, "match", this.$route.params.id), async (doc) => {
       this.match = doc;
 
       if (this.match.data().turn % 3 === 0) {
@@ -92,6 +107,10 @@ export default {
         const shared_with = this.match.data().shared_with;
         shared_with.push(this.account.id);
         const turnPlayer1 = Math.floor(Math.random() * 1000 + 1) % 2;
+        const opponentAccount = await getAccount({
+          id: this.match.data().created_by,
+          setStore: false,
+        });
         updateMatch({
           id: this.$route.params.id,
           data: {
@@ -100,12 +119,14 @@ export default {
             turn: 1,
             players: [
               {
+                data: this.account.data(),
                 turn: !!turnPlayer1,
                 id: this.account.id,
                 status: "selecting-deck",
                 health: 20,
               },
               {
+                data: opponentAccount.data(),
                 turn: !turnPlayer1,
                 id: this.match.data().created_by,
                 status: "selecting-deck",

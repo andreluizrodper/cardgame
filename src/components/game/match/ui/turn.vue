@@ -1,9 +1,5 @@
 <template>
   <div v-if="player.turn" class="flex items-center flex-1 justify-center gap-2">
-    <Button size="sm" :disabled="player.drawn" @click="draw">
-      Draw a card
-    </Button>
-    <Button size="sm" @click="expanded = !expanded"> My hand </Button>
     <Button size="sm" @click="endTurn">End my turn</Button>
   </div>
   <div
@@ -12,19 +8,6 @@
   >
     <span class="text-sm">Waiting for your opponent</span>
     <Loading />
-  </div>
-  <div
-    v-show="expanded"
-    class="absolute bottom-0 left-0 right-0 z-50 bg-gray-100"
-  >
-    <div class="overflow-x-auto py-2 px-4 flex gap-1">
-      <Card
-        v-for="(card, index) in player.hand"
-        :key="index"
-        :card="card"
-        @toggleCard="toggleCard"
-      />
-    </div>
   </div>
 </template>
 
@@ -69,23 +52,8 @@ export default {
       match.players = [this.player, this.opponent];
       updateMatch({ id: this.$route.params.id, data: match });
     },
-    draw() {
-      if (this.player.hand) {
-        this.player.hand.push(this.doDraw());
-      } else {
-        this.player.hand = [];
-        for (let a = 0; a < 8; a++) {
-          this.player.hand.push(this.doDraw());
-        }
-      }
-      const match = this.match.data();
-      this.player.drawn = true;
-      match.players = [this.player, this.opponent];
-      updateMatch({ id: this.$route.params.id, data: match });
-    },
     endTurn() {
       const match = this.match.data();
-      this.player.drawn = false;
       this.player.turn = false;
       this.player.table = this.player.tempTable;
       this.player.tempTable = [];

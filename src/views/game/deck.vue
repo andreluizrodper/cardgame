@@ -3,7 +3,6 @@
     <div class="flex-1">
       <Greeting />
       <Decks />
-      <PlayNow />
     </div>
     <Footer />
   </div>
@@ -12,6 +11,5 @@
 <script setup>
 import Decks from "@/components/game/decks/list.vue";
 import Greeting from "@/components/game/greeting.vue";
-import PlayNow from "@/components/game/play-now.vue";
 import Footer from "@/components/game/footer.vue";
 </script>

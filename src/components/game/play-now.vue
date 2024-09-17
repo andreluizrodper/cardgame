@@ -6,7 +6,7 @@
 
 <script>
 import { Button } from "@/components/ui/button";
-import { createMatch } from "@/utils/match";
+import { getWaitingMatches, createMatch } from "@/utils/match";
 
 export default {
   components: {
@@ -14,8 +14,16 @@ export default {
   },
   methods: {
     async createMatch() {
-      const match = await createMatch();
-      this.$router.push({ name: "match", params: { id: match.id } });
+      const matches = await getWaitingMatches();
+      if (matches.length > 0) {
+        const index = Math.floor(Math.random() * matches.length);
+        console.log(index, matches[index]);
+        const match = matches[index];
+        this.$router.push({ name: "match", params: { id: match.id } });
+      } else {
+        const match = await createMatch();
+        this.$router.push({ name: "match", params: { id: match.id } });
+      }
     },
   },
 };
