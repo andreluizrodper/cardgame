@@ -161,6 +161,7 @@ import Card from "@/components/game/match/ui/card.vue";
 import CardHand from "@/components/game/match/ui/card-hand.vue";
 import { updateMatch } from "@/utils/match";
 import { Button } from "@/components/ui/button";
+import { updateAccount } from "@/utils/updateAccount";
 
 export default {
   components: {
