@@ -1,0 +1,86 @@
+{
+  "artwork": "/assets/artwork/mana.jpg",
+  "name": "Mana",
+  "cards": [
+    {
+      "name": "Earth Crystal",
+      "manaValue": 1,
+      "type": "Earth"
+    },
+    {
+      "name": "Fire Ember",
+      "manaValue": 1,
+      "type": "Fire"
+    },
+    {
+      "name": "Water Droplet",
+      "manaValue": 1,
+      "type": "Water"
+    },
+    {
+      "name": "Air Whisper",
+      "manaValue": 1,
+      "type": "Air"
+    },
+    {
+      "name": "Greater Earth Stone",
+      "manaValue": 2,
+      "type": "Earth"
+    },
+    {
+      "name": "Greater Fire Spark",
+      "manaValue": 2,
+      "type": "Fire"
+    },
+    {
+      "name": "Greater Water Flow",
+      "manaValue": 2,
+      "type": "Water"
+    },
+    {
+      "name": "Greater Air Breeze",
+      "manaValue": 2,
+      "type": "Air"
+    },
+    {
+      "name": "Earth Gemstone",
+      "manaValue": 3,
+      "type": "Earth"
+    },
+    {
+      "name": "Fire Flame",
+      "manaValue": 3,
+      "type": "Fire"
+    },
+    {
+      "name": "Water Crystal",
+      "manaValue": 3,
+      "type": "Water"
+    },
+    {
+      "name": "Air Gust",
+      "manaValue": 3,
+      "type": "Air"
+    },
+    {
+      "name": "Earth Core",
+      "manaValue": 4,
+      "type": "Earth"
+    },
+    {
+      "name": "Inferno Shard",
+      "manaValue": 4,
+      "type": "Fire"
+    },
+    {
+      "name": "Tidal Essence",
+      "manaValue": 4,
+      "type": "Water"
+    },
+    {
+      "name": "Storm Feather",
+      "manaValue": 4,
+      "type": "Air"
+    }
+  ]
+}

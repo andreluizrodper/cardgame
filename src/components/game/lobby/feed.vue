@@ -6,8 +6,8 @@
 </template>
 
 <script>
-import Form from "@/components/game/feed/form.vue";
-import ListItem from "@/components/game/feed/list-item.vue";
+import Form from "@/components/game/lobby/feed/form.vue";
+import ListItem from "@/components/game/lobby/feed/list-item.vue";
 import { getFeeds } from "@/utils/feed";
 
 export default {

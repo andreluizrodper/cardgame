@@ -4,7 +4,7 @@
     <Button @click="doLoginGoogle" variant="outline">
       <span class="flex justify-center items-center gap-4">
         <img src="@/assets/google.png" class="w-[24px]" />
-        Entrar com Google
+        Get in using google
       </span>
     </Button>
   </div>

@@ -1,6 +1,10 @@
 <template>
   <div class="flex bg-stone-800 text-white flex-col gap-4 px-4 py-6">
-    <p class="text-sm">My decks</p>
+    <div class="flex justify-between">
+      <router-link :to="{ name: 'decks' }">
+        <p class="text-sm underline">My decks</p>
+      </router-link>
+    </div>
     <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
       <router-link
         v-for="deck in decks"

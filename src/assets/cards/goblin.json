@@ -1,0 +1,111 @@
+{
+  "artwork": "/assets/artwork/goblin.jpg",
+  "name": "Goblins",
+  "cards": [
+    {
+      "name": "Goblin Scout",
+      "attack": 2,
+      "defense": 1,
+      "manaNeeded": 1,
+      "manaType": "Air"
+    },
+    {
+      "name": "Goblin Pyromancer",
+      "attack": 3,
+      "defense": 2,
+      "manaNeeded": 2,
+      "manaType": "Fire"
+    },
+    {
+      "name": "Goblin Warrior",
+      "attack": 4,
+      "defense": 3,
+      "manaNeeded": 3,
+      "manaType": "Earth"
+    },
+    {
+      "name": "Goblin Aquamage",
+      "attack": 2,
+      "defense": 4,
+      "manaNeeded": 3,
+      "manaType": "Water"
+    },
+    {
+      "name": "Goblin Berserker",
+      "attack": 5,
+      "defense": 2,
+      "manaNeeded": 4,
+      "manaType": "Fire"
+    },
+    {
+      "name": "Goblin Rockshaper",
+      "attack": 3,
+      "defense": 5,
+      "manaNeeded": 4,
+      "manaType": "Earth"
+    },
+    {
+      "name": "Goblin Windrider",
+      "attack": 4,
+      "defense": 3,
+      "manaNeeded": 3,
+      "manaType": "Air"
+    },
+    {
+      "name": "Goblin Hydromancer",
+      "attack": 3,
+      "defense": 4,
+      "manaNeeded": 3,
+      "manaType": "Water"
+    },
+    {
+      "name": "Goblin Firebrand",
+      "attack": 6,
+      "defense": 1,
+      "manaNeeded": 5,
+      "manaType": "Fire"
+    },
+    {
+      "name": "Goblin Earthbreaker",
+      "attack": 5,
+      "defense": 5,
+      "manaNeeded": 6,
+      "manaType": "Earth"
+    },
+    {
+      "name": "Goblin Stormcaller",
+      "attack": 4,
+      "defense": 4,
+      "manaNeeded": 4,
+      "manaType": "Air"
+    },
+    {
+      "name": "Goblin Tidal Brute",
+      "attack": 5,
+      "defense": 3,
+      "manaNeeded": 5,
+      "manaType": "Water"
+    },
+    {
+      "name": "Goblin Flamecaster",
+      "attack": 7,
+      "defense": 2,
+      "manaNeeded": 6,
+      "manaType": "Fire"
+    },
+    {
+      "name": "Goblin Earth Guardian",
+      "attack": 4,
+      "defense": 7,
+      "manaNeeded": 7,
+      "manaType": "Earth"
+    },
+    {
+      "name": "Goblin Wind Reaver",
+      "attack": 6,
+      "defense": 3,
+      "manaNeeded": 6,
+      "manaType": "Air"
+    }
+  ]
+}

@@ -1,6 +1,10 @@
 import Card from '@/components/ui/card/Card.vue';
 <template>
-  <div class="min-h-[100vh] flex bg-stone-100 items-center justify-center">
+  <img
+    class="object-cover object-center fixed h-[100vh] w-[100vw]"
+    src="@/assets/bg/bg-1.jpg"
+  />
+  <div class="min-h-[100vh] flex items-center justify-center relative z-30">
     <Card>
       <CardHeader>
         <CardTitle>Elemental Cards</CardTitle>

@@ -37,6 +37,7 @@ const updateDeck = async ({ id, data }) => {
 
 const getDecks = async () => {
   const queryParams = [where("created_by_id", "==", store.state.account.id)];
+  queryParams.push(where("archived", "==", true));
   queryParams.push(orderBy("updated_at", "desc"));
   queryParams.push(orderBy("created_at", "desc"));
   const qdecks = query(collection(firestore, "deck"), ...queryParams);

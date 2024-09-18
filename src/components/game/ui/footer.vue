@@ -16,17 +16,6 @@
         <Boxes size="18" />
       </router-link>
     </div>
-    <DropdownMenu>
-      <DropdownMenuTrigger>
-        <AccountAvatar :id="account.id" />
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="start">
-        <DropdownMenuItem @click="logOut">
-          <LogOut size="16" class="mr-2" />
-          Sair
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
   </div>
 </template>
 

@@ -1,0 +1,125 @@
+{
+  "artwork": "/assets/artwork/skeleton.jpg",
+  "name": "Skeletons",
+  "cards": [
+    {
+      "name": "Skeleton Soldier",
+      "attack": 2,
+      "defense": 1,
+      "manaNeeded": 1,
+      "manaType": "Earth"
+    },
+    {
+      "name": "Skeleton Pyro",
+      "attack": 3,
+      "defense": 1,
+      "manaNeeded": 2,
+      "manaType": "Fire"
+    },
+    {
+      "name": "Skeleton Mariner",
+      "attack": 2,
+      "defense": 2,
+      "manaNeeded": 2,
+      "manaType": "Water"
+    },
+    {
+      "name": "Skeleton Windwalker",
+      "attack": 3,
+      "defense": 1,
+      "manaNeeded": 2,
+      "manaType": "Air"
+    },
+    {
+      "name": "Bone Defender",
+      "attack": 2,
+      "defense": 4,
+      "manaNeeded": 3,
+      "manaType": "Earth"
+    },
+    {
+      "name": "Flamebone Warrior",
+      "attack": 4,
+      "defense": 2,
+      "manaNeeded": 3,
+      "manaType": "Fire"
+    },
+    {
+      "name": "Skeleton Tidecaller",
+      "attack": 3,
+      "defense": 3,
+      "manaNeeded": 3,
+      "manaType": "Water"
+    },
+    {
+      "name": "Windbone Archer",
+      "attack": 4,
+      "defense": 2,
+      "manaNeeded": 3,
+      "manaType": "Air"
+    },
+    {
+      "name": "Bonecrusher Giant",
+      "attack": 5,
+      "defense": 4,
+      "manaNeeded": 4,
+      "manaType": "Earth"
+    },
+    {
+      "name": "Infernal Skull Mage",
+      "attack": 6,
+      "defense": 1,
+      "manaNeeded": 4,
+      "manaType": "Fire"
+    },
+    {
+      "name": "Abyssal Skeleton",
+      "attack": 4,
+      "defense": 5,
+      "manaNeeded": 4,
+      "manaType": "Water"
+    },
+    {
+      "name": "Skybone Reaper",
+      "attack": 5,
+      "defense": 2,
+      "manaNeeded": 4,
+      "manaType": "Air"
+    },
+    {
+      "name": "Bone Guardian",
+      "attack": 4,
+      "defense": 6,
+      "manaNeeded": 5,
+      "manaType": "Earth"
+    },
+    {
+      "name": "Skeleton Fire Lich",
+      "attack": 7,
+      "defense": 2,
+      "manaNeeded": 5,
+      "manaType": "Fire"
+    },
+    {
+      "name": "Deepwater Skeleton",
+      "attack": 5,
+      "defense": 4,
+      "manaNeeded": 5,
+      "manaType": "Water"
+    },
+    {
+      "name": "Stormbone Warlord",
+      "attack": 6,
+      "defense": 3,
+      "manaNeeded": 5,
+      "manaType": "Air"
+    },
+    {
+      "name": "Ancient Bone Titan",
+      "attack": 7,
+      "defense": 5,
+      "manaNeeded": 6,
+      "manaType": "Earth"
+    }
+  ]
+}

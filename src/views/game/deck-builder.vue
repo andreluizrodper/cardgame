@@ -1,89 +1,201 @@
 <template>
-  <div class="flex min-h-[100vh] flex flex-col">
+  <div class="bg-stone-500">
     <div
-      class="sticky top-0 left-0 right-0 bg-white py-4 flex gap-2 flex-col border-b"
+      class="flex min-h-[100vh] flex flex-col md:mx-auto max-w-7xl shadow bg-white"
     >
-      <div class="px-4">
-        <router-link :to="{ name: 'decks' }" class="flex gap-1 items-center">
-          <ChevronLeft size="16" />
-          Back
-        </router-link>
-      </div>
-      <div class="flex justify-between px-4 items-center">
-        <div>
-          <Input v-model="name" placeholder="Deck name" />
-        </div>
-        <div class="text-xl text-gray-800">
-          {{ selectedCardsCount }} selected
-        </div>
-        <Button size="sm" :disabled="!isValid" @click="save">{{
-          buttonText
-        }}</Button>
-      </div>
-    </div>
-    <div class="flex-1">
-      <div class="grid grid-cols-2 gap-4 px-4 py-4">
-        <Card
-          v-for="(card, index) in selectedCards"
-          :key="index"
-          :card="card"
-          @toggleCard="toggleCard"
-        />
-      </div>
-    </div>
-    <div class="sticky bottom-0 left-0 right-0 bg-gray-100">
-      <div
-        @click="expanded = !expanded"
-        class="absolute -top-6 flex justify-center left-0 right-0"
-      >
-        <span class="bg-gray-100 rounded-t px-4 py-2">
-          <ChevronDown v-if="expanded" size="18" />
-          <ChevronUp v-if="!expanded" size="18" />
-        </span>
-      </div>
-      <div
-        v-show="expanded"
-        class="flex justify-between px-4 py-2 items-center"
-      >
-        <span class="text-gray-400 text-sm">
-          Available cards {{ availableCards.length }}
-        </span>
-        <div>
-          <Input v-model="search" />
+      <div class="sticky top-0 left-0 right-0 flex flex-col z-30">
+        <NavBar />
+        <div class="flex flex-col py-3 border-b bg-gray-100 gap-2">
+          <div class="px-4 text-sm flex gap-2 items-center">
+            <router-link
+              :to="{ name: 'lobby' }"
+              class="flex items-center gap-2 text-sm"
+            >
+              <Home size="16" />
+              Lobby
+            </router-link>
+            <ChevronRight size="14" />
+            <router-link
+              :to="{ name: 'decks' }"
+              class="flex gap-1 items-center text-sm"
+            >
+              My decks
+            </router-link>
+            <ChevronRight size="14" />
+            <span v-if="$route.params.id"> Editing deck </span>
+            <span v-else> Creating deck </span>
+          </div>
+          <div class="flex justify-between px-4 items-center">
+            <div class="max-w-96 w-full">
+              <Input v-model="name" placeholder="Deck name" />
+            </div>
+            <div class="flex gap-4 items-center">
+              <div />
+              <Button size="sm" :disabled="!isValid" @click="save">{{
+                buttonText
+              }}</Button>
+            </div>
+          </div>
         </div>
       </div>
-      <div v-show="expanded" class="overflow-x-auto py-2 px-4 flex gap-1">
-        <Card
-          v-for="(card, index) in availableCards"
-          :key="index"
-          :card="card"
-          @toggleCard="toggleCard"
-        />
+      <div class="px-4 py-2 flex items-center justify-between">
+        <div class="flex items-center gap-4">
+          <Drawer>
+            <DrawerTrigger :disabled="!collectionSelected">
+              <Button :disabled="!collectionSelected">Select cards</Button>
+            </DrawerTrigger>
+            <DrawerContent>
+              <DrawerHeader>
+                <DrawerTitle>Cards</DrawerTitle>
+              </DrawerHeader>
+              <div
+                v-show="expanded"
+                class="flex justify-between px-4 py-2 items-center"
+              >
+                <span class="text-gray-400 text-sm">
+                  Available cards {{ availableCards.length }}
+                </span>
+                <div>
+                  <Input v-model="search" placeholder="Search..." />
+                </div>
+              </div>
+              <div
+                v-show="expanded"
+                class="overflow-x-auto py-2 px-4 flex gap-1"
+              >
+                <Card
+                  v-for="(card, index) in availableCards"
+                  :key="index"
+                  :card="card"
+                  @toggleCard="toggleCard"
+                />
+              </div>
+            </DrawerContent>
+          </Drawer>
+
+          <div class="flex items-center">
+            <div class="border rounded px-4 bg-gray-50 py-1">
+              {{ selectedCardsCount }} cards
+            </div>
+          </div>
+        </div>
+        <Button size="sm" @click="collectionSeet = true"
+          >Select a collection</Button
+        >
+        <Sheet :open="collectionSeet" @update:open="toggleSheetCollection">
+          <SheetContent>
+            <SheetHeader>
+              <SheetTitle>Collections</SheetTitle>
+              <SheetDescription>
+                <div class="grid grid-cols-2 gap-2">
+                  <button
+                    v-for="(collection, index) in collections"
+                    :key="index"
+                    class="border hover:shadow-md rounded overflow-hidden min-w-32"
+                    @click="selectCollection(collection)"
+                  >
+                    <img :src="collection.artwork" />
+                    <div
+                      class="px-2 py-2 bg-stone-50 text-gray-800 flex flex-col gap-1"
+                    >
+                      <span>{{ collection.name }}</span>
+                      <span class="text-xs"
+                        >{{ collection.cards.length }} cards</span
+                      >
+                    </div>
+                  </button>
+                </div>
+              </SheetDescription>
+            </SheetHeader>
+          </SheetContent>
+        </Sheet>
+      </div>
+      <div class="flex-1 relative overflow-hidden">
+        <div
+          class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-2 p-2"
+        >
+          <div
+            v-for="(card, index) in selectedCards"
+            :key="index"
+            class="flex justify-center"
+          >
+            <Card @toggleCard="toggleCard" :card="card" />
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { ChevronDown, ChevronUp, ChevronLeft } from "lucide-vue-next";
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import {
+  ChevronDown,
+  ChevronUp,
+  ChevronLeft,
+  ChevronRight,
+  Home,
+} from "lucide-vue-next";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import Cards from "@/assets/cards/deck.json";
+import Human from "@/assets/cards/human.json";
+import Elf from "@/assets/cards/elf.json";
+import Goblin from "@/assets/cards/goblin.json";
+import Skeleton from "@/assets/cards/skeleton.json";
+import Mana from "@/assets/cards/mana.json";
 import Card from "@/components/game/decks/card.vue";
 import { updateDeck, createDeck, getDeck } from "@/utils/deck";
+import NavBar from "@/components/game/ui/nav-bar.vue";
+
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from "@/components/ui/drawer";
 
 export default {
   components: {
+    NavBar,
     ChevronLeft,
     Input,
     Card,
     ChevronDown,
     ChevronUp,
     Button,
+    Sheet,
+    SheetClose,
+    SheetContent,
+    SheetDescription,
+    SheetHeader,
+    SheetTitle,
+    SheetTrigger,
+    Drawer,
+    DrawerClose,
+    DrawerContent,
+    DrawerDescription,
+    DrawerFooter,
+    DrawerHeader,
+    DrawerTitle,
+    DrawerTrigger,
+    ChevronRight,
+    Home,
   },
   computed: {
     buttonText() {
-      if (this.$route.params.id) return "Edit";
+      if (this.$route.params.id) return "Save";
       return "Create";
     },
     selectedCardsCount() {
@@ -104,11 +216,16 @@ export default {
   },
   data() {
     return {
+      drawerCard: false,
+      collectionSeet: false,
+      collectionSelected: false,
       search: "",
       selectedCards: [],
-      cards: Cards,
+      artwork: null,
+      cards: [],
       name: "",
       expanded: true,
+      collections: [Human, Elf, Goblin, Skeleton, Mana],
     };
   },
   async mounted() {
@@ -119,6 +236,24 @@ export default {
     }
   },
   methods: {
+    toggleSheetCollection() {
+      this.collectionSeet = false;
+    },
+    toggleDrawerCard() {
+      this.drawerCard = false;
+    },
+    selectCollection(collection) {
+      this.collectionSelected = true;
+      const cards = collection.cards.map((card) => {
+        return {
+          ...card,
+          artwork: collection.artwork,
+        };
+      });
+      this.cards = cards;
+      this.collectionSeet = false;
+      this.drawerCard = true;
+    },
     toggleCard(card) {
       if (this.selectedCards.includes(card)) {
         const index = this.selectedCards.indexOf(card);

@@ -9,7 +9,7 @@
 
 <script>
 import Loading from "@/components/ui/loading.vue";
-import ListItem from "@/components/game/board/list-item.vue";
+import ListItem from "@/components/game/lobby/board/list-item.vue";
 import {
   query,
   collection,
