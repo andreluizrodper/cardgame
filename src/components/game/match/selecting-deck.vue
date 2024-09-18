@@ -46,11 +46,19 @@ export default {
         this.$router.push({ name: "deck-builder" });
       }
       if (this.decks.length === 1) {
-        this.$emit("toggleDeck", this.decks[0].data().cards);
+        const sortedDeck = this.sortDeck(this.decks[0].data().cards);
+        this.$emit("toggleDeck", sortedDeck);
       }
     },
     toggleDeck(deck) {
-      this.$emit("toggleDeck", deck.data().cards);
+      const sortedDeck = this.sortDeck(deck.data().cards);
+      this.$emit("toggleDeck", sortedDeck);
+    },
+    sortDeck(deck) {
+      return deck
+        .map((value) => ({ value, sort: Math.random() }))
+        .sort((a, b) => a.sort - b.sort)
+        .map(({ value }) => value);
     },
   },
 };

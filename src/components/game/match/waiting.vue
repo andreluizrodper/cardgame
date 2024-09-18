@@ -1,6 +1,6 @@
 <template>
   <img
-    src="@/assets/hero/hero.jpg"
+    src="@/assets/hero/lobby.jpg"
     class="fixed h-[100vh] w-full object-cover object-center opacity-50"
   />
   <div class="min-h-[100vh] flex flex-col z-30 relative">

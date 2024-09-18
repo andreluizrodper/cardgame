@@ -2,7 +2,12 @@
   <div
     @click="selectCard"
     class="border rounded border-white min-w-48 max-w-48 flex flex-col bg-white drop-shadow overflow-hidden"
-    :class="card.active ? '-translate-y-6' : ''"
+    :class="
+      [
+        card.active ? '-translate-y-6' : '',
+        card.turnCount === 0 ? 'opacity-60' : '',
+      ].join(' ')
+    "
   >
     <div class="relative">
       <img :src="card.artwork" />
@@ -13,7 +18,7 @@
       </div>
     </div>
     <div class="text-base flex-1 text-left px-2 py-2">{{ card.name }}</div>
-    <div class="p-4 flex flex-col w-full">
+    <div class="p-2 pb-1 flex flex-col w-full">
       <div v-if="card.manaNeeded" class="flex justify-between w-full">
         <div class="flex gap-2">
           <div class="flex gap-2 items-center">
@@ -61,6 +66,7 @@ export default {
   emits: ["toggleCard"],
   methods: {
     selectCard() {
+      if (this.card.turnCount === 0) return;
       this.$emit("toggleCard", this.card);
     },
   },

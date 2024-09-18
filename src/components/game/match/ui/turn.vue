@@ -11,7 +11,7 @@
   </div>
   <div
     v-if="!player.turn"
-    class="flex justify-center w-full flex-col gap-2 items-center"
+    class="flex justify-center w-full flex-col gap-2 items-center text-white"
   >
     <span class="text-sm">Waiting for your opponent</span>
     <Loading />
@@ -78,8 +78,14 @@ export default {
     endTurn() {
       const match = this.match.data();
       this.player.turn = false;
-      this.player.table = this.player.tempTable;
-      this.player.tempTable = [];
+      this.player.table.map((card) => {
+        const turnCount = card.turnCount + 1;
+        return {
+          ...card,
+          turnCount,
+          turnActive: false,
+        };
+      });
       this.opponent.turn = true;
       this.opponent.tempTable = this.opponent.table ?? [];
       match.turn += 1;

@@ -1,6 +1,13 @@
 <template>
   <div
+    @click="activateCard"
     class="border rounded border-white min-w-48 max-w-48 flex flex-col bg-white drop-shadow overflow-hidden"
+    :class="
+      [
+        card.turnActive ? 'opacity-40' : '',
+        card.turnCount > 0 ? '' : 'opacity-40',
+      ].join(' ')
+    "
   >
     <div class="relative">
       <img :src="card.artwork" />
@@ -11,7 +18,7 @@
       </div>
     </div>
     <div class="text-base flex-1 text-left px-2 py-2">{{ card.name }}</div>
-    <div class="p-4 flex flex-col w-full">
+    <div class="p-2 pb-1 flex flex-col w-full">
       <div v-if="card.manaNeeded" class="flex justify-between w-full">
         <div class="flex gap-2">
           <div class="flex gap-2 items-center">
@@ -56,16 +63,13 @@ export default {
       type: Boolean,
     },
   },
-  emits: ["toggleCard", "discardCard", "toggleCardSize"],
+  emits: ["toggleMana"],
   methods: {
-    toggleCardHand() {
-      this.$emit("toggleCard", this.card);
-    },
-    toggleCardSide() {
-      this.$emit("toggleCardSize", this.card);
-    },
-    discardCard() {
-      this.$emit("discardCard", this.card);
+    activateCard() {
+      if (this.card.turnActive) return;
+      if (this.card.manaValue) {
+        this.$emit("toggleMana", this.card);
+      }
     },
   },
 };

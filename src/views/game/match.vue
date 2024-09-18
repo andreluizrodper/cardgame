@@ -25,7 +25,7 @@ import TableTop from "@/components/game/match/table-top.vue";
 import { updateMatch } from "@/utils/match";
 import { doc, onSnapshot } from "firebase/firestore";
 import { firestore } from "@/utils/firebase";
-import { getAccount } from "@/utils/account";
+import { getAccount, updateAccount } from "@/utils/account";
 
 export default {
   components: {
@@ -65,6 +65,22 @@ export default {
         const opponentAccount = await getAccount({
           id: this.match.data().created_by,
           setStore: false,
+        });
+        const matchesPlayer1 = this.account.data().matches ?? 0 + 1;
+        updateAccount({
+          id: this.account.id,
+          data: {
+            ...this.account.data(),
+            matches: matchesPlayer1,
+          },
+        });
+        const matchesPlayer2 = opponentAccount.data().matches ?? 0 + 1;
+        updateAccount({
+          id: this.match.data().created_by,
+          data: {
+            ...opponentAccount.data(),
+            matches: matchesPlayer2,
+          },
         });
         updateMatch({
           id: this.$route.params.id,

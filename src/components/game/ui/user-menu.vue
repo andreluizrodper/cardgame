@@ -1,10 +1,18 @@
 <template>
   <DropdownMenu>
     <DropdownMenuTrigger>
-      <AccountAvatar :id="account.id" />
+      <AccountAvatar :id="account?.id" />
     </DropdownMenuTrigger>
-    <DropdownMenuContent align="start">
-      <DropdownMenuItem @click="logOut">
+    <DropdownMenuContent align="end">
+      <DropdownMenuLabel>
+        {{ account.data().name }}
+      </DropdownMenuLabel>
+      <DropdownMenuSeparator />
+      <DropdownMenuItem>
+        <router-link :to="{ name: 'my-account' }"> My account </router-link>
+      </DropdownMenuItem>
+      <DropdownMenuSeparator />
+      <DropdownMenuItem @click="logOut" class="cursor-pointer">
         <LogOut size="16" class="mr-2" />
         Sair
       </DropdownMenuItem>
@@ -19,7 +27,9 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
+  DropdownMenuLabel,
 } from "@/components/ui/dropdown-menu";
 import { signOut } from "firebase/auth";
 import { auth } from "@/utils/firebase.js";
@@ -30,8 +40,10 @@ export default {
     LogOut,
     DropdownMenu,
     DropdownMenuContent,
+    DropdownMenuSeparator,
     DropdownMenuItem,
     DropdownMenuTrigger,
+    DropdownMenuLabel,
   },
   computed: {
     account() {

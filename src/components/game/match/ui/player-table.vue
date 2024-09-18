@@ -10,7 +10,12 @@
         class="mx-1 drop-shadow flex justify-center"
         :class="expanded ? 'my-1 min-h-36' : 'h-12 -ml-32 -mb-4'"
       >
-        <Card :card="card" :isTurn="player.turn" :expanded="expanded" />
+        <Card
+          :card="card"
+          :isTurn="player.turn"
+          :expanded="expanded"
+          @toggleMana="toggleMana"
+        />
       </div>
     </div>
     <div
@@ -70,6 +75,7 @@
             :key="index"
             :card="card"
             :expandedHand="expandedHand"
+            :mana="player.mana"
             @toggleCard="toggleCardHand"
             @toggleCardCemetary="toggleCardCemetary"
           />
@@ -85,6 +91,12 @@
           {{ player.data.name }}
         </div>
         <div class="flex gap-2">
+          <span
+            class="flex gap-1 items-center"
+            :class="!player.mana || player.mana <= 0 ? 'opacity-40' : ''"
+          >
+            <Gem size="16" /> {{ player.mana }}
+          </span>
           <span class="flex gap-1 items-center">
             <Heart size="16" /> {{ player.health }}
           </span>
@@ -142,6 +154,7 @@ import {
   Layers3,
   RefreshCcw,
   Skull,
+  Gem,
 } from "lucide-vue-next";
 import Card from "@/components/game/match/ui/card.vue";
 import CardHand from "@/components/game/match/ui/card-hand.vue";
@@ -160,6 +173,7 @@ export default {
     Button,
     Card,
     CardHand,
+    Gem,
     ChevronDown,
     Skull,
     ChevronUp,
@@ -196,6 +210,13 @@ export default {
     }
   },
   methods: {
+    toggleMana(card) {
+      card.turnActive = true;
+      this.player.mana = this.player.mana ?? 0 + card.manaValue;
+      const match = this.match.data();
+      match.players = [this.player, this.opponent];
+      updateMatch({ id: this.$route.params.id, data: match });
+    },
     toggleCemetarySheet() {
       this.cemetarySheet = false;
     },

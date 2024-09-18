@@ -1,7 +1,7 @@
 <template>
   <div class="bg-stone-200 flex items-center h-36">
     <img
-      src="@/assets/hero/lobby.jpg"
+      src="@/assets/hero/my-account.jpg"
       class="h-36 w-full object-cover object-center"
     />
   </div>

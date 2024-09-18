@@ -1,6 +1,6 @@
 <template>
   <div
-    class="absolute z-30 left-0 right-0 top-0 bg-gray-100 pb-4"
+    class="absolute z-30 left-0 right-0 top-0 bg-gray-100"
     :class="expanded ? 'pb-2' : ''"
   >
     <div>
@@ -31,8 +31,8 @@
       </div>
     </div>
     <div
-      class="px-1 flex max-h-96"
-      :class="expanded ? 'overflow-y-auto' : 'overflow-y-hidden pl-36'"
+      class="px-1 flex max-h-96 pt-2"
+      :class="expanded ? 'overflow-y-auto pb-2' : 'overflow-y-hidden pl-36 '"
     >
       <div
         v-for="(card, index) in cards"
