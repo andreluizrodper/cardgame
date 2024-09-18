@@ -92,6 +92,7 @@ export default {
       );
       player.status = "ready";
       player.deck = deck;
+      console.log(deck);
       updateMatch({
         id: this.$route.params.id,
         data: match,

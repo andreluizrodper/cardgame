@@ -51,6 +51,7 @@ export default {
     },
     toggleDeck(deck) {
       const sortedDeck = this.sortDeck(deck.data().cards);
+      console.log(sortedDeck);
       this.$emit("toggleDeck", sortedDeck);
     },
     sortDeck(deck) {

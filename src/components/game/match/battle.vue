@@ -65,7 +65,7 @@ import Card from "@/components/game/match/battle/card.vue";
 import { Button } from "@/components/ui/button";
 import { updateMatch } from "@/utils/match";
 import { Sword, Heart, X } from "lucide-vue-next";
-import { updateAccount } from "@/utils/updateAccount";
+import { updateAccount } from "@/utils/account";
 
 export default {
   components: {
