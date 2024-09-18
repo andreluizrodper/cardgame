@@ -4,7 +4,11 @@
     class="border rounded border-white min-w-48 max-w-48 flex flex-col bg-white drop-shadow overflow-hidden"
     :class="
       [
-        card.active ? '-translate-y-6' : '',
+        card.active
+          ? direction === 'top'
+            ? '-translate-y-6'
+            : 'translate-y-6'
+          : '',
         card.turnCount === 0 ? 'opacity-60' : '',
       ].join(' ')
     "
@@ -25,7 +29,7 @@
             <Sword size="16" /> {{ card.attack }}
           </div>
           <div class="flex gap-2 items-center">
-            <Heart size="16" /> {{ card.defense }}
+            <Heart size="16" /> {{ card.health ?? card.defense }}
           </div>
         </div>
         <div class="flex gap-2 items-center">
@@ -53,6 +57,9 @@ export default {
     Button,
   },
   props: {
+    direction: {
+      type: String,
+    },
     card: {
       type: Object,
     },

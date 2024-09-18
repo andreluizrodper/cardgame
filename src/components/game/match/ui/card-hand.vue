@@ -17,7 +17,9 @@
       :class="
         [
           expandedHand ? 'mr-2' : '-ml-32',
-          !card.manaValue && mana >= card.manaNeeded ? '' : 'opacity-40',
+          card.manaNeeded && (!mana || mana < card.manaNeeded)
+            ? 'opacity-40'
+            : '',
         ].join(' ')
       "
     >
@@ -67,6 +69,9 @@ export default {
     Button,
   },
   props: {
+    isTurn: {
+      type: Boolean,
+    },
     mana: {
       type: Number,
     },
@@ -80,6 +85,7 @@ export default {
   emits: ["toggleCard", "toggleCardCemetary"],
   methods: {
     toggleCard() {
+      if (!this.isTurn) return;
       if (!this.card.manaValue && this.mana < this.card.manaNeeded) return;
       this.card.turnCount = 0;
       this.$emit("toggleCard", this.card);

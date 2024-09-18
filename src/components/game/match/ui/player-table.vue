@@ -76,6 +76,7 @@
             :card="card"
             :expandedHand="expandedHand"
             :mana="player.mana"
+            :isTurn="player.turn"
             @toggleCard="toggleCardHand"
             @toggleCardCemetary="toggleCardCemetary"
           />
@@ -212,7 +213,8 @@ export default {
   methods: {
     toggleMana(card) {
       card.turnActive = true;
-      this.player.mana = this.player.mana ?? 0 + card.manaValue;
+      const mana = this.player.mana ?? 0;
+      this.player.mana = mana + card.manaValue;
       const match = this.match.data();
       match.players = [this.player, this.opponent];
       updateMatch({ id: this.$route.params.id, data: match });
@@ -224,6 +226,9 @@ export default {
       const cemetary = this.player.cemetary ?? [];
       cemetary.push(card);
       this.player.cemetary = cemetary;
+      const indexCard = this.player.hand.indexOf(card);
+      this.player.hand.splice(indexCard, 1);
+      const match = this.match.data();
       match.players = [this.player, this.opponent];
       updateMatch({ id: this.$route.params.id, data: match });
     },
@@ -233,6 +238,24 @@ export default {
       const match = this.match.data();
       match.status = "done";
       match.players = [this.player, this.opponent];
+      let playerLose = this.player.data.lose ?? 0;
+      playerLose++;
+      updateAccount({
+        id: this.player.id,
+        data: {
+          ...this.player.data,
+          lose: playerLose,
+        },
+      });
+      let opponentWin = this.opponent.data.win ?? 0;
+      opponentWin++;
+      updateAccount({
+        id: this.opponent.id,
+        data: {
+          ...this.opponent.data,
+          win: opponentWin,
+        },
+      });
       updateMatch({ id: this.$route.params.id, data: match });
       this.$router.push({ name: "lobby" });
     },
@@ -253,6 +276,7 @@ export default {
       table.push(card);
       this.player.table = table;
       this.player.hand = hand;
+      this.player.mana = this.player.mana - card.manaNeeded;
       const match = this.match.data();
       match.players = [this.player, this.opponent];
       updateMatch({ id: this.$route.params.id, data: match });

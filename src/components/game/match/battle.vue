@@ -3,8 +3,11 @@
   <div
     class="bg-white z-50 fixed top-4 right-4 bottom-4 left-4 rounded flex flex-col"
   >
-    <div class="px-2 py-1">
+    <div class="px-2 py-1 flex justify-between">
       <p class="text-base font-bold">Battle</p>
+      <div>
+        <Button size="xs" @click="forfeitBattle">Quit battle</Button>
+      </div>
     </div>
     <div class="flex flex-1 flex-col">
       <div class="flex overflow-x-auto gap-1 p-2">
@@ -12,6 +15,7 @@
           v-for="card in battle.defense.player.table"
           :key="card.id"
           :card="card"
+          direction="bottom"
           @toggleCard="toggleCard"
         />
       </div>
@@ -48,6 +52,7 @@
           v-for="card in battle.attack.player.table"
           :key="card.id"
           :card="card"
+          direction="top"
           @toggleCard="toggleCard"
         />
       </div>
@@ -74,6 +79,9 @@ export default {
     battle: { type: Object },
   },
   computed: {
+    isAttacker() {
+      return this.battle.attack.player.data.id === this.account.id;
+    },
     account() {
       return this.$store.state.account;
     },
@@ -95,6 +103,11 @@ export default {
     },
   },
   methods: {
+    forfeitBattle() {
+      const match = this.match.data();
+      match.battle = null;
+      updateMatch({ id: this.$route.params.id, data: match });
+    },
     attackReady() {
       this.battle.attack.status = "ready";
       const match = this.match.data();
@@ -110,7 +123,6 @@ export default {
       this.doBattle();
     },
     doBattle() {
-      console.log(this.battle);
       if (
         this.battle.attack.status !== "ready" ||
         this.battle.defense.status !== "ready"
@@ -120,10 +132,52 @@ export default {
         this.battle.defense.player.health +=
           this.defensePoints - this.attackPoints;
       }
-      const match = this.match.data();
-      match.players = [this.battle.defense.player, this.battle.attack.player];
-      match.battle = null;
-      updateMatch({ id: this.$route.params.id, data: match });
+      const attackPoints = this.attackPoints;
+      this.battle.defense.player.table.map((card) => {
+        const health = card.health ?? card.defense;
+        if (attackPoints > health) {
+          card.health = 0;
+          attackPoints -= card.defense;
+          const indexCard = this.battle.defense.player.table.indexOf(card);
+          this.battle.defense.player.table.splice(indexCard, 1);
+          this.battle.defense.player.cemetary.push(card);
+        } else {
+          card.health -= attackPoints;
+          attackPoints -= card.defense;
+        }
+      });
+      if (attackPoints > 0) {
+        this.battle.defense.player.health -= attackPoints;
+
+        if (this.battle.defense.player.health <= 0) {
+          const match = this.match.data();
+          match.status = "done";
+          let playerLose = this.battle.defense.player.lose ?? 0;
+          playerLose++;
+          updateAccount({
+            id: this.battle.defense.player.id,
+            data: {
+              ...this.battle.defense.player,
+              lose: playerLose,
+            },
+          });
+          let opponentWin = this.battle.attack.player.win ?? 0;
+          opponentWin++;
+          updateAccount({
+            id: this.battle.attack.player.id,
+            data: {
+              ...this.battle.attack.player,
+              win: opponentWin,
+            },
+          });
+          updateMatch({ id: this.$route.params.id, data: match });
+        }
+      } else {
+        const match = this.match.data();
+        match.players = [this.battle.defense.player, this.battle.attack.player];
+        match.battle = null;
+        updateMatch({ id: this.$route.params.id, data: match });
+      }
     },
     toggleCard(card) {
       card.active = !card.active;

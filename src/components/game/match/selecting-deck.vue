@@ -46,8 +46,7 @@ export default {
         this.$router.push({ name: "deck-builder" });
       }
       if (this.decks.length === 1) {
-        const sortedDeck = this.sortDeck(this.decks[0].data().cards);
-        this.$emit("toggleDeck", sortedDeck);
+        this.toggleDeck(this.decks[0]);
       }
     },
     toggleDeck(deck) {

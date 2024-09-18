@@ -8,6 +8,21 @@
     >
       End my turn
     </Button>
+    <div
+      v-if="!match.data().hasStarted"
+      class="z-[100] fixed top-0 right-0 bottom-0 left-0 flex items-center justify-center"
+    >
+      <div class="fixed top-0 right-0 bottom-0 left-0 bg-black opacity-50" />
+      <div class="bg-white rounded drop-shadow p-6 flex flex-col gap-8">
+        <div class="text-sm">
+          You have won the dice roll and has the choice to start the match!
+        </div>
+        <div class="flex justify-center gap-8">
+          <Button @click="start">I want to start</Button>
+          <Button @click="pass">Pass</Button>
+        </div>
+      </div>
+    </div>
   </div>
   <div
     v-if="!player.turn"
@@ -55,6 +70,20 @@ export default {
     };
   },
   methods: {
+    start() {
+      console.log(this.match.data());
+      const match = this.match.data();
+      match.hasStarted = true;
+      updateMatch({ id: this.$route.params.id, data: match });
+    },
+    pass() {
+      const match = this.match.data();
+      this.player.turn = false;
+      this.opponent.turn = true;
+      match.hasStarted = true;
+      match.players = [this.player, this.opponent];
+      updateMatch({ id: this.$route.params.id, data: match });
+    },
     startBattle() {
       const match = this.match.data();
       match.battle = {

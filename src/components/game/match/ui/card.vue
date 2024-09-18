@@ -5,7 +5,7 @@
     :class="
       [
         card.turnActive ? 'opacity-40' : '',
-        card.turnCount > 0 ? '' : 'opacity-40',
+        card.manaNeeded && card.turnCount === 0 ? 'opacity-40' : '',
       ].join(' ')
     "
   >
@@ -25,7 +25,7 @@
             <Sword size="16" /> {{ card.attack }}
           </div>
           <div class="flex gap-2 items-center">
-            <Heart size="16" /> {{ card.defense }}
+            <Heart size="16" /> {{ card.health ?? card.defense }}
           </div>
         </div>
         <div class="flex gap-2 items-center">
@@ -66,6 +66,7 @@ export default {
   emits: ["toggleMana"],
   methods: {
     activateCard() {
+      if (!this.isTurn) return;
       if (this.card.turnActive) return;
       if (this.card.manaValue) {
         this.$emit("toggleMana", this.card);
