@@ -1,5 +1,9 @@
 <template>
-  <div class="min-h-[100vh] flex flex-col">
+  <img
+    src="@/assets/hero/hero.jpg"
+    class="fixed h-[100vh] w-full object-cover object-center opacity-50"
+  />
+  <div class="min-h-[100vh] flex flex-col z-30 relative">
     <div class="flex flex-1 items-center">
       <div class="flex flex-col gap-8 w-full justify-center items-center">
         <div class="flex flex-col gap-2 items-center">
@@ -7,7 +11,7 @@
           <Loading />
         </div>
         <div class="flex flex-col gap-1 items-center">
-          <span class="text-xs">Match code:</span>
+          <span class="text-xs text-gray-700 font-bold">Match code:</span>
           <div class="bg-gray-50 px-2 py-1 text-sm rounded" @click="copyCode">
             {{ match.id }}
           </div>

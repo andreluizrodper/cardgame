@@ -1,17 +1,10 @@
 <template>
   <div
-    @click="toggleCard"
+    @click="selectCard"
     class="border rounded border-white min-w-48 max-w-48 flex flex-col bg-white drop-shadow overflow-hidden"
-    :class="expandedHand ? 'mr-2' : '-ml-32'"
+    :class="card.active ? '-translate-y-6' : ''"
   >
     <div class="relative">
-      <button
-        @click="goToCemetary"
-        size="sm"
-        class="absolute top-2 left-2 z-20 px-2 py-1 rounded border bg-white"
-      >
-        <X size="16" />
-      </button>
       <img :src="card.artwork" />
       <div
         class="absolute top-2 right-2 border rounded bg-white px-1 text-xs shadow-sm"
@@ -44,32 +37,31 @@
 </template>
 
 <script>
+import { Heart, Sword, Gem } from "lucide-vue-next";
 import { Button } from "@/components/ui/button";
-import { Heart, Sword, Gem, X } from "lucide-vue-next";
 
 export default {
   components: {
     Heart,
     Sword,
     Gem,
-    X,
     Button,
   },
   props: {
-    expandedHand: {
-      type: Boolean,
-    },
     card: {
       type: Object,
     },
-  },
-  emits: ["toggleCard", "toggleCardCemetary"],
-  methods: {
-    toggleCard() {
-      this.$emit("toggleCard", this.card);
+    isTurn: {
+      type: Boolean,
     },
-    goToCemetary() {
-      this.$emit("toggleCardCemetary", this.card);
+    expanded: {
+      type: Boolean,
+    },
+  },
+  emits: ["toggleCard"],
+  methods: {
+    selectCard() {
+      this.$emit("toggleCard", this.card);
     },
   },
 };

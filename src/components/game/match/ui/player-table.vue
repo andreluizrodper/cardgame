@@ -1,22 +1,16 @@
 <template>
   <div class="absolute z-40 left-0 right-0 bottom-0 bg-gray-100 pt-4">
     <div
-      class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 px-1 overflow-hidden max-h-96"
-      :class="expanded ? 'overflow-y-auto' : 'overflow-y-hidden'"
+      class="px-1 flex max-h-96"
+      :class="expanded ? 'overflow-y-auto' : 'overflow-y-hidden pl-36'"
     >
       <div
         v-for="(card, index) in cards"
         :key="index"
         class="mx-1 drop-shadow flex justify-center"
-        :class="expanded ? 'my-1 min-h-36' : 'h-12 -mb-4 overflow-hidden'"
+        :class="expanded ? 'my-1 min-h-36' : 'h-12 -ml-32 -mb-4'"
       >
-        <Card
-          v-if="card.name"
-          :card="card"
-          :isTurn="player.turn"
-          @discardCard="discardCard"
-        />
-        <EmptyCard v-if="!card.name" />
+        <Card :card="card" :isTurn="player.turn" :expanded="expanded" />
       </div>
     </div>
     <div
@@ -33,13 +27,40 @@
       :class="expandedHand ? '' : 'h-16'"
     >
       <div class="flex justify-between p-2">
-        <div class="text-xs">My hand</div>
+        <div class="text-sm flex gap-2 items-center">
+          My hand
+
+          <span
+            class="border bg-gray-50 rounded flex gap-2 items-center px-2 py-1"
+          >
+            <Layers3 size="16" /> {{ (player.hand && player.hand.length) || 0 }}
+          </span>
+        </div>
         <div class="flex gap-2">
-          <RefreshCcw size="16" @click="draw" />
-          <div @click="expandedHand = !expandedHand">
+          <button
+            v-if="player.cemetary"
+            class="border bg-gray-50 rounded flex gap-2 items-center px-2 py-1 relative"
+            @click="cemetarySheet = true"
+          >
+            <span
+              class="absolute -top-1 -right-2 px-2 rounded-full text-xs bg-red-300 text-white"
+              >{{ player.cemetary.length }}</span
+            >
+            <Skull size="16" />
+          </button>
+          <button
+            class="border bg-gray-50 rounded flex gap-2 items-center px-2 py-1"
+            @click="draw"
+          >
+            <RefreshCcw size="16" />
+          </button>
+          <button
+            @click="expandedHand = !expandedHand"
+            class="border bg-gray-50 rounded flex gap-2 items-center px-2 py-1"
+          >
             <ChevronDown v-if="expandedHand" size="16" />
             <ChevronUp v-if="!expandedHand" size="16" />
-          </div>
+          </button>
         </div>
       </div>
       <div class="overflow-x-auto gap-1 pb-2 px-1">
@@ -50,6 +71,7 @@
             :card="card"
             :expandedHand="expandedHand"
             @toggleCard="toggleCardHand"
+            @toggleCardCemetary="toggleCardCemetary"
           />
         </div>
       </div>
@@ -58,7 +80,7 @@
       v-if="player.data"
       class="w-full relative py-2 flex justify-center text-sm"
     >
-      <div class="flex w-full justify-between px-4">
+      <div class="flex w-full justify-between px-4 items-center">
         <div>
           {{ player.data.name }}
         </div>
@@ -70,9 +92,10 @@
             <Layers3 size="16" />
             {{ player.deck.length }}
           </span>
+          <Button size="xs" variant="outline" @click="quit">Quit match</Button>
         </div>
       </div>
-      <div class="absolute top-0 left-0 right-0 h-0.5 flex justify-end">
+      <div class="absolute top-0 left-0 right-0 h-0.5 flex">
         <div
           class="h-0.5 bg-green-500"
           :style="{ width: `${(player.health / 20) * 100}%` }"
@@ -80,28 +103,66 @@
       </div>
     </div>
   </div>
+  <Sheet
+    class="max-w-md"
+    :open="cemetarySheet"
+    @update:open="toggleCemetarySheet"
+  >
+    <SheetContent>
+      <SheetHeader>
+        <SheetTitle> Cemetary </SheetTitle>
+        <SheetDescription> </SheetDescription>
+      </SheetHeader>
+      <div class="grid gap-2 grid-cols-2 overflow-y-auto">
+        <Card
+          v-for="(card, index) in player.cemetary"
+          :key="index"
+          :card="card"
+          @toggleCard="toggleCard"
+        />
+      </div>
+    </SheetContent>
+  </Sheet>
 </template>
 
 <script>
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import {
   ChevronDown,
   ChevronUp,
   Heart,
   Layers3,
   RefreshCcw,
+  Skull,
 } from "lucide-vue-next";
 import Card from "@/components/game/match/ui/card.vue";
 import CardHand from "@/components/game/match/ui/card-hand.vue";
-import EmptyCard from "@/components/game/match/ui/empty-card.vue";
 import { updateMatch } from "@/utils/match";
+import { Button } from "@/components/ui/button";
 
 export default {
   components: {
+    Sheet,
+    SheetClose,
+    SheetContent,
+    SheetDescription,
+    SheetHeader,
+    SheetTitle,
+    SheetTrigger,
+    Button,
     Card,
     CardHand,
     ChevronDown,
+    Skull,
     ChevronUp,
-    EmptyCard,
     Heart,
     Layers3,
     RefreshCcw,
@@ -119,14 +180,12 @@ export default {
   },
   computed: {
     cards() {
-      let tableCards;
-      if (this.player.turn) tableCards = this.player.tempTable ?? [];
-      else tableCards = this.player.table ?? [];
-      return tableCards;
+      return this.player.table;
     },
   },
   data() {
     return {
+      cemetarySheet: false,
       expandedHand: false,
       expanded: false,
     };
@@ -137,6 +196,25 @@ export default {
     }
   },
   methods: {
+    toggleCemetarySheet() {
+      this.cemetarySheet = false;
+    },
+    toggleCardCemetary(card) {
+      const cemetary = this.player.cemetary ?? [];
+      cemetary.push(card);
+      this.player.cemetary = cemetary;
+      match.players = [this.player, this.opponent];
+      updateMatch({ id: this.$route.params.id, data: match });
+    },
+    quit() {
+      this.player.status = "lose";
+      this.opponent.status = "win";
+      const match = this.match.data();
+      match.status = "done";
+      match.players = [this.player, this.opponent];
+      updateMatch({ id: this.$route.params.id, data: match });
+      this.$router.push({ name: "lobby" });
+    },
     draw() {
       if (this.player.hand?.length > 0) {
         this.player.deck.push(...this.player.hand);
@@ -147,22 +225,13 @@ export default {
       updateMatch({ id: this.$route.params.id, data: match });
     },
     toggleCardHand(card) {
-      const tempTable = this.player.tempTable ?? [];
+      const table = this.player.table ?? [];
       const hand = this.player.hand ?? [];
       const index = hand.indexOf(card);
       hand.splice(index, 1);
-      tempTable.push(card);
-      this.player.tempTable = tempTable;
+      table.push(card);
+      this.player.table = table;
       this.player.hand = hand;
-      const match = this.match.data();
-      match.players = [this.player, this.opponent];
-      updateMatch({ id: this.$route.params.id, data: match });
-    },
-    discardCard(card) {
-      const tempTable = this.player.tempTable ?? [];
-      const index = tempTable.indexOf(card);
-      this.player.tempTable = tempTable;
-      tempTable.splice(index, 1);
       const match = this.match.data();
       match.players = [this.player, this.opponent];
       updateMatch({ id: this.$route.params.id, data: match });

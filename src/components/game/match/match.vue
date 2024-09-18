@@ -2,21 +2,17 @@
   <div v-if="isLoading" class="flex items-center justify-center min-h-[100vh]">
     <Loading />
   </div>
-  <div v-if="!isLoading" class="min-h-[100vh] flex flex-col w-full">
-    <TopBar :match="match" :player="player" :opponent="opponent" />
-    <div class="relative flex-1 flex">
-      <OpponentTable :opponent="opponent" />
-      <div class="flex-1 items-center flex">
-        <Turn :match="match" :player="player" :opponent="opponent" />
-      </div>
-      <PlayerTable :player="player" :match="match" :opponent="opponent" />
+  <div v-if="!isLoading" class="min-h-[100vh] flex flex-col w-full bg-gray-600">
+    <OpponentTable :opponent="opponent" />
+    <div class="flex-1 items-center flex">
+      <Turn :match="match" :player="player" :opponent="opponent" />
     </div>
+    <PlayerTable :player="player" :match="match" :opponent="opponent" />
   </div>
 </template>
 
 <script>
 import Loading from "@/components/ui/loading.vue";
-import TopBar from "@/components/game/match/ui/top-bar.vue";
 import OpponentTable from "@/components/game/match/ui/opponent-table.vue";
 import PlayerTable from "@/components/game/match/ui/player-table.vue";
 import Turn from "@/components/game/match/ui/turn.vue";
@@ -24,7 +20,6 @@ import Turn from "@/components/game/match/ui/turn.vue";
 export default {
   components: {
     Loading,
-    TopBar,
     OpponentTable,
     PlayerTable,
     Turn,

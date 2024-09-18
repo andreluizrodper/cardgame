@@ -9,8 +9,6 @@
 <script>
 import Loading from "@/components/ui/loading.vue";
 import { updateMatch } from "@/utils/match";
-import { query, collection, where, onSnapshot } from "firebase/firestore";
-import { firestore } from "@/utils/firebase";
 import SelectingDeck from "@/components/game/match/selecting-deck.vue";
 import WaitingPlayer from "@/components/game/match/waiting-player.vue";
 import Match from "@/components/game/match/match.vue";
@@ -85,17 +83,6 @@ export default {
       turns: null,
       isLoading: true,
     };
-  },
-  async mounted() {
-    onSnapshot(
-      query(
-        collection(firestore, "turns"),
-        where("match_id", "==", this.$route.params.id)
-      ),
-      (doc) => {
-        this.turns = doc.docs;
-      }
-    );
   },
   methods: {
     toggleDeck(deck) {

@@ -1,5 +1,5 @@
 <template>
-  <div v-if="matches" class="px-4 py-3 flex flex-col">
+  <div v-if="matches && matches.length > 0" class="px-4 py-3 flex flex-col">
     <p class="text-gray-600 text-sm">Matches open right now:</p>
     <div class="flex flex-col gap-2">
       <ListItem v-for="match in matches" :key="match.id" :match="match" />

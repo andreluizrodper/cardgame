@@ -39,19 +39,55 @@
         </div>
       </div>
       <div class="px-4 py-2 flex items-center justify-between">
-        <div class="flex items-center gap-4">
-          <Drawer>
-            <DrawerTrigger :disabled="!collectionSelected">
-              <Button :disabled="!collectionSelected">Select cards</Button>
-            </DrawerTrigger>
-            <DrawerContent>
-              <DrawerHeader>
-                <DrawerTitle>Cards</DrawerTitle>
-              </DrawerHeader>
-              <div
-                v-show="expanded"
-                class="flex justify-between px-4 py-2 items-center"
+        <div class="flex items-center">
+          <div class="border rounded px-4 bg-gray-50 py-1 text-sm">
+            {{ selectedCardsCount }} cards
+          </div>
+        </div>
+        <Button size="sm" @click="collectionSeet = true">Your cards</Button>
+        <Sheet
+          class="max-w-md"
+          :open="collectionSeet"
+          @update:open="toggleSheetCollection"
+        >
+          <SheetContent>
+            <SheetHeader>
+              <SheetTitle>
+                {{
+                  collectionSelected
+                    ? `${collectionName} Cards`
+                    : "Select a colection"
+                }}
+              </SheetTitle>
+              <SheetDescription> </SheetDescription>
+            </SheetHeader>
+            <div v-if="!collectionSelected" class="grid grid-cols-2 gap-2">
+              <button
+                v-for="(collection, index) in collections"
+                :key="index"
+                class="border hover:shadow-md rounded overflow-hidden min-w-32"
+                @click="selectCollection(collection)"
               >
+                <img :src="collection.artwork" />
+                <div
+                  class="px-2 py-2 bg-stone-50 text-gray-800 flex flex-col gap-1"
+                >
+                  <span>{{ collection.name }}</span>
+                  <span class="text-xs"
+                    >{{ collection.cards.length }} cards</span
+                  >
+                </div>
+              </button>
+            </div>
+            <div v-else>
+              <button
+                class="flex gap-2 items-center"
+                @click="collectionSelected = false"
+              >
+                <ChevronLeft size="16" />
+                All collections
+              </button>
+              <div class="flex justify-between px-4 py-2 items-center">
                 <span class="text-gray-400 text-sm">
                   Available cards {{ availableCards.length }}
                 </span>
@@ -61,7 +97,7 @@
               </div>
               <div
                 v-show="expanded"
-                class="overflow-x-auto py-2 px-4 flex gap-1"
+                class="grid gap-2 grid-cols-2 overflow-y-auto"
               >
                 <Card
                   v-for="(card, index) in availableCards"
@@ -70,43 +106,7 @@
                   @toggleCard="toggleCard"
                 />
               </div>
-            </DrawerContent>
-          </Drawer>
-
-          <div class="flex items-center">
-            <div class="border rounded px-4 bg-gray-50 py-1">
-              {{ selectedCardsCount }} cards
             </div>
-          </div>
-        </div>
-        <Button size="sm" @click="collectionSeet = true"
-          >Select a collection</Button
-        >
-        <Sheet :open="collectionSeet" @update:open="toggleSheetCollection">
-          <SheetContent>
-            <SheetHeader>
-              <SheetTitle>Collections</SheetTitle>
-              <SheetDescription>
-                <div class="grid grid-cols-2 gap-2">
-                  <button
-                    v-for="(collection, index) in collections"
-                    :key="index"
-                    class="border hover:shadow-md rounded overflow-hidden min-w-32"
-                    @click="selectCollection(collection)"
-                  >
-                    <img :src="collection.artwork" />
-                    <div
-                      class="px-2 py-2 bg-stone-50 text-gray-800 flex flex-col gap-1"
-                    >
-                      <span>{{ collection.name }}</span>
-                      <span class="text-xs"
-                        >{{ collection.cards.length }} cards</span
-                      >
-                    </div>
-                  </button>
-                </div>
-              </SheetDescription>
-            </SheetHeader>
           </SheetContent>
         </Sheet>
       </div>
@@ -225,6 +225,7 @@ export default {
       cards: [],
       name: "",
       expanded: true,
+      collectionName: null,
       collections: [Human, Elf, Goblin, Skeleton, Mana],
     };
   },
@@ -239,11 +240,9 @@ export default {
     toggleSheetCollection() {
       this.collectionSeet = false;
     },
-    toggleDrawerCard() {
-      this.drawerCard = false;
-    },
     selectCollection(collection) {
       this.collectionSelected = true;
+      this.collectionName = collection.name;
       const cards = collection.cards.map((card) => {
         return {
           ...card,
@@ -251,8 +250,6 @@ export default {
         };
       });
       this.cards = cards;
-      this.collectionSeet = false;
-      this.drawerCard = true;
     },
     toggleCard(card) {
       if (this.selectedCards.includes(card)) {

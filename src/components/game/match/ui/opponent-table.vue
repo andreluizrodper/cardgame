@@ -31,17 +31,16 @@
       </div>
     </div>
     <div
-      class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 px-1 overflow-hidden max-h-96"
-      :class="expanded ? 'overflow-y-auto' : 'overflow-y-hidden'"
+      class="px-1 flex max-h-96"
+      :class="expanded ? 'overflow-y-auto' : 'overflow-y-hidden pl-36'"
     >
       <div
         v-for="(card, index) in cards"
         :key="index"
         class="mx-1 drop-shadow flex justify-center"
-        :class="expanded ? 'my-1 min-h-36' : 'h-12 -mb-4 overflow-hidden'"
+        :class="expanded ? 'my-1 min-h-36' : 'h-12 -ml-32 -mb-4'"
       >
-        <Card v-if="card.name" :card="card" />
-        <EmptyCard v-if="!card.name" />
+        <Card :card="card" :expanded="expanded" />
       </div>
     </div>
     <div
@@ -59,7 +58,6 @@
 <script>
 import { ChevronDown, ChevronUp, Heart, Layers3 } from "lucide-vue-next";
 import Card from "@/components/game/match/ui/card.vue";
-import EmptyCard from "@/components/game/match/ui/empty-card.vue";
 
 export default {
   components: {
@@ -68,7 +66,6 @@ export default {
     ChevronDown,
     ChevronUp,
     Layers3,
-    EmptyCard,
   },
   props: {
     opponent: {
@@ -77,12 +74,7 @@ export default {
   },
   computed: {
     cards() {
-      const emptyCards = [...new Array(8).keys()];
-      const table = [...(this.opponent.table ?? []), ...emptyCards].splice(
-        0,
-        8
-      );
-      return table;
+      return this.opponent.table;
     },
   },
   data() {

@@ -41,7 +41,10 @@ export default {
   methods: {
     async getDecks() {
       this.decks = await getDecks();
-
+      if (this.decks.length === 0) {
+        this.$store.commit("setRedirectMatch", this.$route.params.id);
+        this.$router.push({ name: "deck-builder" });
+      }
       if (this.decks.length === 1) {
         this.$emit("toggleDeck", this.decks[0].data().cards);
       }
