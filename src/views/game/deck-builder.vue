@@ -1,7 +1,7 @@
 <template>
   <div class="bg-stone-500">
     <div
-      class="flex min-h-[100vh] flex flex-col md:mx-auto max-w-7xl shadow bg-white"
+      class="flex min-h-[100vh] flex-col md:mx-auto max-w-7xl shadow bg-white"
     >
       <div class="sticky top-0 left-0 right-0 flex flex-col z-30">
         <NavBar />
@@ -47,105 +47,115 @@
             {{ manaCardsCount }} mana cards
           </div>
         </div>
-        <Button size="sm" @click="collectionSeet = true">Your cards</Button>
-        <Sheet
-          class="max-w-md"
-          :open="collectionSeet"
-          @update:open="toggleSheetCollection"
-        >
-          <SheetContent>
-            <SheetHeader>
-              <SheetTitle>
-                {{
-                  collectionSelected
-                    ? `${collectionName} Cards`
-                    : "Select a colection"
-                }}
-              </SheetTitle>
-              <SheetDescription> </SheetDescription>
-            </SheetHeader>
-            <div v-if="!collectionSelected" class="grid grid-cols-2 gap-2">
-              <button
-                v-for="(collection, index) in collections"
-                :key="index"
-                class="border hover:shadow-md rounded overflow-hidden min-w-32"
-                @click="selectCollection(collection)"
-              >
-                <img :src="collection.artwork" />
-                <div
-                  class="px-2 py-2 bg-stone-50 text-gray-800 flex flex-col gap-1"
-                >
-                  <span>{{ collection.name }}</span>
-                  <span class="text-xs"
-                    >{{ collection.cards.length }} cards</span
-                  >
-                </div>
-              </button>
+        <Button size="sm" @click="removeAllCards" :disabled="selectedCards.length === 0">
+          Remove All Cards
+        </Button>
+      </div>
+      <div class="flex-1 relative overflow-hidden flex flex-col md:flex-row">
+        <div class="w-full md:w-2/6 p-4 order-1 md:order-2">
+          <h2 class="text-xl font-bold mb-4">Your Deck</h2>
+          <div class="grid grid-cols-1 gap-2 h-[200px] md:h-full overflow-y-auto">
+            <div v-if="selectedCards.length === 0" class="text-gray-500 text-center">
+              No cards in your deck. <br /> Add cards from the collection.
             </div>
-            <div v-else>
-              <button
-                class="flex gap-2 items-center"
-                @click="collectionSelected = false"
+            <div
+              v-for="(card, index) in selectedCards"
+              :key="index"
+              class="relative"
+            >
+              <div
+                class="border rounded p-2 cursor-pointer hover:shadow-md transition-shadow"
+                @mouseenter="hoveredCard = card"
+                @mouseleave="hoveredCard = null"
+                @click="toggleCard(card)"
               >
-                <ChevronLeft size="16" />
-                All collections
-              </button>
-              <div class="flex justify-between px-4 py-2 items-center">
-                <span class="text-gray-400 text-sm">
-                  Available cards {{ availableCards.length }}
-                </span>
-                <div>
-                  <Input v-model="search" placeholder="Search..." />
-                </div>
+                {{ card.name }}
               </div>
               <div
-                v-show="expanded"
-                class="grid gap-2 grid-cols-2 overflow-y-auto"
+                v-if="hoveredCard === card"
+                class="absolute z-10 right-full top-0 ml-2 hidden md:block"
               >
-                <Card
-                  v-for="(card, index) in availableCards"
-                  :key="index"
-                  :card="card"
-                  @toggleCard="toggleCard"
-                />
+                <Card :card="card" @toggleCard="toggleCard" />
+              </div>
+              <Button
+                class="absolute top-0 right-0 p-1 lg:hidden"
+                size="sm"
+                @click.stop="showCardDetails(card)"
+              >
+                <Eye size="16" />
+              </Button>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Collection -->
+        <div class="w-full md:w-4/6 p-4 border-b md:border-b-0 md:border-r order-2 md:order-1">
+          <h2 class="text-xl font-bold mb-4">Collection</h2>
+          <div v-if="!collectionSelected" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-2">
+            <button
+              v-for="(collection, index) in collections"
+              :key="index"
+              class="border hover:shadow-md rounded overflow-hidden"
+              @click="selectCollection(collection)"
+            >
+              <img :src="collection.artwork" class="w-full h-24 object-cover" />
+              <div
+                class="px-2 py-2 bg-stone-50 text-gray-800 flex flex-col gap-1"
+              >
+                <span class="text-xs truncate">{{ collection.name }}</span>
+                <span class="text-xs"
+                  >{{ collection.cards.length }} cards</span
+                >
+              </div>
+            </button>
+          </div>
+          <div v-else>
+            <button
+              class="flex gap-2 items-center mb-4"
+              @click="collectionSelected = false"
+            >
+              <ChevronLeft size="16" />
+              All collections
+            </button>
+            <div class="flex justify-between mb-4 items-center">
+              <span class="text-gray-400 text-sm">
+                Available cards {{ availableCards.length }}
+              </span>
+              <div>
+                <Input v-model="search" placeholder="Search..." />
               </div>
             </div>
-          </SheetContent>
-        </Sheet>
-      </div>
-      <div class="flex-1 relative overflow-hidden">
-        <div
-          class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-2 p-2"
-        >
-          <div
-            v-for="(card, index) in selectedCards"
-            :key="index"
-            class="flex justify-center"
-          >
-            <Card @toggleCard="toggleCard" :card="card" />
+            <div class="flex flex-wrap gap-2 items-center justify-center" :style="gridStyle">
+              <Card
+                v-for="(card, index) in availableCards"
+                :key="index"
+                :card="card"
+                @toggleCard="toggleCard"
+              />
+            </div>
           </div>
         </div>
       </div>
+    </div>
+  </div>
+
+  <!-- Modal for card details on mobile -->
+  <div v-if="showModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div class="bg-white p-4 rounded-lg max-w-sm w-full">
+      <Card :card="selectedCardForModal" @toggleCard="toggleCard" />
+      <Button class="mt-4 w-full" @click="closeModal">Close</Button>
     </div>
   </div>
 </template>
 
 <script>
 import {
-  Sheet,
-  SheetClose,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
-import {
   ChevronDown,
   ChevronUp,
   ChevronLeft,
   ChevronRight,
   Home,
+  Eye,
 } from "lucide-vue-next";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -158,17 +168,6 @@ import Card from "@/components/game/decks/card.vue";
 import { updateDeck, createDeck, getDeck } from "@/utils/deck";
 import NavBar from "@/components/game/ui/nav-bar.vue";
 
-import {
-  Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerDescription,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
-} from "@/components/ui/drawer";
-
 export default {
   components: {
     NavBar,
@@ -178,23 +177,9 @@ export default {
     ChevronDown,
     ChevronUp,
     Button,
-    Sheet,
-    SheetClose,
-    SheetContent,
-    SheetDescription,
-    SheetHeader,
-    SheetTitle,
-    SheetTrigger,
-    Drawer,
-    DrawerClose,
-    DrawerContent,
-    DrawerDescription,
-    DrawerFooter,
-    DrawerHeader,
-    DrawerTitle,
-    DrawerTrigger,
     ChevronRight,
     Home,
+    Eye,
   },
   computed: {
     buttonText() {
@@ -225,17 +210,17 @@ export default {
   },
   data() {
     return {
-      drawerCard: false,
-      collectionSeet: false,
       collectionSelected: false,
       search: "",
       selectedCards: [],
       artwork: null,
       cards: [],
       name: "",
-      expanded: true,
       collectionName: null,
       collections: [Human, Elf, Goblin, Skeleton, Mana],
+      hoveredCard: null,
+      showModal: false,
+      selectedCardForModal: null,
     };
   },
   async mounted() {
@@ -246,9 +231,6 @@ export default {
     }
   },
   methods: {
-    toggleSheetCollection() {
-      this.collectionSeet = false;
-    },
     selectCollection(collection) {
       this.collectionSelected = true;
       this.collectionName = collection.name;
@@ -286,6 +268,17 @@ export default {
         this.$store.commit("addToast", { description: `Deck created!` });
       }
       this.$router.push({ name: "decks" });
+    },
+    removeAllCards() {
+      this.selectedCards = [];
+    },
+    showCardDetails(card) {
+      this.selectedCardForModal = card;
+      this.showModal = true;
+    },
+    closeModal() {
+      this.showModal = false;
+      this.selectedCardForModal = null;
     },
   },
 };
