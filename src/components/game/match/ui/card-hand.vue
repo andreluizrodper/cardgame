@@ -1,27 +1,10 @@
 <template>
   <div
-    class="relative min-w-48 max-w-48 flex"
-    :class="[expandedHand ? 'mr-2' : '-ml-32'].join(' ')"
+    class="relative min-w-48 max-w-48 flex -ml-32 group-hover:mr-2 group-hover:ml-0 duration-300 hover:-translate-y-5"
   >
-    <button
-      @click="goToCemetary"
-      size="sm"
-      class="absolute top-2 left-2 z-20 px-2 py-1 rounded border bg-white"
-    >
-      <Skull size="16" />
-    </button>
-
     <div
       @click="toggleCardTable"
-      class="border rounded border-white min-w-48 max-w-48 flex flex-col bg-white drop-shadow overflow-hidden"
-      :class="
-        [
-          expandedHand ? 'mr-2' : '-ml-32',
-          card.manaNeeded && (!mana || mana < card.manaNeeded)
-            ? 'opacity-40'
-            : '',
-        ].join(' ')
-      "
+      class="border border-b-0 rounded-t group-hover:rounded-b border-white min-w-48 max-w-48 flex flex-col bg-white drop-shadow overflow-hidden"
     >
       <div class="relative">
         <img :src="card.artwork" />
@@ -53,6 +36,13 @@
         </div>
       </div>
     </div>
+    <button
+      @click="goToCemetary"
+      size="sm"
+      class="absolute top-2 left-2 px-2 py-1 rounded border bg-white"
+    >
+      <Skull size="16" />
+    </button>
   </div>
 </template>
 

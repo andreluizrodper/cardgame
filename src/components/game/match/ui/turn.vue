@@ -1,35 +1,34 @@
 <template>
-  <div v-if="player.turn" class="flex items-center flex-1 justify-center gap-2">
-    <Button size="sm" @click="startBattle"> Start battle </Button>
-    <Button
-      size="sm"
-      :disabled="player.hand && player.hand.length > 7"
-      @click="endTurn"
-    >
-      End my turn
-    </Button>
-    <div
-      v-if="!match.data().hasStarted"
-      class="z-[100] fixed top-0 right-0 bottom-0 left-0 flex items-center justify-center"
-    >
-      <div class="fixed top-0 right-0 bottom-0 left-0 bg-black opacity-50" />
-      <div class="bg-white rounded drop-shadow p-6 flex flex-col gap-8">
-        <div class="text-sm">
-          You have won the dice roll and has the choice to start the match!
-        </div>
-        <div class="flex justify-center gap-8">
-          <Button @click="start">I want to start</Button>
-          <Button @click="pass">Pass</Button>
+  <div
+    v-if="!isSpectator"
+    class="flex items-center flex-1 justify-center gap-2"
+  >
+    <div v-if="player.turn" class="flex items-center flex-1 justify-end gap-2">
+      <Button
+        size="sm"
+        class="translate-x-5 -rotate-90 relative z-50"
+        variant="outline"
+        :disabled="player.hand && player.hand.length > 7"
+        @click="endTurn"
+      >
+        End my turn
+      </Button>
+      <div
+        v-if="!match.data().hasStarted"
+        class="z-[100] fixed top-0 right-0 bottom-0 left-0 flex items-center justify-center"
+      >
+        <div class="fixed top-0 right-0 bottom-0 left-0 bg-black opacity-50" />
+        <div class="bg-white rounded drop-shadow p-6 flex flex-col gap-8">
+          <div class="text-sm">
+            You have won the dice roll and has the choice to start the match!
+          </div>
+          <div class="flex justify-center gap-8">
+            <Button @click="start">I want to start</Button>
+            <Button @click="pass">Pass</Button>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-  <div
-    v-if="!player.turn"
-    class="flex justify-center w-full flex-col gap-2 items-center text-white"
-  >
-    <span class="text-sm">Waiting for your opponent</span>
-    <Loading />
   </div>
   <Battle v-if="onBattle" :battle="this.match.data().battle" :match="match" />
 </template>
@@ -54,6 +53,9 @@ export default {
     },
   },
   props: {
+    isSpectator: {
+      type: Boolean,
+    },
     match: {
       type: Object,
     },
@@ -100,19 +102,6 @@ export default {
       this.player.tempTable = tempTable;
       this.player.hand = hand;
       const match = this.match.data();
-      match.players = [this.player, this.opponent];
-      updateMatch({ id: this.$route.params.id, data: match });
-    },
-    endTurn() {
-      const match = this.match.data();
-      this.player.turn = false;
-      this.opponent.turn = true;
-      this.opponent.table?.map((card) => {
-        card.turnCount += 1;
-        card.turnActive = false;
-        return card;
-      });
-      match.turn += 1;
       match.players = [this.player, this.opponent];
       updateMatch({ id: this.$route.params.id, data: match });
     },

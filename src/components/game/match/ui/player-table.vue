@@ -1,97 +1,81 @@
 <template>
-  <div class="absolute z-40 left-0 right-0 bottom-0 bg-gray-100 pt-4">
-    <div
-      class="px-1 flex max-h-96"
-      :class="expanded ? 'overflow-y-auto' : 'overflow-y-hidden pl-36'"
-    >
-      <div
-        v-for="(card, index) in cards"
-        :key="index"
-        class="mx-1 drop-shadow flex justify-center"
-        :class="expanded ? 'my-1 min-h-36' : 'h-12 -ml-32 -mb-4'"
-      >
-        <Card
-          :card="card"
-          :isTurn="player.turn"
-          :expanded="expanded"
-          @toggleMana="toggleMana"
-        />
+  <div class="absolute z-40 left-0 right-0 bottom-0 flex">
+    <div class="text-sm w-56 left-0 flex flex-col gap-2">
+      <div class="mx-2 relative z-30">
+        <Button @click="endTurn" :disabled="!player.turn" variant="outline"
+          >End my turn</Button
+        >
       </div>
-    </div>
-    <div
-      @click="expanded = !expanded"
-      class="absolute -top-4 flex justify-center left-0 right-0"
-    >
-      <span class="bg-gray-100 rounded-t px-2 py-1">
-        <ChevronDown v-if="expanded" size="16" />
-        <ChevronUp v-if="!expanded" size="16" />
-      </span>
-    </div>
-    <div
-      class="bg-gray-200 overflow-hidden"
-      :class="expandedHand ? '' : 'h-16'"
-    >
-      <div class="flex justify-between p-2">
-        <div class="text-sm flex gap-2 items-center">
-          My hand
-
-          <span
-            class="border bg-gray-50 rounded flex gap-2 items-center px-2 py-1"
-          >
-            <Layers3 size="16" /> {{ (player.hand && player.hand.length) || 0 }}
-          </span>
+      <div class="flex flex-col gap-2 mx-2">
+        <div class="flex justify-between text-stone-200 items-center">
+          <p class="text-sm">Spell deck</p>
+          <p class="flex gap-2 items-center">
+            <Layers3 size="16" /> {{ spellCardsCount }}
+          </p>
         </div>
-        <div class="flex gap-2">
-          <button
-            v-if="player.cemetary"
-            class="border bg-gray-50 rounded flex gap-2 items-center px-2 py-1 relative"
-            @click="cemetarySheet = true"
-          >
-            <span
-              class="absolute -top-1 -right-2 px-2 rounded-full text-xs bg-red-300 text-white"
-              >{{ player.cemetary.length }}</span
+        <div
+          class="w-50 h-32 bg-stone-400 bg-cover rounded flex items-start pl-3 justify-end pb-2 flex-col"
+          :style="{ backgroundImage: 'url(/assets/deck/back.png)' }"
+        >
+          <div v-if="player.hand" class="">
+            <Button @click="drawSpell" :disabled="!player.hasDrawn"
+              >Draw</Button
             >
-            <Skull size="16" />
-          </button>
-          <button
-            class="border bg-gray-50 rounded flex gap-2 items-center px-2 py-1"
-            @click="draw"
-          >
-            <RefreshCcw size="16" />
-          </button>
-          <button
-            @click="expandedHand = !expandedHand"
-            class="border bg-gray-50 rounded flex gap-2 items-center px-2 py-1"
-          >
-            <ChevronDown v-if="expandedHand" size="16" />
-            <ChevronUp v-if="!expandedHand" size="16" />
-          </button>
+          </div>
+          <div v-if="!player.hand" class="flex gap-2 justify-end px-2 w-full">
+            <Input
+              class="w-16"
+              v-model="amountSpell"
+              :max="8 - amountMana"
+              :min="0"
+              type="number"
+            />
+          </div>
         </div>
       </div>
-      <div class="overflow-x-auto gap-1 pb-2 px-1">
-        <div class="flex" :class="expandedHand ? '' : 'ml-32'">
-          <CardHand
-            v-for="(card, index) in player.hand"
-            :key="index"
-            :card="card"
-            :expandedHand="expandedHand"
-            :mana="player.mana"
-            :isTurn="player.turn"
-            @toggleCardTable="toggleCardTable"
-            @toggleCardCemetary="toggleCardCemetary"
-          />
+      <div class="flex flex-col gap-2 mx-2">
+        <div class="flex justify-between text-stone-200 items-center">
+          <p class="text-sm">Mana deck</p>
+          <p class="flex gap-2 items-center">
+            <Layers3 size="16" /> {{ manaCardsCount }}
+          </p>
+        </div>
+        <div
+          class="w-50 h-32 bg-stone-400 bg-cover rounded flex items-start pl-3 justify-end pb-2 flex-col"
+          :style="{ backgroundImage: 'url(/assets/deck/back.png)' }"
+        >
+          <div v-if="player.hand" class="">
+            <Button @click="drawMana" :disabled="!player.hasDrawn">Draw</Button>
+          </div>
+          <div v-if="!player.hand" class="flex gap-2 justify-end px-2 w-full">
+            <Input
+              class="w-16"
+              v-model="amountMana"
+              :max="8 - amountSpell"
+              :min="0"
+              type="number"
+            />
+          </div>
         </div>
       </div>
-    </div>
-    <div
-      v-if="player.data"
-      class="w-full relative py-2 flex justify-center text-sm"
-    >
-      <div class="flex w-full justify-between px-4 items-center">
+      <div v-if="player.turn">
+        <div
+          v-if="!player.hand"
+          class="text-stone-200 px-2 text-xs flex gap-2 items-center"
+        >
+          It's your first draw, select up to 8 cards to draw
+          <Button size="xs" :disabled="!drawAvailable" @click="firstDraw"
+            >Draw</Button
+          >
+        </div>
+      </div>
+      <div
+        class="bg-stone-600 text-stone-200 p-2 rounded shadow-md flex flex-col items-start gap-1"
+      >
         <div>
           {{ player.data.name }}
         </div>
-        <div class="flex gap-2">
+        <div class="flex gap-4">
           <span
             class="flex gap-1 items-center"
             :class="!player.mana || player.mana <= 0 ? 'opacity-40' : ''"
@@ -105,13 +89,53 @@
             <Layers3 size="16" />
             {{ player.deck.length }}
           </span>
-          <Button size="xs" variant="outline" @click="quit">Quit match</Button>
+          <button
+            v-if="player.cemetary"
+            class="border bg-gray-50 rounded flex gap-2 items-center px-2 py-1 relative"
+            @click="cemetarySheet = true"
+          >
+            <span
+              class="absolute -top-1 -right-2 px-2 rounded-full text-xs bg-red-300 text-white"
+              >{{ player.cemetary.length }}</span
+            >
+            <Skull size="16" />
+          </button>
+        </div>
+        <button
+          v-if="!isSpectator"
+          class="px-2 rounded bg-stone-400 text-stone-700 hover:bg-stone-900 hover:text-red-300"
+          @click="quit"
+        >
+          Quit match
+        </button>
+      </div>
+    </div>
+    <div class="flex-1 flex items-end">
+      <div class="flex mb-8 w-full justify-center">
+        <div
+          class="px-1 scale-75 -mx-32 flex max-h-96 justify-center items-end flex-wrap"
+        >
+          <div
+            v-for="(card, index) in cards"
+            :key="index"
+            class="mx-1 drop-shadow flex justify-center my-1 min-h-36"
+          >
+            <Card :card="card" :isTurn="player.turn" @toggleMana="toggleMana" />
+          </div>
         </div>
       </div>
-      <div class="absolute top-0 left-0 right-0 h-0.5 flex">
-        <div
-          class="h-0.5 bg-green-500"
-          :style="{ width: `${(player.health / 20) * 100}%` }"
+      <div
+        v-if="!isSpectator"
+        class="flex group justify-center absolute h-16 overflow-hidden hover:h-auto hover:overflow-auto bottom-0 left-0 right-0 z-30 left-[300px] hover:ml-0 duration-300 hover:bottom-2 pt-6"
+      >
+        <CardHand
+          v-for="(card, index) in player.hand"
+          :key="index"
+          :card="card"
+          :mana="player.mana"
+          :isTurn="player.turn"
+          @toggleCardTable="toggleCardTable"
+          @toggleCardCemetary="toggleCardCemetary"
         />
       </div>
     </div>
@@ -157,6 +181,7 @@ import {
   Skull,
   Gem,
 } from "lucide-vue-next";
+import { Input } from "@/components/ui/input";
 import Card from "@/components/game/match/ui/card.vue";
 import CardHand from "@/components/game/match/ui/card-hand.vue";
 import { updateMatch } from "@/utils/match";
@@ -165,6 +190,7 @@ import { updateAccount } from "@/utils/account";
 
 export default {
   components: {
+    Input,
     Sheet,
     SheetClose,
     SheetContent,
@@ -184,6 +210,9 @@ export default {
     RefreshCcw,
   },
   props: {
+    isSpectator: {
+      type: Boolean,
+    },
     match: {
       type: Object,
     },
@@ -195,23 +224,54 @@ export default {
     },
   },
   computed: {
+    drawAvailable() {
+      return (
+        this.amountMana + this.amountSpell <= 8 &&
+        this.amountMana + this.amountSpell > 0
+      );
+    },
+    spellCards() {
+      return this.player.deck.filter((card) => card.manaNeeded);
+    },
+    spellCardsCount() {
+      return this.spellCards.length;
+    },
+    manaCards() {
+      return this.player.deck.filter((card) => card.manaValue);
+    },
+    manaCardsCount() {
+      return this.manaCards.length;
+    },
     cards() {
       return this.player.table;
+    },
+    tableSpellCards() {
+      return this.player.table.filter((card) => card.manaNeeded);
     },
   },
   data() {
     return {
       cemetarySheet: false,
       expandedHand: false,
-      expanded: false,
+      expanded: true,
+      amountMana: null,
+      amountSpell: null,
     };
   },
-  mounted() {
-    if (this.player.turn) {
-      this.draw();
-    }
-  },
   methods: {
+    endTurn() {
+      this.player.turn = false;
+      this.opponent.mana = 0;
+      this.opponent.turn = true;
+      this.player.hasDrawn = false;
+      this.opponent.table?.map((card) => {
+        card.turnCount += 1;
+        card.turnActive = false;
+        return card;
+      });
+      this.match.turn += 1;
+      this.doUpdateMatch();
+    },
     toggleMana(card) {
       card.turnActive = true;
       const mana = this.player.mana ?? 0;
@@ -262,14 +322,26 @@ export default {
       updateMatch({ id: this.$route.params.id, data: match });
       this.$router.push({ name: "lobby" });
     },
-    draw() {
-      if (this.player.hand?.length > 0) {
-        this.player.deck.push(...this.player.hand);
-      }
-      this.player.hand = this.player.deck.splice(0, 8);
+    doUpdateMatch() {
       const match = this.match.data();
       match.players = [this.player, this.opponent];
       updateMatch({ id: this.$route.params.id, data: match });
+    },
+    drawMana() {
+      const mana = this.manaCards.splice(0, 1);
+      this.player.hand.push(...mana);
+      this.doUpdateMatch();
+    },
+    drawSpell() {
+      const spell = this.spellCards.splice(0, 1);
+      this.player.hand.push(...spell);
+      this.doUpdateMatch();
+    },
+    firstDraw() {
+      const mana = this.manaCards.splice(0, this.amountMana);
+      const spell = this.spellCards.splice(0, this.amountSpell);
+      this.player.hand = [...mana, ...spell];
+      this.doUpdateMatch();
     },
     toggleCardTable(card) {
       const table = this.player.table ?? [];
@@ -282,9 +354,7 @@ export default {
       if (card.manaNeeded) {
         this.player.mana = this.player.mana - card.manaNeeded;
       }
-      const match = this.match.data();
-      match.players = [this.player, this.opponent];
-      updateMatch({ id: this.$route.params.id, data: match });
+      this.doUpdateMatch();
     },
   },
 };

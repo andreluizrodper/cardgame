@@ -18,16 +18,20 @@
           <span class="flex gap-1 items-center text-sm"> My account </span>
         </div>
         <UserData v-if="account" :account="account" />
+        <DeleteMyAccount :account="account" />
       </div>
     </div>
   </div>
+  <Dialog />
 </template>
 
 <script>
 import Hero from "@/components/my-account/hero.vue";
 import UserData from "@/components/my-account/user-data.vue";
+import DeleteMyAccount from "@/components/my-account/delete-account.vue";
 import NavBar from "@/components/game/ui/nav-bar.vue";
 import { Home, ChevronRight } from "lucide-vue-next";
+import Dialog from "@/components/ui/dialog.vue";
 
 export default {
   components: {
@@ -36,6 +40,8 @@ export default {
     NavBar,
     Hero,
     UserData,
+    DeleteMyAccount,
+    Dialog,
   },
   computed: {
     account() {

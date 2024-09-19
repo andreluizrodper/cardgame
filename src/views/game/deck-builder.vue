@@ -39,9 +39,12 @@
         </div>
       </div>
       <div class="px-4 py-2 flex items-center justify-between">
-        <div class="flex items-center">
+        <div class="flex items-center gap-2">
           <div class="border rounded px-4 bg-gray-50 py-1 text-sm">
-            {{ selectedCardsCount }} cards
+            {{ spellCardsCount }} cards
+          </div>
+          <div class="border rounded px-4 bg-gray-50 py-1 text-sm">
+            {{ manaCardsCount }} mana cards
           </div>
         </div>
         <Button size="sm" @click="collectionSeet = true">Your cards</Button>
@@ -198,6 +201,12 @@ export default {
       if (this.$route.params.id) return "Save";
       return "Create";
     },
+    spellCardsCount() {
+      return this.selectedCards.filter((card) => card.manaNeeded).length;
+    },
+    manaCardsCount() {
+      return this.selectedCards.filter((card) => card.manaValue).length;
+    },
     selectedCardsCount() {
       return this.selectedCards.length;
     },
@@ -211,7 +220,7 @@ export default {
         .filter((card) => card.name.toLowerCase().includes(search));
     },
     isValid() {
-      return this.name.length > 4 && this.selectedCardsCount >= 40;
+      return this.name.length > 4 && this.spellCardsCount >= 40;
     },
   },
   data() {

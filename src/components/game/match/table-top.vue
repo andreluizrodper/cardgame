@@ -1,4 +1,11 @@
 <template>
+  <router-link
+    v-if="isSpectator"
+    :to="{ name: 'lobby' }"
+    class="absolute top-2 left-2 border border-gray-500 hover:bg-gray-800 rounded bg-gray-700 text-white p-2 text-sm"
+  >
+    <Home size="16" />
+  </router-link>
   <SelectingDeck
     v-if="isSelectingDeck"
     :match="match"
@@ -6,7 +13,13 @@
     :opponent="opponent"
   />
   <WaitingPlayer v-if="isWaiting" />
-  <Match v-if="isReady" :match="match" :player="player" :opponent="opponent" />
+  <Match
+    v-if="isReady"
+    :match="match"
+    :player="player"
+    :opponent="opponent"
+    :isSpectator="isSpectator"
+  />
   <Win v-if="hasPlayerWon" />
   <Lose v-if="hasPlayerLose" />
 </template>
@@ -18,9 +31,13 @@ import WaitingPlayer from "@/components/game/match/waiting-player.vue";
 import Match from "@/components/game/match/match.vue";
 import Win from "@/components/game/match/win.vue";
 import Lose from "@/components/game/match/lose.vue";
+import { Home } from "lucide-vue-next";
 
 export default {
   props: {
+    isSpectator: {
+      type: Boolean,
+    },
     match: {
       type: Object,
     },
@@ -32,6 +49,7 @@ export default {
     },
   },
   components: {
+    Home,
     Loading,
     SelectingDeck,
     WaitingPlayer,

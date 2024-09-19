@@ -9,6 +9,10 @@
           <Label>My name</Label>
           <Input v-model="name" />
         </div>
+        <div class="flex flex-col gap-2">
+          <Label>My email</Label>
+          <Input v-model="email" disabled />
+        </div>
         <div>
           <Button @click="save">Save</Button>
         </div>
@@ -42,6 +46,7 @@ export default {
   data() {
     return {
       name: this.account.data().name,
+      email: this.account.data().email,
     };
   },
   methods: {

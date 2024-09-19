@@ -8,6 +8,7 @@
       v-if="
         ['playing', 'done'].includes(match.data().status) && player && opponent
       "
+      :isSpectator="isSpectator"
       :match="match"
       :player="player"
       :opponent="opponent"
@@ -38,14 +39,21 @@ export default {
       return this.$store.state.account;
     },
     player() {
+      if (!this.match.data().shared_with.includes(this.account.id))
+        return this.match.data().players[0];
       return this.match
         .data()
         .players.find((player) => player.id === this.account.id);
     },
     opponent() {
+      if (!this.match.data().shared_with.includes(this.account.id))
+        return this.match.data().players[1];
       return this.match
         .data()
         .players.find((player) => player.id !== this.account.id);
+    },
+    isSpectator() {
+      return !this.match.data().shared_with.includes(this.account.id);
     },
   },
   data() {
@@ -58,7 +66,10 @@ export default {
     onSnapshot(doc(firestore, "match", this.$route.params.id), async (doc) => {
       this.match = doc;
 
-      if (!this.match.data().shared_with.includes(this.account.id)) {
+      if (
+        this.match.data().shared_with.length === 1 &&
+        !this.match.data().shared_with.includes(this.account.id)
+      ) {
         const shared_with = this.match.data().shared_with;
         shared_with.push(this.account.id);
         const turnPlayer1 = Math.floor(Math.random() * 1000 + 1) % 2;

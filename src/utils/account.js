@@ -32,6 +32,7 @@ const createAccount = async ({ data, setStore = true }) => {
   try {
     const uuid = uuidv4();
     data.uuid = uuid;
+    data.archived = false;
     const createdAccount = await addDoc(
       collection(firestore, "accounts"),
       data
@@ -53,6 +54,7 @@ const getAccount = async ({ id, setStore = true }) => {
 const accountExists = async ({ id }) => {
   const qAccounts = query(
     collection(firestore, "accounts"),
+    where("archived", "==", false),
     where("owner", "==", id)
   );
   const accountDocs = await getDocs(qAccounts);
@@ -63,6 +65,7 @@ const loginAccount = async ({ id }) => {
   try {
     const qAccounts = query(
       collection(firestore, "accounts"),
+      where("archived", "==", false),
       where("owner", "==", id)
     );
     const accountDocs = await getDocs(qAccounts);
@@ -77,6 +80,7 @@ const loginAccount = async ({ id }) => {
 const getAccountByEmail = async ({ email }) => {
   const qAccounts = query(
     collection(firestore, "accounts"),
+    where("archived", "==", false),
     where("email", "==", email)
   );
   const accountDocs = await getDocs(qAccounts);
