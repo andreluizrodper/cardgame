@@ -1,27 +1,5 @@
 <template>
-  <div class="absolute z-30 left-0 right-0 top-0">
-    <div
-      class="text-sm absolute top-0 z-80 right-0 bg-stone-600 text-stone-200 p-2 rounded shadow-md flex flex-col items-end gap-1 shadow-lg"
-    >
-      <div>
-        {{ opponent.data.name }}
-      </div>
-      <div class="flex gap-4">
-        <span
-          class="flex gap-1 items-center"
-          :class="!opponent.mana || opponent.mana <= 0 ? 'opacity-40' : ''"
-        >
-          <Gem size="16" /> {{ opponent.mana }}
-        </span>
-        <span class="flex gap-1 items-center">
-          <Heart size="16" /> {{ opponent.health }}
-        </span>
-        <span class="flex gap-1 items-center">
-          <Layers3 size="16" />
-          {{ opponent.deck.length }}
-        </span>
-      </div>
-    </div>
+  <div class="absolute z-30 left-0 right-0 top-0 flex">
     <div class="flex-1 flex items-end">
       <div class="flex mb-8 w-full justify-center">
         <div
@@ -34,6 +12,30 @@
           >
             <Card :card="card" />
           </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div
+        class="text-sm top-0 z-80 right-0 bg-stone-600 text-stone-200 p-2 rounded shadow-md flex flex-col items-end gap-1 shadow-lg"
+      >
+        <div>
+          {{ opponent.data.name }}
+        </div>
+        <div class="flex gap-4">
+          <span
+            class="flex gap-1 items-center"
+            :class="!opponent.mana || opponent.mana <= 0 ? 'opacity-40' : ''"
+          >
+            <Gem size="16" /> {{ opponent.mana }}
+          </span>
+          <span class="flex gap-1 items-center">
+            <Heart size="16" /> {{ opponent.health }}
+          </span>
+          <span class="flex gap-1 items-center">
+            <Layers3 size="16" />
+            {{ opponent.deck.length }}
+          </span>
         </div>
       </div>
     </div>

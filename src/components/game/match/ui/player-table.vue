@@ -261,9 +261,9 @@ export default {
   methods: {
     endTurn() {
       this.player.turn = false;
+      this.player.hasDrawn = false;
       this.opponent.mana = 0;
       this.opponent.turn = true;
-      this.player.hasDrawn = false;
       this.opponent.table?.map((card) => {
         card.turnCount += 1;
         card.turnActive = false;
@@ -330,17 +330,20 @@ export default {
     drawMana() {
       const mana = this.manaCards.splice(0, 1);
       this.player.hand.push(...mana);
+      this.player.hasDrawn = true;
       this.doUpdateMatch();
     },
     drawSpell() {
       const spell = this.spellCards.splice(0, 1);
       this.player.hand.push(...spell);
+      this.player.hasDrawn = true;
       this.doUpdateMatch();
     },
     firstDraw() {
       const mana = this.manaCards.splice(0, this.amountMana);
       const spell = this.spellCards.splice(0, this.amountSpell);
       this.player.hand = [...mana, ...spell];
+      this.player.hasDrawn = true;
       this.doUpdateMatch();
     },
     toggleCardTable(card) {
