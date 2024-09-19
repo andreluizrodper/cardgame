@@ -54,7 +54,7 @@ export default {
     logOut() {
       signOut(auth).then(() => {
         this.$store.commit("setAccount", null);
-        this.$router.push({ name: "Home" });
+        this.$router.push({ name: "home" });
       });
     },
   },

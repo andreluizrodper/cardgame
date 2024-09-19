@@ -37,10 +37,10 @@ export default {
       } else {
         if (this.$route.path.includes("match")) {
           this.$store.commit("setRedirectMatch", this.$route.params.id);
-          this.$router.push({ name: "Home" });
+          this.$router.push({ name: "home" });
         }
         if (this.$route.path.includes("game")) {
-          this.$router.push({ name: "Home" });
+          this.$router.push({ name: "home" });
         }
         this.loading = false;
       }

@@ -77,7 +77,7 @@
             :expandedHand="expandedHand"
             :mana="player.mana"
             :isTurn="player.turn"
-            @toggleCard="toggleCardHand"
+            @toggleCardTable="toggleCardTable"
             @toggleCardCemetary="toggleCardCemetary"
           />
         </div>
@@ -215,7 +215,7 @@ export default {
     toggleMana(card) {
       card.turnActive = true;
       const mana = this.player.mana ?? 0;
-      this.player.mana = mana + card.manaValue;
+      this.player.mana = mana + parseInt(card.manaValue);
       const match = this.match.data();
       match.players = [this.player, this.opponent];
       updateMatch({ id: this.$route.params.id, data: match });
@@ -247,6 +247,7 @@ export default {
           ...this.player.data,
           lose: playerLose,
         },
+        setStore: false,
       });
       let opponentWin = this.opponent.data.win ?? 0;
       opponentWin++;
@@ -256,6 +257,7 @@ export default {
           ...this.opponent.data,
           win: opponentWin,
         },
+        setStore: false,
       });
       updateMatch({ id: this.$route.params.id, data: match });
       this.$router.push({ name: "lobby" });
@@ -269,7 +271,7 @@ export default {
       match.players = [this.player, this.opponent];
       updateMatch({ id: this.$route.params.id, data: match });
     },
-    toggleCardHand(card) {
+    toggleCardTable(card) {
       const table = this.player.table ?? [];
       const hand = this.player.hand ?? [];
       const index = hand.indexOf(card);
@@ -277,7 +279,9 @@ export default {
       table.push(card);
       this.player.table = table;
       this.player.hand = hand;
-      this.player.mana = this.player.mana - card.manaNeeded;
+      if (card.manaNeeded) {
+        this.player.mana = this.player.mana - card.manaNeeded;
+      }
       const match = this.match.data();
       match.players = [this.player, this.opponent];
       updateMatch({ id: this.$route.params.id, data: match });

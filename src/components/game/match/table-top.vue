@@ -1,5 +1,10 @@
 <template>
-  <SelectingDeck v-if="isSelectingDeck" @toggleDeck="toggleDeck" />
+  <SelectingDeck
+    v-if="isSelectingDeck"
+    :match="match"
+    :player="player"
+    :opponent="opponent"
+  />
   <WaitingPlayer v-if="isWaiting" />
   <Match v-if="isReady" :match="match" :player="player" :opponent="opponent" />
   <Win v-if="hasPlayerWon" />
@@ -8,7 +13,6 @@
 
 <script>
 import Loading from "@/components/ui/loading.vue";
-import { updateMatch } from "@/utils/match";
 import SelectingDeck from "@/components/game/match/selecting-deck.vue";
 import WaitingPlayer from "@/components/game/match/waiting-player.vue";
 import Match from "@/components/game/match/match.vue";
@@ -40,63 +44,22 @@ export default {
       return this.$store.state.account;
     },
     isSelectingDeck() {
-      return (
-        this.match
-          .data()
-          .players.find((player) => player.id === this.account.id).status ===
-        "selecting-deck"
-      );
+      return this.player.status === "selecting-deck";
     },
     isWaiting() {
       return (
-        !this.isSelectingDeck &&
-        this.match
-          .data()
-          .players.find((player) => player.id !== this.account.id).status ===
-          "selecting-deck"
+        this.player.status === "ready" &&
+        this.opponent.status === "selecting-deck"
       );
     },
     isReady() {
-      return this.match
-        .data()
-        .players.every((player) => player.status === "ready");
+      return this.player.status === "ready" && this.opponent.status === "ready";
     },
     hasPlayerWon() {
-      return (
-        this.match
-          .data()
-          .players.find((player) => player.id === this.account.id).status ===
-        "win"
-      );
+      return this.player.status === "win";
     },
     hasPlayerLose() {
-      return (
-        this.match
-          .data()
-          .players.find((player) => player.id === this.account.id).status ===
-        "lose"
-      );
-    },
-  },
-  data() {
-    return {
-      turns: null,
-      isLoading: true,
-    };
-  },
-  methods: {
-    toggleDeck(deck) {
-      const match = this.match.data();
-      const player = match.players.find(
-        (player) => player.id === this.account.id
-      );
-      player.status = "ready";
-      player.deck = deck;
-      console.log(deck);
-      updateMatch({
-        id: this.$route.params.id,
-        data: match,
-      });
+      return this.player.status === "lose";
     },
   },
 };

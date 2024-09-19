@@ -38,19 +38,5 @@ export default {
       type: Boolean,
     },
   },
-  computed: {
-    deck() {
-      return this.player.deck;
-    },
-    account() {
-      return this.$store.state.account;
-    },
-    opponentHand() {
-      return this.opponent.hand;
-    },
-    hand() {
-      return this.player.hand ?? [];
-    },
-  },
 };
 </script>

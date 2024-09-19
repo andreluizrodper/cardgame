@@ -12,7 +12,7 @@
     </button>
 
     <div
-      @click="toggleCard"
+      @click="toggleCardTable"
       class="border rounded border-white min-w-48 max-w-48 flex flex-col bg-white drop-shadow overflow-hidden"
       :class="
         [
@@ -82,13 +82,13 @@ export default {
       type: Object,
     },
   },
-  emits: ["toggleCard", "toggleCardCemetary"],
+  emits: ["toggleCardTable", "toggleCardCemetary"],
   methods: {
-    toggleCard() {
+    toggleCardTable() {
       if (!this.isTurn) return;
       if (!this.card.manaValue && this.mana < this.card.manaNeeded) return;
       this.card.turnCount = 0;
-      this.$emit("toggleCard", this.card);
+      this.$emit("toggleCardTable", this.card);
     },
     goToCemetary() {
       this.$emit("toggleCardCemetary", this.card);

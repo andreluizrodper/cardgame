@@ -20,6 +20,7 @@ export default createStore({
       state.user = data;
     },
     setAccount(state, data) {
+      if (state.account) return;
       state.account = data;
     },
   },

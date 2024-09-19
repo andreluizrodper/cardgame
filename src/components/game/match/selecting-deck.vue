@@ -1,12 +1,12 @@
 <template>
-  <div class="flex justify-center py-6" v-if="!decks">
-    <Loading />
-  </div>
   <div
     v-if="decks"
     class="flex min-h-[100vh] items-center w-full flex-col justify-center"
   >
     <p class="text-xl font-bold">Select your deck</p>
+    <div class="flex justify-center py-6" v-if="!decks">
+      <Loading />
+    </div>
     <div
       class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 px-4 py-6 w-full"
     >
@@ -25,7 +25,20 @@
 <script>
 import Loading from "@/components/ui/loading.vue";
 import { getDecks } from "@/utils/deck";
+import { updateMatch } from "@/utils/match";
+
 export default {
+  props: {
+    match: {
+      type: Object,
+    },
+    player: {
+      type: Object,
+    },
+    opponent: {
+      type: Object,
+    },
+  },
   components: {
     Loading,
   },
@@ -37,22 +50,19 @@ export default {
   mounted() {
     this.getDecks();
   },
-  emits: ["toggleDeck"],
   methods: {
     async getDecks() {
       this.decks = await getDecks();
-      if (this.decks.length === 0) {
-        this.$store.commit("setRedirectMatch", this.$route.params.id);
-        this.$router.push({ name: "deck-builder" });
-      }
-      if (this.decks.length === 1) {
-        this.toggleDeck(this.decks[0]);
-      }
     },
     toggleDeck(deck) {
-      const sortedDeck = this.sortDeck(deck.data().cards);
-      console.log(sortedDeck);
-      this.$emit("toggleDeck", sortedDeck);
+      const match = this.match.data();
+      this.player.status = "ready";
+      this.player.deck = this.sortDeck(deck.data().cards);
+      match.players = [this.player, this.opponent];
+      updateMatch({
+        id: this.$route.params.id,
+        data: match,
+      });
     },
     sortDeck(deck) {
       return deck

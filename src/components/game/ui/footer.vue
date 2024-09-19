@@ -50,13 +50,5 @@ export default {
       return new Date().getFullYear();
     },
   },
-  methods: {
-    logOut() {
-      signOut(auth).then(() => {
-        this.$store.commit("setAccount", null);
-        this.$router.push({ name: "Home" });
-      });
-    },
-  },
 };
 </script>

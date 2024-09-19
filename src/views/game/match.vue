@@ -66,21 +66,25 @@ export default {
           id: this.match.data().created_by,
           setStore: false,
         });
-        const matchesPlayer1 = this.account.data().matches ?? 0 + 1;
+        let matchesPlayer1 = this.account.data().matches ?? 0;
+        matchesPlayer1++;
         updateAccount({
           id: this.account.id,
           data: {
             ...this.account.data(),
             matches: matchesPlayer1,
           },
+          setStore: false,
         });
-        const matchesPlayer2 = opponentAccount.data().matches ?? 0 + 1;
+        let matchesPlayer2 = opponentAccount.data().matches ?? 0;
+        matchesPlayer2++;
         updateAccount({
           id: this.match.data().created_by,
           data: {
             ...opponentAccount.data(),
             matches: matchesPlayer2,
           },
+          setStore: false,
         });
         updateMatch({
           id: this.$route.params.id,

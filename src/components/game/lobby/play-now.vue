@@ -17,7 +17,6 @@ export default {
       const matches = await getWaitingMatches();
       if (matches.length > 0) {
         const index = Math.floor(Math.random() * matches.length);
-        console.log(index, matches[index]);
         const match = matches[index];
         this.$router.push({ name: "match", params: { id: match.id } });
       } else {

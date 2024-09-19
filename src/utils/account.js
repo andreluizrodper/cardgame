@@ -12,7 +12,7 @@ import {
 } from "firebase/firestore";
 import store from "@/store";
 
-const updateAccount = async ({ id, data }) => {
+const updateAccount = async ({ id, data, setStore = true }) => {
   try {
     const account = await getAccount({ id });
     const accountRef = doc(firestore, "accounts", id);
@@ -21,7 +21,7 @@ const updateAccount = async ({ id, data }) => {
       ...data,
       updated_at: new Date(),
     });
-    getAccount({ id });
+    getAccount({ id, setStore });
     return true;
   } catch (error) {
     console.error("Error adding document: ", error);
@@ -83,8 +83,6 @@ const getAccountByEmail = async ({ email }) => {
   if (!accountDocs.docs.length) return null;
   return accountDocs.docs[0];
 };
-
-const logOutAccount = async () => {};
 
 export {
   accountExists,

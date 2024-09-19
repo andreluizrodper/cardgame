@@ -71,7 +71,6 @@ export default {
   },
   methods: {
     start() {
-      console.log(this.match.data());
       const match = this.match.data();
       match.hasStarted = true;
       updateMatch({ id: this.$route.params.id, data: match });
@@ -107,16 +106,12 @@ export default {
     endTurn() {
       const match = this.match.data();
       this.player.turn = false;
-      this.player.table.map((card) => {
-        const turnCount = card.turnCount + 1;
-        return {
-          ...card,
-          turnCount,
-          turnActive: false,
-        };
-      });
       this.opponent.turn = true;
-      this.opponent.tempTable = this.opponent.table ?? [];
+      this.opponent.table?.map((card) => {
+        card.turnCount += 1;
+        card.turnActive = false;
+        return card;
+      });
       match.turn += 1;
       match.players = [this.player, this.opponent];
       updateMatch({ id: this.$route.params.id, data: match });
