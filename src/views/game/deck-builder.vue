@@ -54,7 +54,7 @@
       <div class="flex-1 relative overflow-hidden flex flex-col md:flex-row">
         <div class="w-full md:w-2/6 p-4 order-1 md:order-2">
           <h2 class="text-xl font-bold mb-4">Your Deck</h2>
-          <div class="grid grid-cols-1 gap-2 h-[200px] md:h-full overflow-y-auto">
+          <div class="flex flex-col gap-2 max-h-[200px] md:max-h-full overflow-y-auto md:overflow-y-visible">
             <div v-if="selectedCards.length === 0" class="text-gray-500 text-center">
               No cards in your deck. <br /> Add cards from the collection.
             </div>
@@ -68,13 +68,14 @@
                 @mouseenter="hoveredCard = card"
                 @mouseleave="hoveredCard = null"
                 @click="toggleCard(card)"
-              >
+              >   
                 {{ card.name }}
               </div>
               <div
                 v-if="hoveredCard === card"
                 class="absolute z-10 right-full top-0 ml-2 hidden md:block"
-              >
+                style="pointer-events: none;"
+              > 
                 <Card :card="card" @toggleCard="toggleCard" />
               </div>
               <Button
@@ -125,7 +126,7 @@
                 <Input v-model="search" placeholder="Search..." />
               </div>
             </div>
-            <div class="flex flex-wrap gap-2 items-center justify-center" :style="gridStyle">
+            <div class="flex flex-wrap gap-2 items-center justify-center">
               <Card
                 v-for="(card, index) in availableCards"
                 :key="index"
@@ -243,10 +244,11 @@ export default {
       this.cards = cards;
     },
     toggleCard(card) {
-      if (this.selectedCards.includes(card)) {
-        const index = this.selectedCards.indexOf(card);
-        this.selectedCards.splice(index, 1);
-      } else this.selectedCards.push(card);
+      if (this.selectedCards.some(c => c.name === card.name)) {
+        this.selectedCards = this.selectedCards.filter(c => c.name !== card.name);
+      } else {
+        this.selectedCards.push(card);
+      }
     },
     save() {
       if (this.$route.params.id) {
@@ -283,3 +285,7 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+/* Add any necessary styles here */
+</style>
