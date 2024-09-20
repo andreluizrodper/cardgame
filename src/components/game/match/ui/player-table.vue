@@ -117,21 +117,21 @@
       <p class="mb-4">Select up to 7 cards to draw:</p>
       <div class="flex gap-4 mb-4">
         <div>
-          <label class="block mb-2">Mana Cards:</label>
-          <Input
-            class="w-16"
-            v-model="amountMana"
-            :max="7 - amountSpell"
-            :min="0"
-            type="number"
-          />
-        </div>
-        <div>
           <label class="block mb-2">Spell Cards:</label>
           <Input
             class="w-16"
             v-model="amountSpell"
             :max="7 - amountMana"
+            :min="0"
+            type="number"
+          />
+        </div>
+        <div>
+          <label class="block mb-2">Mana Cards:</label>
+          <Input
+            class="w-16"
+            v-model="amountMana"
+            :max="7 - amountSpell"
             :min="0"
             type="number"
           />
