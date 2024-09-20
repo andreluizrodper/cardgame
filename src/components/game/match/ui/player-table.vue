@@ -74,7 +74,7 @@
       </div>
     </div>
     <div class="flex-1 flex items-end">
-      <div class="flex mb-40 w-full justify-center">
+      <div class="flex mb-12 w-full justify-center">
         <div
           class="px-1 scale-75 -mx-32 flex max-h-96 justify-center items-end flex-wrap"
         >
@@ -89,7 +89,7 @@
       </div>
       <div
         v-if="!isSpectator"
-        class="flex group justify-center absolute h-16 overflow-hidden hover:h-auto hover:overflow-auto bottom-0 left-0 right-0 z-30 left-[300px] hover:ml-0 duration-300 hover:bottom-2 pt-6"
+        class="flex group justify-center absolute h-16 overflow-hidden hover:h-auto hover:overflow-auto bottom-0 left-0 right-0 z-30 hover:ml-0 duration-300 hover:bottom-2 pt-6"
       >
         <CardHand
           v-for="(card, index) in player.hand"

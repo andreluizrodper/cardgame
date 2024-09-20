@@ -1,7 +1,7 @@
 <template>
   <div class="absolute z-30 left-0 right-0 top-0 flex">
     <div class="flex-1 flex items-end">
-      <div class="flex mb-8 w-full justify-center">
+      <div class="flex w-full justify-center">
         <div
           class="px-1 scale-75 -mx-32 flex max-h-96 justify-center items-end flex-wrap"
         >
@@ -14,10 +14,18 @@
           </div>
         </div>
       </div>
+      <div class="flex justify-center absolute h-16 overflow-hidden top-0 left-0 right-0 z-30">
+        <CardHand
+          v-for="(card, index) in opponent.hand"
+          :key="index"
+          :card="card"
+          :isOpponent="true"
+        />
+      </div>
     </div>
     <div>
       <div
-        class="text-sm top-0 z-80 right-0 bg-stone-600 text-stone-200 p-2 rounded shadow-md flex flex-col items-end gap-1 shadow-lg"
+        class="text-sm top-0 z-80 right-0 bg-stone-600 text-stone-200 p-2 rounded shadow-md flex flex-col items-end gap-1"
       >
         <div>
           {{ opponent.data.name }}
@@ -45,10 +53,12 @@
 <script>
 import { Gem, ChevronDown, ChevronUp, Heart, Layers3 } from "lucide-vue-next";
 import Card from "@/components/game/match/ui/card.vue";
+import CardHand from "@/components/game/match/ui/card-hand.vue";
 
 export default {
   components: {
     Card,
+    CardHand,
     Heart,
     ChevronDown,
     ChevronUp,
