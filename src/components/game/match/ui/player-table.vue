@@ -26,7 +26,7 @@
             <Input
               class="w-16"
               v-model="amountSpell"
-              :max="8 - amountMana"
+              :max="7 - amountMana"
               :min="0"
               type="number"
             />
@@ -63,7 +63,7 @@
           v-if="!player.hand"
           class="text-stone-200 px-2 text-xs flex gap-2 items-center"
         >
-          It's your first draw, select up to 8 cards to draw
+          It's your first draw, select up to 7 cards to draw
           <Button size="xs" :disabled="!drawAvailable" @click="firstDraw"
             >Draw</Button
           >
@@ -226,7 +226,7 @@ export default {
   computed: {
     drawAvailable() {
       return (
-        this.amountMana + this.amountSpell <= 8 &&
+        this.amountMana + this.amountSpell <= 7 &&
         this.amountMana + this.amountSpell > 0
       );
     },
