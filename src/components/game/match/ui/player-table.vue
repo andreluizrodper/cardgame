@@ -22,15 +22,6 @@
               >Draw</Button
             >
           </div>
-          <div v-if="!player.hand" class="flex gap-2 justify-end px-2 w-full">
-            <Input
-              class="w-16"
-              v-model="amountSpell"
-              :max="7 - amountMana"
-              :min="0"
-              type="number"
-            />
-          </div>
         </div>
       </div>
       <div class="flex flex-col gap-2 mx-2">
@@ -47,26 +38,6 @@
           <div v-if="player.hand" class="">
             <Button @click="drawMana" :disabled="!player.hasDrawn">Draw</Button>
           </div>
-          <div v-if="!player.hand" class="flex gap-2 justify-end px-2 w-full">
-            <Input
-              class="w-16"
-              v-model="amountMana"
-              :max="8 - amountSpell"
-              :min="0"
-              type="number"
-            />
-          </div>
-        </div>
-      </div>
-      <div v-if="player.turn">
-        <div
-          v-if="!player.hand"
-          class="text-stone-200 px-2 text-xs flex gap-2 items-center"
-        >
-          It's your first draw, select up to 7 cards to draw
-          <Button size="xs" :disabled="!drawAvailable" @click="firstDraw"
-            >Draw</Button
-          >
         </div>
       </div>
       <div
@@ -138,6 +109,35 @@
           @toggleCardCemetary="toggleCardCemetary"
         />
       </div>
+    </div>
+  </div>
+  <div v-if="!player.hand" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+    <div class="bg-white p-6 rounded-lg shadow-lg">
+      <h2 class="text-xl font-bold mb-4">Initial Draw</h2>
+      <p class="mb-4">Select up to 7 cards to draw:</p>
+      <div class="flex gap-4 mb-4">
+        <div>
+          <label class="block mb-2">Mana Cards:</label>
+          <Input
+            class="w-16"
+            v-model="amountMana"
+            :max="7 - amountSpell"
+            :min="0"
+            type="number"
+          />
+        </div>
+        <div>
+          <label class="block mb-2">Spell Cards:</label>
+          <Input
+            class="w-16"
+            v-model="amountSpell"
+            :max="7 - amountMana"
+            :min="0"
+            type="number"
+          />
+        </div>
+      </div>
+      <Button :disabled="!drawAvailable" @click="firstDraw">Draw</Button>
     </div>
   </div>
   <Sheet
@@ -254,8 +254,8 @@ export default {
       cemetarySheet: false,
       expandedHand: false,
       expanded: true,
-      amountMana: null,
-      amountSpell: null,
+      amountMana: 0,
+      amountSpell: 0,
     };
   },
   methods: {
