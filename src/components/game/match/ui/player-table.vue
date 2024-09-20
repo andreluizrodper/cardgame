@@ -17,11 +17,6 @@
           class="w-50 h-32 bg-stone-400 bg-cover rounded flex items-start pl-3 justify-end pb-2 flex-col"
           :style="{ backgroundImage: 'url(/assets/deck/back.png)' }"
         >
-          <div v-if="player.hand" class="">
-            <Button @click="drawSpell" :disabled="!player.hasDrawn"
-              >Draw</Button
-            >
-          </div>
         </div>
       </div>
       <div class="flex flex-col gap-2 mx-2">
@@ -35,9 +30,6 @@
           class="w-50 h-32 bg-stone-400 bg-cover rounded flex items-start pl-3 justify-end pb-2 flex-col"
           :style="{ backgroundImage: 'url(/assets/deck/back.png)' }"
         >
-          <div v-if="player.hand" class="">
-            <Button @click="drawMana" :disabled="!player.hasDrawn">Draw</Button>
-          </div>
         </div>
       </div>
       <div
@@ -82,7 +74,7 @@
       </div>
     </div>
     <div class="flex-1 flex items-end">
-      <div class="flex mb-8 w-full justify-center">
+      <div class="flex mb-40 w-full justify-center">
         <div
           class="px-1 scale-75 -mx-32 flex max-h-96 justify-center items-end flex-wrap"
         >
@@ -138,6 +130,16 @@
         </div>
       </div>
       <Button :disabled="!drawAvailable" @click="firstDraw">Draw</Button>
+    </div>
+  </div>
+  <div v-if="player.turn && !player.hasDrawn" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+    <div class="bg-white p-6 rounded-lg shadow-lg">
+      <h2 class="text-xl font-bold mb-4">Draw a Card</h2>
+      <p class="mb-4">Choose which deck to draw from:</p>
+      <div class="flex gap-4">
+        <Button @click="drawSpell">Draw Spell Card</Button>
+        <Button @click="drawMana">Draw Mana Card</Button>
+      </div>
     </div>
   </div>
   <Sheet
