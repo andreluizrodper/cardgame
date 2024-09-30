@@ -6,25 +6,7 @@
       <div class="sticky top-0 left-0 right-0 flex flex-col z-30">
         <NavBar />
         <div class="flex flex-col py-3 border-b bg-gray-100 gap-2">
-          <div class="px-4 text-sm flex gap-2 items-center">
-            <router-link
-              :to="{ name: 'lobby' }"
-              class="flex items-center gap-2 text-sm"
-            >
-              <Home size="16" />
-              Lobby
-            </router-link>
-            <ChevronRight size="14" />
-            <router-link
-              :to="{ name: 'decks' }"
-              class="flex gap-1 items-center text-sm"
-            >
-              My decks
-            </router-link>
-            <ChevronRight size="14" />
-            <span v-if="$route.params.id"> Editing deck </span>
-            <span v-else> Creating deck </span>
-          </div>
+          <Breadcrumbs />
           <div class="flex justify-between px-4 items-center">
             <div class="max-w-96 w-full">
               <Input v-model="name" placeholder="Deck name" />
@@ -38,131 +20,79 @@
           </div>
         </div>
       </div>
-      <div class="px-4 py-2 flex items-center gap-4 my-4">
-        <div class="border rounded px-4 bg-gray-50 py-1 text-sm">
-            {{ spellCardsCount }} spell cards
-          </div>
-          <div class="border rounded px-4 bg-gray-50 py-1 text-sm">
-            {{ manaCardsCount }} mana cards
-          </div>
-      </div>
       <div class="flex-1 relative overflow-hidden flex flex-col md:flex-row">
         <div class="w-full md:w-2/6 p-4 order-1 md:order-2">
           <div class="flex justify-between items-center mb-4">
-            <h2 class="text-xl font-bold">Your Deck</h2>
-            <Button size="sm" @click="removeAllCards" :disabled="selectedCards.length === 0">
+            <div class="flex flex-col">
+              <h2 class="text-xl font-bold">Your Deck</h2>
+              <span class="text-xs"
+                >{{ spellCardsCount + manaCardsCount }} cards</span
+              >
+            </div>
+            <Button
+              size="sm"
+              @click="removeAllCards"
+              :disabled="selectedCards.length === 0"
+            >
               Remove All Cards
             </Button>
           </div>
-          <div class="flex flex-col gap-4 max-h-[200px] md:max-h-full overflow-y-auto md:overflow-y-visible">
-            <div v-if="selectedCards.length === 0" class="text-gray-500 text-center">
-              No cards in your deck. <br /> Add cards from the collection.
+          <div
+            class="flex flex-col gap-4 max-h-[200px] md:max-h-full overflow-y-auto md:overflow-y-visible"
+          >
+            <div
+              v-if="selectedCards.length === 0"
+              class="text-gray-500 text-center"
+            >
+              No cards in your deck. <br />
+              Add cards from the collection.
             </div>
             <div v-else>
-              <div class="flex mb-4">
-                <button 
+              <div class="flex mb-4 gap-2">
+                <Button
+                  size="sm"
                   @click="activeTab = 'spell'"
-                  :class="['px-4 py-2 text-sm font-medium', activeTab === 'spell' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700']"
+                  :variant="activeTab === 'spell' ? 'default' : 'outline'"
                 >
-                  Spell Cards
-                </button>
-                <button 
+                  Spell Cards ({{ spellCardsCount }})
+                </Button>
+                <Button
+                  size="sm"
                   @click="activeTab = 'mana'"
-                  :class="['px-4 py-2 text-sm font-medium', activeTab === 'mana' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700']"
+                  :variant="activeTab === 'mana' ? 'default' : 'outline'"
                 >
-                  Mana Cards
-                </button>
+                  Mana Cards ({{ manaCardsCount }})
+                </Button>
               </div>
-              
-              <div v-if="activeTab === 'spell'">
+
+              <div>
                 <div class="flex flex-col gap-2">
-                  <div
-                    v-for="(card, index) in spellCards"
+                  <SelectedCardItem
+                    v-for="(card, index) in filterCardsByTab"
                     :key="index"
-                    class="relative"
-                  >
-                    <div
-                      class="border rounded p-2 cursor-pointer hover:shadow-md transition-shadow"
-                      @mouseenter="hoveredCard = card"
-                      @mouseleave="hoveredCard = null"
-                      @click="toggleCard(card)"
-                    >   
-                      {{ card.name }}
-                    </div>
-                    <div
-                      v-if="hoveredCard === card"
-                      class="absolute z-10 right-full top-0 ml-2 hidden md:block"
-                      style="pointer-events: none;"
-                    > 
-                      <Card :card="card" @toggleCard="toggleCard" />
-                    </div>
-                    <Button
-                      class="absolute top-0 right-0 p-1 lg:hidden"
-                      size="sm"
-                      @click.stop="showCardDetails(card)"
-                    >
-                      <Eye size="16" />
-                    </Button>
-                  </div>
-                </div>
-              </div>
-              
-              <div v-if="activeTab === 'mana'">
-                <div class="flex flex-col gap-2">
-                  <div
-                    v-for="(card, index) in manaCards"
-                    :key="index"
-                    class="relative"
-                  >
-                    <div
-                      class="border rounded p-2 cursor-pointer hover:shadow-md transition-shadow"
-                      @mouseenter="hoveredCard = card"
-                      @mouseleave="hoveredCard = null"
-                      @click="toggleCard(card)"
-                    >   
-                      {{ card.name }}
-                    </div>
-                    <div
-                      v-if="hoveredCard === card"
-                      class="absolute z-10 right-full top-0 ml-2 hidden md:block"
-                      style="pointer-events: none;"
-                    > 
-                      <Card :card="card" @toggleCard="toggleCard" />
-                    </div>
-                    <Button
-                      class="absolute top-0 right-0 p-1 lg:hidden"
-                      size="sm"
-                      @click.stop="showCardDetails(card)"
-                    >
-                      <Eye size="16" />
-                    </Button>
-                  </div>
+                    :card="card"
+                    @toggleCard="toggleCard"
+                  />
                 </div>
               </div>
             </div>
           </div>
         </div>
-        
-        <!-- Collection -->
-        <div class="w-full md:w-4/6 p-4 border-b md:border-b-0 md:border-r order-2 md:order-1">
+        <div
+          class="w-full md:w-4/6 p-4 border-b md:border-b-0 md:border-r order-2 md:order-1"
+        >
           <h2 class="text-xl font-bold mb-4">Collection</h2>
-          <div v-if="!collectionSelected" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
-            <button
+          <div
+            v-if="!collectionSelected"
+            class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2"
+          >
+            <CollectionItem
               v-for="(collection, index) in collections"
               :key="index"
-              class="border hover:shadow-md rounded overflow-hidden"
-              @click="selectCollection(collection)"
-            >
-              <img :src="collection.artwork" class="w-full h-24 object-cover" />
-              <div
-                class="px-2 py-2 bg-stone-50 text-gray-800 flex flex-col gap-1"
-              >
-                <span class="text-xs truncate">{{ collection.name }}</span>
-                <span class="text-xs"
-                  >{{ collection.cards.length }} cards</span
-                >
-              </div>
-            </button>
+              :collection="collection"
+              @selectCollection="selectCollection"
+              :selectedCardsNames="selectedCardsNames"
+            />
           </div>
           <div v-else>
             <button
@@ -174,15 +104,16 @@
             </button>
             <div class="flex justify-between mb-4 items-center">
               <span class="text-gray-400 text-sm">
-                Available cards {{ availableCards.length }}
+                Available cards: {{ cardListAvailableCount }}
               </span>
               <div>
                 <Input v-model="search" placeholder="Search..." />
               </div>
             </div>
+            <div class="flex gap-2"></div>
             <div class="flex flex-wrap gap-2 items-center justify-center">
               <Card
-                v-for="(card, index) in availableCards"
+                v-for="(card, index) in cardList"
                 :key="index"
                 :card="card"
                 @toggleCard="toggleCard"
@@ -195,7 +126,10 @@
   </div>
 
   <!-- Modal for card details on mobile -->
-  <div v-if="showModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+  <div
+    v-if="showModal"
+    class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+  >
     <div class="bg-white p-4 rounded-lg max-w-sm w-full">
       <Card :card="selectedCardForModal" @toggleCard="toggleCard" />
       <Button class="mt-4 w-full" @click="closeModal">Close</Button>
@@ -204,14 +138,7 @@
 </template>
 
 <script>
-import {
-  ChevronDown,
-  ChevronUp,
-  ChevronLeft,
-  ChevronRight,
-  Home,
-  Eye,
-} from "lucide-vue-next";
+import { ChevronDown, ChevronUp, ChevronLeft, Eye } from "lucide-vue-next";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Human from "@/assets/cards/human.json";
@@ -222,18 +149,24 @@ import Mana from "@/assets/cards/mana.json";
 import Card from "@/components/game/decks/card.vue";
 import { updateDeck, createDeck, getDeck } from "@/utils/deck";
 import NavBar from "@/components/game/ui/nav-bar.vue";
+import CardCount from "@/components/game/deck-builder/card-count.vue";
+import Breadcrumbs from "@/components/game/deck-builder/breadcrumbs.vue";
+import CollectionItem from "@/components/game/deck-builder/collection-item.vue";
+import SelectedCardItem from "@/components/game/deck-builder/selected-card-item.vue";
 
 export default {
   components: {
     NavBar,
+    Breadcrumbs,
+    CollectionItem,
+    SelectedCardItem,
+    CardCount,
     ChevronLeft,
     Input,
     Card,
     ChevronDown,
     ChevronUp,
     Button,
-    ChevronRight,
-    Home,
     Eye,
   },
   computed: {
@@ -253,11 +186,23 @@ export default {
     selectedCardsNames() {
       return this.selectedCards.map((card) => card.name);
     },
-    availableCards() {
+    cardList() {
       const search = this.search.toLowerCase();
       return this.cards
-        .filter((card) => !this.selectedCardsNames.includes(card.name))
-        .filter((card) => card.name.toLowerCase().includes(search));
+        .map((card) => {
+          console.log(this.selectedCardsNames.includes(card.name));
+          return {
+            ...card,
+            isAvailable: !this.selectedCardsNames.includes(card.name),
+          };
+        })
+        .filter((card) => card.name.toLowerCase().includes(search))
+        .sort((a, b) =>
+          a.isAvailable === b.isAvailable ? 0 : a.isAvailable ? -1 : 1
+        );
+    },
+    cardListAvailableCount() {
+      return this.cardList.filter((card) => card.isAvailable).length;
     },
     isValid() {
       return this.name.length > 4 && this.spellCardsCount >= 40;
@@ -267,6 +212,10 @@ export default {
     },
     manaCards() {
       return this.selectedCards.filter((card) => card.manaValue);
+    },
+    filterCardsByTab() {
+      if (this.activeTab === "mana") return this.manaCards;
+      return this.spellCards;
     },
   },
   data() {
@@ -282,7 +231,7 @@ export default {
       hoveredCard: null,
       showModal: false,
       selectedCardForModal: null,
-      activeTab: 'spell',
+      activeTab: "spell",
     };
   },
   async mounted() {
@@ -293,7 +242,10 @@ export default {
         this.selectedCards = deck.data().cards;
       } else {
         console.error("Failed to load deck");
-        this.$store.commit("addToast", { description: "Failed to load deck", type: "error" });
+        this.$store.commit("addToast", {
+          description: "Failed to load deck",
+          type: "error",
+        });
       }
     }
   },
@@ -310,8 +262,10 @@ export default {
       this.cards = cards;
     },
     toggleCard(card) {
-      if (this.selectedCards.some(c => c.name === card.name)) {
-        this.selectedCards = this.selectedCards.filter(c => c.name !== card.name);
+      if (this.selectedCards.some((c) => c.name === card.name)) {
+        this.selectedCards = this.selectedCards.filter(
+          (c) => c.name !== card.name
+        );
       } else {
         this.selectedCards.push(card);
       }
@@ -328,17 +282,26 @@ export default {
             id: this.$route.params.id,
             data: deckData,
           });
-          this.$store.commit("addToast", { description: `Deck updated!`, type: "success" });
+          this.$store.commit("addToast", {
+            description: `Deck updated!`,
+            type: "success",
+          });
         } else {
           await createDeck({
             data: deckData,
           });
-          this.$store.commit("addToast", { description: `Deck created!`, type: "success" });
+          this.$store.commit("addToast", {
+            description: `Deck created!`,
+            type: "success",
+          });
         }
         this.$router.push({ name: "decks" });
       } catch (error) {
         console.error("Error saving deck:", error);
-        this.$store.commit("addToast", { description: `Failed to save deck: ${error.message}`, type: "error" });
+        this.$store.commit("addToast", {
+          description: `Failed to save deck: ${error.message}`,
+          type: "error",
+        });
       }
     },
     removeAllCards() {
@@ -355,7 +318,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-/* Add any necessary styles here */
-</style>

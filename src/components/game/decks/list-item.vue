@@ -1,6 +1,8 @@
 <template>
   <div class="border rounded bg-white text-gray-900">
-    <div class="flex flex-col gap-2 p-4 h-44 bg-stone-400 justify-end">
+    <div
+      class="flex flex-col gap-2 p-4 h-44 bg-stone-900 justify-end text-white"
+    >
       {{ deck.data().name }}
     </div>
     <div class="flex gap-2 w-full justify-between border-t p-4">

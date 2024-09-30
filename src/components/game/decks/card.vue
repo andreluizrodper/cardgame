@@ -2,6 +2,7 @@
   <button
     @click="toggleCard"
     class="border rounded bg-white min-w-48 max-w-48 max-auto flex flex-col flex-1"
+    :class="card.isAvailable ? 'opacity-100' : 'opacity-20'"
   >
     <div class="relative">
       <img :src="card.artwork" />

@@ -16,8 +16,7 @@
         <div
           class="w-50 h-32 bg-stone-400 bg-cover rounded flex items-start pl-3 justify-end pb-2 flex-col"
           :style="{ backgroundImage: 'url(/assets/deck/back.png)' }"
-        >
-        </div>
+        ></div>
       </div>
       <div class="flex flex-col gap-2 mx-2">
         <div class="flex justify-between text-stone-200 items-center">
@@ -29,8 +28,7 @@
         <div
           class="w-50 h-32 bg-stone-400 bg-cover rounded flex items-start pl-3 justify-end pb-2 flex-col"
           :style="{ backgroundImage: 'url(/assets/deck/back.png)' }"
-        >
-        </div>
+        ></div>
       </div>
       <div
         class="bg-stone-600 text-stone-200 p-2 rounded shadow-md flex flex-col items-start gap-1"
@@ -103,15 +101,18 @@
       </div>
     </div>
   </div>
-  <div v-if="!player.hand" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+  <div
+    v-if="player.turn && !player.hand"
+    class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
+  >
     <div class="bg-white p-6 rounded-lg shadow-lg">
       <h2 class="text-xl font-bold mb-4">Initial Draw</h2>
       <p class="mb-4">Select up to 7 cards to draw:</p>
-      <div class="flex gap-4 mb-4">
+      <div class="grid grid-cols-2 gap-4 mb-4">
         <div>
           <label class="block mb-2">Spell Cards:</label>
           <Input
-            class="w-16"
+            class="w-full"
             v-model="amountSpell"
             :max="7 - amountMana"
             :min="0"
@@ -121,7 +122,7 @@
         <div>
           <label class="block mb-2">Mana Cards:</label>
           <Input
-            class="w-16"
+            class="w-full"
             v-model="amountMana"
             :max="7 - amountSpell"
             :min="0"
@@ -132,7 +133,10 @@
       <Button :disabled="!drawAvailable" @click="firstDraw">Draw</Button>
     </div>
   </div>
-  <div v-if="player.turn && !player.hasDrawn" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+  <div
+    v-if="player.turn && player.hand && !player.hasDrawn"
+    class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
+  >
     <div class="bg-white p-6 rounded-lg shadow-lg">
       <h2 class="text-xl font-bold mb-4">Draw a Card</h2>
       <p class="mb-4">Choose which deck to draw from:</p>
@@ -162,6 +166,7 @@
       </div>
     </SheetContent>
   </Sheet>
+  <Steps v-if="player.id === account.id" :currentStep="player.step" />
 </template>
 
 <script>
@@ -184,6 +189,7 @@ import {
   Gem,
 } from "lucide-vue-next";
 import { Input } from "@/components/ui/input";
+import Steps from "@/components/game/match/ui/steps.vue";
 import Card from "@/components/game/match/ui/card.vue";
 import CardHand from "@/components/game/match/ui/card-hand.vue";
 import { updateMatch } from "@/utils/match";
@@ -192,6 +198,7 @@ import { updateAccount } from "@/utils/account";
 
 export default {
   components: {
+    Steps,
     Input,
     Sheet,
     SheetClose,

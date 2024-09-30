@@ -1,5 +1,6 @@
 <template>
   <div class="absolute z-30 left-0 right-0 top-0 flex">
+    <Steps v-if="player.id === account.id" :actualStep="opponent.step" />
     <div class="flex-1 flex items-end">
       <div class="flex w-full justify-center">
         <div
@@ -14,7 +15,9 @@
           </div>
         </div>
       </div>
-      <div class="flex justify-center absolute h-16 overflow-hidden top-0 left-0 right-0 z-30">
+      <div
+        class="flex justify-center absolute h-16 overflow-hidden top-0 left-0 right-0 z-30"
+      >
         <CardHand
           v-for="(card, index) in opponent.hand"
           :key="index"
@@ -51,12 +54,14 @@
 </template>
 
 <script>
+import Steps from "@/components/game/match/ui/steps.vue";
 import { Gem, ChevronDown, ChevronUp, Heart, Layers3 } from "lucide-vue-next";
 import Card from "@/components/game/match/ui/card.vue";
 import CardHand from "@/components/game/match/ui/card-hand.vue";
 
 export default {
   components: {
+    Steps,
     Card,
     CardHand,
     Heart,
