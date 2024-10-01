@@ -1,0 +1,138 @@
+{
+    "artwork": "/assets/artwork/wisps/ice.png",
+    "name": "Wisps",
+    "cards": [
+        {
+            "name": "Air Wisp",
+            "manaNeeded": 2,
+            "type": "Creature - Wisp",
+            "manaType": "Air",
+            "power": 2,
+            "toughness": 1,
+            "ability": "Wind Walker: Air Wisp can't be blocked by creatures with power 2 or greater.",
+            "lore": "Air Wisps are elusive spirits that slip past powerful foes and create chaos on the battlefield.",
+            "artwork": "/assets/artwork/wisps/air.png"
+        },
+        {
+            "name": "Fire Wisp",
+            "manaNeeded": 2,
+            "type": "Creature - Wisp",
+            "manaType": "Fire",
+            "power": 1,
+            "toughness": 1,
+            "ability": "Spark Multiplication: Whenever this creature deals damage, create a 1/1 Fire Wisp token.",
+            "lore": "Fire Wisps multiply rapidly but burn out quickly, like sparks from a bonfire.",
+            "artwork": "/assets/artwork/wisps/fire.png"
+        },
+        {
+            "name": "Earth Wisp",
+            "manaNeeded": 2,
+            "type": "Creature - Wisp",
+            "manaType": "Earth",
+            "power": 1,
+            "toughness": 3,
+            "ability": "Geomancy: Tap an untapped land you control: Earth Wisp gets +1/+1 until end of turn. You may only activate this ability once per turn.",
+            "lore": "Earth Wisps draw power directly from the land, growing stronger with each connection to the earth.",
+            "artwork": "/assets/artwork/wisps/earth.png"
+        },
+        {
+            "name": "Nature Wisp",
+            "manaNeeded": 2,
+            "type": "Creature - Wisp",
+            "manaType": "Nature",
+            "power": 0,
+            "toughness": 2,
+            "ability": "Seasonal Shift: At the beginning of your upkeep, choose summer (+2/+0), autumn (deathtouch), winter (tap target creature), or spring (+0/+2 and gain 2 life). Nature Wisp gains the chosen ability until your next turn.",
+            "lore": "Nature Wisps embody the changing seasons, their powers waxing and waning with nature's cycles.",
+            "artwork": "/assets/artwork/wisps/nature.png"
+        },
+        {
+            "name": "Water Wisp",
+            "manaNeeded": 2,
+            "type": "Creature - Wisp",
+            "manaType": "Water",
+            "power": 2,
+            "toughness": 2,
+            "ability": "Tidal Surge: Whenever Water Wisp attacks, you may return target creature to its owner's hand.",
+            "lore": "Water Wisps crash against their foes like waves upon the shore, retreating only to surge again.",
+            "artwork": "/assets/artwork/wisps/water.png"
+        },
+        {
+            "name": "Light Wisp",
+            "manaNeeded": 2,
+            "type": "Creature - Wisp",
+            "manaType": "Light",
+            "power": 1,
+            "toughness": 3,
+            "ability": "Illuminating Presence: Creatures you control have \"{T}: Prevent the next 2 damage that would be dealt to this creature this turn.\"",
+            "lore": "Light Wisps suffuse their allies with a protective radiance, shielding them from harm.",
+            "artwork": "/assets/artwork/wisps/light.png"
+        },
+        {
+            "name": "Dark Wisp",
+            "manaNeeded": 2,
+            "type": "Creature - Wisp",
+            "manaType": "Dark",
+            "power": 3,
+            "toughness": 1,
+            "ability": "Shadow Puppetry: {T}: Gain control of target creature with power less than Dark Wisp's power until end of turn. It gains haste.",
+            "lore": "Dark Wisps manipulate the shadows within other creatures, briefly bending them to their will.",
+            "artwork": "/assets/artwork/wisps/dark.png"
+        },
+        {
+            "name": "Lightning Wisp",
+            "manaNeeded": 1,
+            "type": "Creature - Wisp",
+            "manaType": "Lightning",
+            "power": 4,
+            "toughness": 3,
+            "ability": "Chain Reaction: Whenever Lightning Wisp deals damage to a creature, it deals 1 damage to that creature's controller and each creature they control.",
+            "lore": "Lightning Wisps embody the chaotic nature of storms, their attacks arcing unpredictably across the battlefield.",
+            "artwork": "/assets/artwork/wisps/lightning.png"
+        },
+        {
+            "name": "Swamp Wisp",
+            "manaNeeded": 1,
+            "type": "Creature - Wisp",
+            "manaType": "Swamp",
+            "power": 2,
+            "toughness": 4,
+            "ability": "Fetid Bloom: At the beginning of your upkeep, put a decay counter on each creature. Creatures with decay counters get -1/-1 for each decay counter on them.",
+            "lore": "Swamp Wisps spread a creeping rot that slowly consumes all life around them.",
+            "artwork": "/assets/artwork/wisps/swamp.png"
+        },
+        {
+            "name": "Ice Wisp",
+            "manaNeeded": 1,
+            "type": "Creature - Wisp",
+            "manaType": "Ice",
+            "power": 2,
+            "toughness": 3,
+            "ability": "When enters: Exile target creature with ice counters equal to its power. Remove one counter each upkeep. Return it when no counters remain.",
+            "lore": "Ice Wisps can encase creatures in magical ice, preserving them for later use or neutralizing threats.",
+            "artwork": "/assets/artwork/wisps/ice.png"
+        },
+        {
+            "name": "Crystal Wisp",
+            "manaNeeded": 1,
+            "type": "Creature - Wisp",
+            "manaType": "Crystal",
+            "power": 2,
+            "toughness": 5,
+            "ability": "Refractive Duplication: When Crystal Wisp enters the battlefield, you may search your library for a Wisp card, reveal it, and put it into your hand. If you do, Crystal Wisp gains that Wisp's abilities until end of turn.",
+            "lore": "Crystal Wisps refract magical essences, briefly taking on the properties of other elemental beings.",
+            "artwork": "/assets/artwork/wisps/crystal.png"
+        },
+        {
+            "name": "Void Wisp",
+            "manaNeeded": 1,
+            "type": "Creature - Wisp",
+            "manaType": "Void",
+            "power": 4,
+            "toughness": 3,
+            "ability": "Creates 2x2 Null Zone on entry. Creatures on/near can't attack, block, or activate abilities. Move Zone 2 spaces each upkeep. Removed when Void Wisp leaves.",
+            "lore": "Void Wisps exist between realities, capable of briefly warping the fabric of existence to create impossible effects.",
+            "artwork": "/assets/artwork/wisps/void.png"
+        }
+    ]
+}

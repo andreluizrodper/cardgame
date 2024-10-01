@@ -141,10 +141,7 @@
 import { ChevronDown, ChevronUp, ChevronLeft, Eye } from "lucide-vue-next";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import Human from "@/assets/cards/human.json";
-import Elf from "@/assets/cards/elf.json";
-import Goblin from "@/assets/cards/goblin.json";
-import Skeleton from "@/assets/cards/skeleton.json";
+import Wisps from "@/assets/cards/wisps.json";
 import Mana from "@/assets/cards/mana.json";
 import Card from "@/components/game/decks/card.vue";
 import { updateDeck, createDeck, getDeck } from "@/utils/deck";
@@ -189,13 +186,10 @@ export default {
     cardList() {
       const search = this.search.toLowerCase();
       return this.cards
-        .map((card) => {
-          console.log(this.selectedCardsNames.includes(card.name));
-          return {
-            ...card,
-            isAvailable: !this.selectedCardsNames.includes(card.name),
-          };
-        })
+        .map((card) => ({
+          ...card,
+          isAvailable: !this.selectedCardsNames.includes(card.name),
+        }))
         .filter((card) => card.name.toLowerCase().includes(search))
         .sort((a, b) =>
           a.isAvailable === b.isAvailable ? 0 : a.isAvailable ? -1 : 1
@@ -223,11 +217,10 @@ export default {
       collectionSelected: false,
       search: "",
       selectedCards: [],
-      artwork: null,
       cards: [],
       name: "",
       collectionName: null,
-      collections: [Human, Elf, Goblin, Skeleton, Mana],
+      collections: [Wisps, Mana], // Add Mana to the collections
       hoveredCard: null,
       showModal: false,
       selectedCardForModal: null,
@@ -253,13 +246,7 @@ export default {
     selectCollection(collection) {
       this.collectionSelected = true;
       this.collectionName = collection.name;
-      const cards = collection.cards.map((card) => {
-        return {
-          ...card,
-          artwork: collection.artwork,
-        };
-      });
-      this.cards = cards;
+      this.cards = collection.cards; // Set the cards when a collection is selected
     },
     toggleCard(card) {
       if (this.selectedCards.some((c) => c.name === card.name)) {
