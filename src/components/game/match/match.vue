@@ -6,7 +6,11 @@
     v-if="!isLoading"
     class="min-h-[100vh] flex flex-col w-full"
     :class="isSpectator ? 'pointer-events-none' : ''"
-    :style="{ 'background-image': 'url(/assets/bg/wood.jpg)' }"
+    :style="{
+      'background-image': 'url(/assets/bg/battlefield_3.png)',
+      'background-repeat': 'no-repeat',
+      'background-size': 'cover',
+    }"
   >
     <OpponentTable :opponent="opponent" />
     <PlayerTable

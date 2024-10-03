@@ -1,6 +1,9 @@
 <template>
   <div class="absolute z-30 left-0 right-0 top-0 flex">
-    <Steps v-if="player.id === account.id" :actualStep="opponent.step" />
+    <Steps
+      v-if="player && account && player.id === account.id"
+      :actualStep="opponent.step"
+    />
     <div class="flex-1 flex items-end">
       <div class="flex w-full justify-center">
         <div
@@ -73,6 +76,15 @@ export default {
   props: {
     opponent: {
       type: Object,
+      required: true,
+    },
+    player: {
+      type: Object,
+      default: () => ({}),
+    },
+    account: {
+      type: Object,
+      default: () => ({}),
     },
   },
   computed: {

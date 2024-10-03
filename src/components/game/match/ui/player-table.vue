@@ -6,29 +6,31 @@
           >End my turn</Button
         >
       </div>
-      <div class="flex flex-col gap-2 mx-2">
-        <div class="flex justify-between text-stone-200 items-center">
-          <p class="text-sm">Spell deck</p>
-          <p class="flex gap-2 items-center">
-            <Layers3 size="16" /> {{ spellCardsCount }}
-          </p>
+      <div class="flex gap-2 mx-2">
+        <div class="flex flex-col gap-2">
+          <div class="flex flex-col text-stone-200 items-start">
+            <p class="text-sm">Spell deck</p>
+            <p class="flex gap-2 items-center">
+              <Layers3 size="16" /> {{ spellCardsCount }}
+            </p>
+          </div>
+          <div
+            class="w-[200px] h-[300px] bg-stone-400 bg-cover bg-center rounded flex items-start pl-3 justify-end pb-2 flex-col"
+            :style="{ backgroundImage: 'url(/assets/deck/back-3.png)' }"
+          ></div>
         </div>
-        <div
-          class="w-50 h-32 bg-stone-400 bg-cover rounded flex items-start pl-3 justify-end pb-2 flex-col"
-          :style="{ backgroundImage: 'url(/assets/deck/back.png)' }"
-        ></div>
-      </div>
-      <div class="flex flex-col gap-2 mx-2">
-        <div class="flex justify-between text-stone-200 items-center">
-          <p class="text-sm">Mana deck</p>
-          <p class="flex gap-2 items-center">
-            <Layers3 size="16" /> {{ manaCardsCount }}
-          </p>
+        <div class="flex flex-col gap-2">
+          <div class="flex flex-col text-stone-200 items-start">
+            <p class="text-sm">Mana deck</p>
+            <p class="flex gap-2 items-center">
+              <Layers3 size="16" /> {{ manaCardsCount }}
+            </p>
+          </div>
+          <div
+            class="w-[200px] h-[300px] bg-stone-400 bg-cover bg-center rounded flex items-start pl-3 justify-end pb-2 flex-col"
+            :style="{ backgroundImage: 'url(/assets/deck/back-3.png)' }"
+          ></div>
         </div>
-        <div
-          class="w-50 h-32 bg-stone-400 bg-cover rounded flex items-start pl-3 justify-end pb-2 flex-col"
-          :style="{ backgroundImage: 'url(/assets/deck/back.png)' }"
-        ></div>
       </div>
       <div
         class="bg-stone-600 text-stone-200 p-2 rounded shadow-md flex flex-col items-start gap-1"
@@ -166,7 +168,7 @@
       </div>
     </SheetContent>
   </Sheet>
-  <Steps v-if="player.id === account.id" :currentStep="player.step" />
+  <!-- <Steps v-if="player.id === account.id" :currentStep="player.step" /> -->
 </template>
 
 <script>
