@@ -12,7 +12,7 @@
           <MyDecks :decks="decks" />
         </div>
         <CreateDeck v-if="decks && decks.length === 0" />
-        <MyCollections />
+        <MyCards />
         <Announcement />
         <Feed />
       </div>
@@ -29,7 +29,7 @@ import CreateDeck from "@/components/game/lobby/create-deck.vue";
 import MyDecks from "@/components/game/lobby/my-decks.vue";
 import Announcement from "@/components/game/lobby/announcement.vue";
 import Feed from "@/components/game/lobby/feed.vue";
-import MyCollections from "@/components/game/ui/my-collections.vue";
+import MyCards from "@/components/game/ui/my-cards.vue";
 import NavBar from "@/components/game/ui/nav-bar.vue";
 import { getDecks } from "@/utils/deck";
 
@@ -42,7 +42,7 @@ export default {
     MyDecks,
     CreateDeck,
     Announcement,
-    MyCollections,
+    MyCards,
     Feed,
     NavBar,
   },

@@ -13,24 +13,20 @@
     :opponent="opponent"
   />
   <WaitingPlayer v-if="isWaiting" />
-  <Match
+  <Battle
     v-if="isReady"
     :match="match"
     :player="player"
     :opponent="opponent"
     :isSpectator="isSpectator"
   />
-  <Win v-if="hasPlayerWon" />
-  <Lose v-if="hasPlayerLose" />
 </template>
 
 <script>
 import Loading from "@/components/ui/loading.vue";
-import SelectingDeck from "@/components/game/match/selecting-deck.vue";
-import WaitingPlayer from "@/components/game/match/waiting-player.vue";
-import Match from "@/components/game/match/match.vue";
-import Win from "@/components/game/match/win.vue";
-import Lose from "@/components/game/match/lose.vue";
+import SelectingDeck from "@/components/game/match/table-top/selecting-deck.vue";
+import WaitingPlayer from "@/components/game/match/table-top/waiting-player.vue";
+import Battle from "@/components/game/match/table-top/battle.vue";
 import { Home } from "lucide-vue-next";
 
 export default {
@@ -53,9 +49,7 @@ export default {
     Loading,
     SelectingDeck,
     WaitingPlayer,
-    Match,
-    Lose,
-    Win,
+    Battle,
   },
   computed: {
     account() {
@@ -72,12 +66,6 @@ export default {
     },
     isReady() {
       return this.player.status === "ready" && this.opponent.status === "ready";
-    },
-    hasPlayerWon() {
-      return this.player.status === "win";
-    },
-    hasPlayerLose() {
-      return this.player.status === "lose";
     },
   },
 };

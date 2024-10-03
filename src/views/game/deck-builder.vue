@@ -143,7 +143,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Wisps from "@/assets/cards/wisps.json";
 import Mana from "@/assets/cards/mana.json";
-import Card from "@/components/game/decks/card.vue";
+import Card from "@/components/game/ui/card.vue";
 import { updateDeck, createDeck, getDeck } from "@/utils/deck";
 import NavBar from "@/components/game/ui/nav-bar.vue";
 import CardCount from "@/components/game/deck-builder/card-count.vue";
@@ -199,7 +199,7 @@ export default {
       return this.cardList.filter((card) => card.isAvailable).length;
     },
     isValid() {
-      return this.name.length > 4 && this.spellCardsCount >= 40;
+      return this.name.length > 4;
     },
     spellCards() {
       return this.selectedCards.filter((card) => card.manaNeeded);

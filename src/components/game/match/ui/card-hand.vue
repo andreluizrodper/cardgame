@@ -1,9 +1,11 @@
 <template>
   <div
     class="relative min-w-48 max-w-48 flex"
-    :class="{ 
-      '-ml-32 group-hover:mr-2 group-hover:ml-0 duration-300 hover:-translate-y-5': !isOpponent,
-      '-mr-32 group-hover:ml-2 group-hover:mr-0 duration-300 hover:-translate-y-5': isOpponent
+    :class="{
+      '-ml-32 group-hover:mr-2 group-hover:ml-0 duration-300 hover:-translate-y-5':
+        !isOpponent,
+      '-mr-32 group-hover:ml-2 group-hover:mr-0 duration-300 hover:-translate-y-5':
+        isOpponent,
     }"
   >
     <div
@@ -11,7 +13,7 @@
       class="border rounded border-white min-w-48 max-w-48 flex flex-col bg-white drop-shadow overflow-hidden"
       :class="{
         'border-b-0 rounded-t group-hover:rounded-b': !isOpponent,
-        'border-t-0 rounded-b group-hover:rounded-t': isOpponent
+        'border-t-0 rounded-b group-hover:rounded-t': isOpponent,
       }"
     >
       <div class="relative">
@@ -23,7 +25,9 @@
           {{ card.manaType ?? card.type }}
         </div>
       </div>
-      <div v-if="!isOpponent" class="text-base flex-1 text-left px-2 py-2">{{ card.name }}</div>
+      <div v-if="!isOpponent" class="text-base flex-1 text-left px-2 py-2">
+        {{ card.name }}
+      </div>
       <div v-if="!isOpponent" class="p-2 pb-1 flex flex-col w-full">
         <div v-if="card.manaNeeded" class="flex justify-between w-full">
           <div class="flex gap-2">
@@ -31,7 +35,7 @@
               <Sword size="16" /> {{ card.attack }}
             </div>
             <div class="flex gap-2 items-center">
-              <Heart size="16" /> {{ card.defense }}
+              <Heart size="16" /> {{ card.toughness }}
             </div>
           </div>
           <div class="flex gap-2 items-center">
@@ -83,27 +87,15 @@ export default {
     },
     isOpponent: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   computed: {
     cardImage() {
       return this.isOpponent ? "/assets/deck/back.png" : this.card.artwork;
-    }
+    },
   },
   emits: ["toggleCardTable", "toggleCardCemetary"],
-  methods: {
-    toggleCardTable() {
-      if (this.isOpponent || !this.isTurn) return;
-      if (!this.card.manaValue && this.mana < this.card.manaNeeded) return;
-      this.card.turnCount = 0;
-      this.$emit("toggleCardTable", this.card);
-    },
-    goToCemetary() {
-      if (!this.isOpponent) {
-        this.$emit("toggleCardCemetary", this.card);
-      }
-    },
-  },
+  methods: {},
 };
 </script>

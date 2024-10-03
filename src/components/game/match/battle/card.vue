@@ -29,7 +29,7 @@
             <Sword size="16" /> {{ card.attack }}
           </div>
           <div class="flex gap-2 items-center">
-            <Heart size="16" /> {{ card.health ?? card.defense }}
+            <Heart size="16" /> {{ card.health ?? card.thoug }}
           </div>
         </div>
         <div class="flex gap-2 items-center">

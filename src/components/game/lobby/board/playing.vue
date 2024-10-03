@@ -43,8 +43,5 @@ export default {
       return this.match.data().players[1];
     },
   },
-  mounted() {
-    console.log(this.match.data().players);
-  },
 };
 </script>

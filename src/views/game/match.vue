@@ -5,17 +5,15 @@
   <div v-if="match">
     <Waiting v-if="match.data().status === 'waiting'" :match="match" />
     <TableTop
-      v-if="
-        ['playing', 'done'].includes(match.data().status) && player && opponent
-      "
+      v-if="match.data().status === 'playing' && player && opponent"
       :isSpectator="isSpectator"
       :match="match"
       :player="player"
       :opponent="opponent"
     />
-    <div v-if="match.data().status === 'forfeit'">
-      This match is not available anymore
-    </div>
+    <Win v-if="match.data().status === 'done' && hasPlayerWon" />
+    <Lose v-if="match.data().status === 'done' && hasPlayerLose" />
+    <Forfeit v-if="match.data().status === 'forfeit'" />
   </div>
 </template>
 
@@ -23,16 +21,22 @@
 import Loading from "@/components/ui/loading.vue";
 import Waiting from "@/components/game/match/waiting.vue";
 import TableTop from "@/components/game/match/table-top.vue";
+import Forfeit from "@/components/game/match/forfeit.vue";
 import { updateMatch } from "@/utils/match";
 import { doc, onSnapshot } from "firebase/firestore";
 import { firestore } from "@/utils/firebase";
 import { getAccount, updateAccount } from "@/utils/account";
+import Win from "@/components/game/match/win.vue";
+import Lose from "@/components/game/match/lose.vue";
 
 export default {
   components: {
     Loading,
     Waiting,
     TableTop,
+    Forfeit,
+    Lose,
+    Win,
   },
   computed: {
     account() {
@@ -54,6 +58,12 @@ export default {
     },
     isSpectator() {
       return !this.match.data().shared_with.includes(this.account.id);
+    },
+    hasPlayerWon() {
+      return this.player.status === "win";
+    },
+    hasPlayerLose() {
+      return this.player.status === "lose";
     },
   },
   data() {

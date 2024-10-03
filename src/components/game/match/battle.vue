@@ -12,47 +12,45 @@
     <div class="flex flex-1 flex-col">
       <div class="flex overflow-x-auto gap-1 p-2 pb-7 bg-stone-200">
         <Card
-          v-for="card in creaturesDefense"
+          v-for="card in creaturestoughness"
           :key="card.id"
           :card="card"
           direction="bottom"
-          @toggleCard="toggleCardDefense"
+          @toggleCard="toggleCardtoughness"
         />
       </div>
       <div
         class="flex-1 flex items-center justify-center gap-6 bg-stone-800 text-white"
       >
         <div class="flex items-center gap-2 flex-col">
-          <div class="flex gap-2 items-center">
-            <Sword /> {{ attackPoints }}
-          </div>
+          <div class="flex gap-2 items-center"><Sword /> {{ powerPoints }}</div>
           <Button
-            v-if="isAttacker && battle.attack.status === 'waiting'"
+            v-if="ispowerer && battle.power.status === 'waiting'"
             size="xs"
-            @click="attackReady"
+            @click="powerReady"
             >Ready</Button
           >
         </div>
         <X size="30" />
         <div class="flex items-center gap-2 flex-col">
           <div class="flex gap-2 items-center">
-            <Heart /> {{ defensePoints }}
+            <Heart /> {{ toughnessPoints }}
           </div>
           <Button
-            v-if="!isAttacker && battle.defense.status === 'waiting'"
+            v-if="!ispowerer && battle.toughness.status === 'waiting'"
             size="xs"
-            @click="defenseReady"
+            @click="toughnessReady"
             >Ready</Button
           >
         </div>
       </div>
       <div class="flex gap-1 p-2 overflow-x-auto pt-7 bg-stone-200">
         <Card
-          v-for="card in creaturesAttack"
+          v-for="card in creaturespower"
           :key="card.id"
           :card="card"
           direction="top"
-          @toggleCard="toggleCardAttack"
+          @toggleCard="toggleCardpower"
         />
       </div>
     </div>
@@ -79,33 +77,33 @@ export default {
     battle: { type: Object },
   },
   computed: {
-    creaturesDefense() {
-      return this.battle.defense.player.table?.filter(
+    creaturesToughness() {
+      return this.battle.toughness.player.table?.filter(
         (card) => card.manaNeeded
       );
     },
-    creaturesAttack() {
-      return this.battle.attack.player.table?.filter((card) => card.manaNeeded);
+    creaturespower() {
+      return this.battle.power.player.table?.filter((card) => card.manaNeeded);
     },
-    isAttacker() {
-      return this.battle.attack.player.id === this.account.id;
+    ispowerer() {
+      return this.battle.power.player.id === this.account.id;
     },
     account() {
       return this.$store.state.account;
     },
-    attackPoints() {
-      return this.battle.attack.player.table
+    powerPoints() {
+      return this.battle.power.player.table
         ?.filter((card) => card.active)
         .reduce((sum, item) => {
-          return (sum += parseInt(item.attack));
+          return (sum += parseInt(item.power));
         }, 0);
     },
-    defensePoints() {
+    toughnessPoints() {
       return (
-        this.battle.defense.player.table
+        this.battle.toughness.player.table
           ?.filter((card) => card.active)
           .reduce((sum, item) => {
-            return (sum += item.defense);
+            return (sum += item.toughness);
           }, 0) ?? 0
       );
     },
@@ -116,15 +114,15 @@ export default {
       match.battle = null;
       updateMatch({ id: this.$route.params.id, data: match });
     },
-    attackReady() {
-      this.battle.attack.status = "ready";
+    powerReady() {
+      this.battle.power.status = "ready";
       const match = this.match.data();
       match.battle = this.battle;
       updateMatch({ id: this.$route.params.id, data: match });
       this.doBattle();
     },
-    defenseReady() {
-      this.battle.defense.status = "ready";
+    toughnessReady() {
+      this.battle.toughness.status = "ready";
       const match = this.match.data();
       match.battle = this.battle;
       updateMatch({ id: this.$route.params.id, data: match });
@@ -132,55 +130,58 @@ export default {
     },
     doBattle() {
       if (
-        this.battle.attack.status !== "ready" ||
-        this.battle.defense.status !== "ready"
+        this.battle.power.status !== "ready" ||
+        this.battle.toughness.status !== "ready"
       )
         return;
-      let attackPoints = this.attackPoints;
-      this.battle.defense.player.table
+      let powerPoints = this.powerPoints;
+      this.battle.toughness.player.table
         .filter((card) => card.active)
         .map((card) => {
-          let health = card.defense;
+          let health = card.toughness;
           if (card.health) health = card.health;
-          if (attackPoints > health) {
+          if (powerPoints > health) {
             card.health = 0;
-            attackPoints -= parseInt(card.defense);
-            const indexCard = this.battle.defense.player.table.indexOf(card);
-            this.battle.defense.player.table.splice(indexCard, 1);
-            const cemetary = this.battle.defense.player.cemetary ?? [];
+            powerPoints -= parseInt(card.toughness);
+            const indexCard = this.battle.toughness.player.table.indexOf(card);
+            this.battle.toughness.player.table.splice(indexCard, 1);
+            const cemetary = this.battle.toughness.player.cemetary ?? [];
             cemetary.push(card);
-            this.battle.defense.player.cemetary = cemetary;
+            this.battle.toughness.player.cemetary = cemetary;
           } else {
-            card.health -= attackPoints;
-            attackPoints -= card.defense;
+            card.health -= powerPoints;
+            powerPoints -= card.toughness;
           }
         });
-      if (attackPoints > 0) {
-        this.battle.defense.player.health -= attackPoints;
+      if (powerPoints > 0) {
+        this.battle.toughness.player.health -= powerPoints;
       }
 
-      if (this.battle.defense.player.health <= 0) {
+      if (this.battle.toughness.player.health <= 0) {
         const match = this.match.data();
         match.status = "done";
-        this.battle.attack.player.status = "win";
-        this.battle.defense.player.status = "lose";
-        match.players = [this.battle.attack.player, this.battle.defense.player];
-        let playerLose = this.battle.defense.player.lose ?? 0;
+        this.battle.power.player.status = "win";
+        this.battle.toughness.player.status = "lose";
+        match.players = [
+          this.battle.power.player,
+          this.battle.toughness.player,
+        ];
+        let playerLose = this.battle.toughness.player.lose ?? 0;
         playerLose++;
         updateAccount({
-          id: this.battle.defense.player.id,
+          id: this.battle.toughness.player.id,
           data: {
-            ...this.battle.defense.player.data,
+            ...this.battle.toughness.player.data,
             lose: playerLose,
           },
           setStore: false,
         });
-        let opponentWin = this.battle.attack.player.win ?? 0;
+        let opponentWin = this.battle.power.player.win ?? 0;
         opponentWin++;
         updateAccount({
-          id: this.battle.attack.player.id,
+          id: this.battle.power.player.id,
           data: {
-            ...this.battle.attack.player.data,
+            ...this.battle.power.player.data,
             win: opponentWin,
           },
           setStore: false,
@@ -189,19 +190,22 @@ export default {
         updateMatch({ id: this.$route.params.id, data: match });
       } else {
         const match = this.match.data();
-        this.battle.defense.player.table.map((card) => (card.active = false));
-        this.battle.attack.player.table.map((card) => (card.active = false));
-        match.players = [this.battle.defense.player, this.battle.attack.player];
+        this.battle.toughness.player.table.map((card) => (card.active = false));
+        this.battle.power.player.table.map((card) => (card.active = false));
+        match.players = [
+          this.battle.toughness.player,
+          this.battle.power.player,
+        ];
         match.battle = null;
         updateMatch({ id: this.$route.params.id, data: match });
       }
     },
-    toggleCardDefense(card) {
-      if (this.isAttacker) return;
+    toggleCardtoughness(card) {
+      if (this.ispowerer) return;
       this.toggleCard(card);
     },
-    toggleCardAttack(card) {
-      if (!this.isAttacker) return;
+    toggleCardpower(card) {
+      if (!this.ispowerer) return;
       this.toggleCard(card);
     },
     toggleCard(card) {
