@@ -116,6 +116,7 @@ export default {
             players: [
               {
                 data: this.account.data(),
+                currentStep: "Upkeep",
                 turn: !!turnPlayer1,
                 id: this.account.id,
                 status: "selecting-deck",
@@ -123,6 +124,7 @@ export default {
               },
               {
                 data: opponentAccount.data(),
+                currentStep: "Upkeep",
                 turn: !turnPlayer1,
                 id: this.match.data().created_by,
                 status: "selecting-deck",

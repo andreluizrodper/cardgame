@@ -73,6 +73,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    isTurn: {
+      type: Boolean,
+      default: false,
+    },
   },
   emits: ["toggleCard"],
   data() {
@@ -94,7 +98,6 @@ export default {
   },
   methods: {
     doAction() {
-      console.log("adasdsa", this.isHand);
       if (this.isHand) this.toggleCardTable();
       else if (this.isGame) {
         this.activateCard();

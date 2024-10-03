@@ -2,11 +2,11 @@
   <div class="absolute z-40 left-0 right-0 bottom-0">
     <div class="flex">
       <div class="text-sm w-56 left-0 flex flex-col gap-2">
-        <div class="mx-2 relative z-30">
-          <Button @click="endTurn" :disabled="!player.turn" variant="outline"
-            >End my turn</Button
-          >
-        </div>
+        <Steps
+          :currentStep="player.currentStep"
+          @updateStep="updateStep"
+          @endTurn="endTurn"
+        />
         <div class="flex flex-col gap-2 mx-2">
           <div class="flex justify-between text-stone-200 items-center">
             <p class="text-sm">Spell deck</p>
@@ -84,6 +84,7 @@
             >
               <Card
                 :card="card"
+                :isGame="true"
                 :isTurn="player.turn"
                 @toggleMana="toggleMana"
               />
@@ -109,7 +110,7 @@
       </div>
     </div>
   </div>
-  <Dialog :open="player.turn && !player.hand">
+  <Dialog :open="player.turn && !player.hand && player.currentStep === 'Draw'">
     <DialogContent>
       <DialogHeader>
         <DialogTitle>Initial Draw</DialogTitle>
@@ -142,7 +143,14 @@
       </div>
     </DialogContent>
   </Dialog>
-  <Dialog :open="player.turn && player.hand && !player.hasDrawn">
+  <Dialog
+    :open="
+      player.turn &&
+      player.hand &&
+      !player.hasDrawn &&
+      player.currentStep === 'Draw'
+    "
+  >
     <DialogContent>
       <DialogHeader>
         <DialogTitle>Draw a Card</DialogTitle>
@@ -208,9 +216,11 @@ import {
   DialogContent,
   DialogHeader,
 } from "@/components/ui/dialog";
+import Steps from "@/components/game/match/table-top/battle/ui/steps.vue";
 
 export default {
   components: {
+    Steps,
     Dialog,
     DialogHeader,
     DialogTitle,
@@ -288,11 +298,16 @@ export default {
     };
   },
   methods: {
+    updateStep(step) {
+      this.player.currentStep = step;
+      this.doUpdateMatch();
+    },
     endTurn() {
       this.player.turn = false;
       this.player.hasDrawn = false;
       this.opponent.mana = 0;
       this.opponent.turn = true;
+      this.opponent.currentStep = "Upkeep";
       this.opponent.table?.map((card) => {
         card.turnCount += 1;
         card.turnActive = false;
@@ -304,6 +319,7 @@ export default {
     toggleMana(card) {
       card.turnActive = true;
       const mana = this.player.mana ?? 0;
+      console.log(mana, card);
       this.player.mana = mana + parseInt(card.manaValue);
       const match = this.match.data();
       match.players = [this.player, this.opponent];
