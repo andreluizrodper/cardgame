@@ -305,6 +305,7 @@ export default {
     },
     endTurn() {
       this.player.turn = false;
+      this.player.manaDown = false;
       this.player.hasDrawn = false;
       this.opponent.mana = 0;
       this.opponent.turn = true;
@@ -318,10 +319,11 @@ export default {
       this.doUpdateMatch();
     },
     toggleMana(card) {
+      if (this.player.manaDown) return;
       card.turnActive = true;
       const mana = this.player.mana ?? 0;
-      console.log(mana, card);
       this.player.mana = mana + parseInt(card.manaValue);
+      this.player.manaDown = true;
       const match = this.match.data();
       match.players = [this.player, this.opponent];
       updateMatch({ id: this.$route.params.id, data: match });
