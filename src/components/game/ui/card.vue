@@ -1,18 +1,29 @@
 <template>
+  <div v-if="isOpponent && isHand">
+    <img
+      :src="cardImage"
+      class="w-[200px] min-w-[200px] object-cover object-top rounded-t-lg transform rotate-180 h-16 -ml-[180px]"
+    />
+  </div>
   <button
+    v-else
     @click="doAction"
-    class="border-2 border-gray-300 rounded-lg bg-white w-[204px] min-w-[204px] h-[350px] mx-auto flex flex-col shadow-md hover:shadow-lg transition-shadow duration-300"
+    class="border-2 border-gray-300 rounded-lg bg-white w-[204px] min-w-[204px] h-[350px] flex flex-col shadow-md hover:shadow-lg transition-shadow duration-300"
     :class="[
       !cardList
         ? (!isGame && card.isAvailable ? 'opacity-100' : 'opacity-50',
           isGame && card.turnActive ? 'rotate-90 mx-10' : '',
           isGame && card.manaNeeded && card.turnCount === 0 ? 'opacity-40' : '')
         : '',
+      isOpponent ? 'cursor-none' : '',
+      isHand && !isOpponent
+        ? '-mr-[140px] group-hover:ml-2 group-hover:mr-0 duration-300 hover:-translate-y-5'
+        : '',
     ]"
   >
     <div class="relative w-full">
       <img
-        :src="card.artwork"
+        :src="cardImage"
         class="w-[200px] min-w-[200px] object-cover rounded-t-md"
       />
       <div
@@ -77,6 +88,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    isOpponent: {
+      type: Boolean,
+      default: false,
+    },
   },
   emits: ["toggleCard"],
   data() {
@@ -86,7 +101,9 @@ export default {
   },
   computed: {
     cardImage() {
-      return this.isOpponent ? "/assets/deck/back.png" : this.card.artwork;
+      return this.isOpponent && this.isHand
+        ? "/assets/deck/back-1.png"
+        : this.card.artwork;
     },
   },
   mounted() {

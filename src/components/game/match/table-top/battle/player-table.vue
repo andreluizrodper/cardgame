@@ -14,10 +14,10 @@
               <Layers3 size="16" /> {{ spellCardsCount }}
             </p>
           </div>
-          <div
-            class="w-50 h-32 bg-stone-400 bg-cover rounded flex items-start pl-3 justify-end pb-2 flex-col"
-            :style="{ backgroundImage: 'url(/assets/deck/back.png)' }"
-          ></div>
+          <img
+            src="/assets/deck/back-2-90-deg.png"
+            class="h-42 object-center rounded"
+          />
         </div>
         <div class="flex flex-col gap-2 mx-2">
           <div class="flex justify-between text-stone-200 items-center">
@@ -26,10 +26,10 @@
               <Layers3 size="16" /> {{ manaCardsCount }}
             </p>
           </div>
-          <div
-            class="w-50 h-32 bg-stone-400 bg-cover rounded flex items-start pl-3 justify-end pb-2 flex-col"
-            :style="{ backgroundImage: 'url(/assets/deck/back.png)' }"
-          ></div>
+          <img
+            src="/assets/deck/back-3-90-deg.png"
+            class="h-42 object-center rounded"
+          />
         </div>
         <div
           class="bg-stone-600 text-stone-200 p-2 rounded shadow-md flex flex-col items-start gap-1"
@@ -105,6 +105,7 @@
             @toggleCardCemetary="toggleCardCemetary"
             :isGame="true"
             :isHand="true"
+            :isOpponent="false"
           />
         </div>
       </div>

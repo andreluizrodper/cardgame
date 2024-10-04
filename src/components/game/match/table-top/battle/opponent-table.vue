@@ -11,7 +11,7 @@
               :key="index"
               class="mx-1 drop-shadow flex justify-center my-1 min-h-36"
             >
-              <Card :card="card" />
+              <Card :card="card" :isOpponent="true" />
             </div>
           </div>
         </div>
@@ -23,6 +23,7 @@
             :key="index"
             :card="card"
             :isOpponent="true"
+            :isHand="true"
           />
         </div>
       </div>

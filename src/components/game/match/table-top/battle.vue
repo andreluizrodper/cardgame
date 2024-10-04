@@ -4,9 +4,9 @@
   </div>
   <div
     v-if="!isLoading"
-    class="min-h-[100vh] flex flex-col w-full"
+    class="min-h-[100vh] flex flex-col w-full bg-cover"
     :class="isSpectator ? 'pointer-events-none' : ''"
-    :style="{ 'background-image': 'url(/assets/bg/wood.jpg)' }"
+    :style="{ 'background-image': 'url(/assets/bg/battlefield_1.png)' }"
   >
     <OpponentTable :player="player" :opponent="opponent" />
     <PlayerTable
