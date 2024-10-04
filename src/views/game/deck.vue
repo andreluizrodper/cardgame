@@ -26,7 +26,7 @@
 
 <script setup>
 import Decks from "@/components/game/decks/list.vue";
-import MyCollections from "@/components/game/ui/my-collections.vue";
+import MyCollections from "@/components/game/ui/my-cards.vue";
 import Hero from "@/components/game/ui/hero.vue";
 import NavBar from "@/components/game/ui/nav-bar.vue";
 import { Home, ChevronRight } from "lucide-vue-next";
