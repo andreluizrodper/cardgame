@@ -75,7 +75,7 @@
       <div class="flex-1 flex items-end">
         <div class="flex mb-12 w-full justify-center">
           <div
-            class="px-1 scale-75 -mx-32 flex max-h-96 justify-center items-end flex-wrap"
+            class="px-1 scale-0 -mx-32 flex max-h-96 justify-center items-end flex-wrap"
           >
             <div
               v-for="(card, index) in cards"
@@ -91,7 +91,7 @@
             </div>
           </div>
         </div>
-        <div
+        <!-- <div
           v-if="!isSpectator"
           class="flex group justify-center absolute h-16 overflow-hidden hover:h-auto hover:overflow-auto bottom-0 left-0 right-0 z-30 hover:ml-0 duration-300 hover:bottom-2 pt-6"
         >
@@ -107,7 +107,13 @@
             :isHand="true"
             :isOpponent="false"
           />
-        </div>
+        </div> -->
+        <Hand
+          :cards="player.hand"
+          :isOpponent="false"
+          @toggleCardTable="toggleCardTable"
+          @toggleCardCemetary="toggleCardCemetary"
+        />
       </div>
     </div>
   </div>
@@ -218,10 +224,11 @@ import {
   DialogHeader,
 } from "@/components/ui/dialog";
 import Steps from "@/components/game/match/table-top/battle/ui/steps.vue";
-
+import Hand from "@/components/game/match/table-top/hand.vue";
 export default {
   components: {
     Steps,
+    Hand,
     Dialog,
     DialogHeader,
     DialogTitle,
