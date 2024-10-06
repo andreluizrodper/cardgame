@@ -39,6 +39,7 @@
         </div>
       </transition-group>
       <div
+        v-if="hoveredCard !== null"
         class="w-[300px] h-[500px] text-stone-200 rounded-xl shadow-md cursor-pointer transition-all duration-200 absolute bg-cover bg-center"
         :style="{
           '--rotation': `${getRotation(hoveredCard)}deg`,
