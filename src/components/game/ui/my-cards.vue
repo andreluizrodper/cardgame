@@ -2,7 +2,7 @@
   <div class="flex flex-col gap-3 py-6">
     <p class="text-sm px-4">My cards</p>
     <div class="overflow-auto flex flex-wrap gap-1 pb-6">
-      <Card
+      <CardDetail
         v-for="(card, cardIndex) in allCards"
         :key="cardIndex"
         :card="card"
@@ -15,11 +15,11 @@
 
 <script>
 import Wisps from "@/assets/cards/wisps.json";
-import Card from "@/components/game/ui/card.vue";
+import CardDetail from "../match/table-top/CardDetail.vue";
 
 export default {
   components: {
-    Card,
+    CardDetail,
   },
   computed: {
     allCards() {

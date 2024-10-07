@@ -7,7 +7,7 @@ import Card from '@/components/ui/card/Card.vue';
   <div class="min-h-[100vh] flex items-center justify-center relative z-30">
     <Card>
       <CardHeader>
-        <CardTitle>Elemental Cards</CardTitle>
+        <CardTitle>Alchemia</CardTitle>
         <CardDescription>This is a card game</CardDescription>
       </CardHeader>
       <CardContent>

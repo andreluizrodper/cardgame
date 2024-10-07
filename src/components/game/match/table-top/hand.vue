@@ -12,105 +12,51 @@
         <div
           v-for="(card, index) in cards"
           :key="index"
-          class="w-[150px] h-[200px] rounded-xl shadow-md cursor-pointer transition-all duration-200 absolute hover-card bg-cover bg-center"
-          :class="[
-            { 'is-hovered': hoveredCard === index },
-            isOpponent ? 'bg-stone-600' : 'bg-stone-600 text-stone-200',
-          ]"
+          class="w-[150px] h-[200px] rounded-xl shadow-md cursor-pointer transition-all duration-200 absolute hover-card"
+          :class="{ 'is-hovered': hoveredCard === index }"
           :style="{
             '--rotation': `${getRotation(index)}deg`,
             '--translateY': `${getTranslateY(index)}px`,
             transform: `rotate(var(--rotation)) translateY(calc(var(--translateY) + 100px))`,
             left: `${index * 60}px`,
             zIndex: index,
-            backgroundImage: isOpponent
-              ? 'url(/assets/deck/back-1.png)'
-              : 'url(/assets/deck/card-front.png)',
           }"
           @mouseover="hoverCard(index)"
           @mouseleave="unhoverCard()"
         >
-          <div
-            v-if="!isOpponent"
-            class="h-8 flex items-center justify-center overflow-hidden"
-          >
-            {{ card.name }}
-          </div>
+          <CardDetail
+            :card="card"
+            :width="150"
+            :height="200"
+            :is-opponent="isOpponent"
+          />
         </div>
       </transition-group>
-      <div
+      <CardDetail
         v-if="hoveredCard !== null"
-        class="w-[300px] h-[500px] text-stone-200 rounded-xl shadow-md cursor-pointer transition-all duration-200 absolute bg-cover bg-center"
+        :card="cards[hoveredCard]"
+        :width="300"
+        :height="500"
+        :is-opponent="isOpponent"
+        class="absolute"
         :style="{
           '--rotation': `${getRotation(hoveredCard)}deg`,
           transform: `translateY(-140px)`,
           left: `${hoveredCard * 60}px`,
           zIndex: cards.length + 1,
-          backgroundImage: 'url(/assets/deck/card-default-background.png)',
         }"
-      >
-        <div class="flex flex-col w-full h-full">
-          <div
-            class="h-[250px] w-full bg-cover bg-center rounded-t-xl absolute top-0 left-0"
-            :style="{ backgroundImage: `url(${cards[hoveredCard].artwork})` }"
-          />
-          <div
-            :style="{
-              backgroundImage: 'url(/assets/deck/card-front-values.png)',
-            }"
-            class="w-full h-[60px] bg-cover bg-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 -mt-[10px]"
-          />
-          <div
-            class="text-center text-3xl absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 -mt-[10px] flex justify-between w-full"
-          >
-            <span class="ml-[24px] font-bold">{{
-              cards[hoveredCard].power
-            }}</span>
-            <span class="mr-[28px] font-bold">{{
-              cards[hoveredCard].toughness
-            }}</span>
-          </div>
-          {{ console.log(cards[hoveredCard]) }}
-          <div class="mt-[270px] flex flex-col gap-4 w-full items-start px-3">
-            <div class="flex gap-4">
-              <div class="flex flex-col gap-2">
-                <div
-                  v-for="(mana, index) in Array(
-                    cards[hoveredCard].manaNeeded
-                  ).fill(0)"
-                  :key="index"
-                  class="w-12 h-12 mb-1"
-                >
-                  <img
-                    :src="`/assets/manas/symbols/${cards[
-                      hoveredCard
-                    ].manaType.toLowerCase()}-mana.png`"
-                    alt="Mana"
-                    class="w-full h-full object-contain"
-                  />
-                </div>
-              </div>
-              <div class="flex flex-col">
-                <h1 class="text-md uppercase font-bold text-white">
-                  {{ cards[hoveredCard].name }}
-                </h1>
-                <h2 class="text-sm uppercase text-white">
-                  {{ cards[hoveredCard].type }}
-                </h2>
-                <p class="text-white text-sm mt-2">
-                  {{ cards[hoveredCard].ability }}
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      />
     </div>
   </div>
 </template>
 
 <script>
+import CardDetail from "./CardDetail.vue";
+
 export default {
+  components: {
+    CardDetail,
+  },
   props: {
     cards: {
       type: Array,

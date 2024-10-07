@@ -112,11 +112,13 @@
             </div>
             <div class="flex gap-2"></div>
             <div class="flex flex-wrap gap-2 items-center justify-center">
-              <Card
+              <CardDetail
                 v-for="(card, index) in cardList"
                 :key="index"
                 :card="card"
                 @toggleCard="toggleCard"
+                :width="250"
+                :height="350"
               />
             </div>
           </div>
@@ -143,7 +145,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Wisps from "@/assets/cards/wisps.json";
 import Mana from "@/assets/cards/mana.json";
-import Card from "@/components/game/ui/card.vue";
+import CardDetail from "@/components/game/match/table-top/CardDetail.vue";
 import { updateDeck, createDeck, getDeck } from "@/utils/deck";
 import NavBar from "@/components/game/ui/nav-bar.vue";
 import CardCount from "@/components/game/deck-builder/card-count.vue";
@@ -160,7 +162,7 @@ export default {
     CardCount,
     ChevronLeft,
     Input,
-    Card,
+    CardDetail,
     ChevronDown,
     ChevronUp,
     Button,

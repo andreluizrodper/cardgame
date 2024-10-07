@@ -2,13 +2,13 @@
   <div v-if="isOpponent && isHand">
     <img
       :src="cardImage"
-      class="w-[200px] min-w-[200px] object-cover object-top rounded-t-lg transform rotate-180 h-16 -ml-[180px]"
+      class="w-[200px] object-cover object-top rounded-t-lg transform rotate-180 h-16 -ml-[180px]"
     />
   </div>
   <button
     v-else
     @click="doAction"
-    class="border-2 border-gray-300 rounded-lg bg-white w-[204px] min-w-[204px] h-[350px] flex flex-col shadow-md hover:shadow-lg transition-shadow duration-300"
+    class="border-2 border-gray-300 rounded-lg bg-white w-[250px] h-[350px] flex flex-col shadow-md hover:shadow-lg transition-shadow duration-300"
     :class="[
       !cardList
         ? (!isGame && card.isAvailable ? 'opacity-100' : 'opacity-50',
@@ -22,15 +22,7 @@
     ]"
   >
     <div class="relative w-full">
-      <img
-        :src="cardImage"
-        class="w-[200px] min-w-[200px] object-cover rounded-t-md"
-      />
-      <div
-        class="absolute top-2 right-2 border rounded bg-white px-2 text-xs font-semibold shadow-sm"
-      >
-        {{ card.manaType ?? card.type }}
-      </div>
+      <img :src="cardImage" class="bg-cover bg-center rounded-t-md" />
     </div>
     <div class="px-3 py-2 flex flex-col overflow-hidden text-xs gap-2 flex-1">
       <h3 class="text-sm font-bold">{{ card.name }}</h3>

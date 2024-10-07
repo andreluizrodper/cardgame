@@ -1,7 +1,7 @@
 <template>
   <div class="bg-stone-500">
     <div
-      class="flex min-h-[100vh] flex flex-col md:mx-auto max-w-7xl shadow bg-white"
+      class="min-h-[100vh] flex flex-col md:mx-auto max-w-7xl shadow bg-white"
     >
       <div class="flex-1">
         <NavBar />
