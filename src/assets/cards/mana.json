@@ -1,102 +1,72 @@
 {
-  "artwork": "/assets/artwork/mana.jpg",
+  "artwork": "/assets/manas/full-art/air.png",
   "name": "Mana",
   "cards": [
     {
-      "name": "Earth Crystal",
+      "name": "Earth",
       "manaValue": 1,
       "manaType": "Earth",
-      "artwork": "/assets/artwork/mana.jpg"
+      "artwork": "/assets/manas/full-art/earth.png"
     },
     {
-      "name": "Fire Ember",
+      "name": "Fire",
       "manaValue": 1,
       "manaType": "Fire",
-      "artwork": "/assets/artwork/mana.jpg"
+      "artwork": "/assets/manas/full-art/fire.png"
     },
     {
-      "name": "Water Droplet",
+      "name": "Water",
       "manaValue": 1,
       "manaType": "Water",
-      "artwork": "/assets/artwork/mana.jpg"
+      "artwork": "/assets/manas/full-art/water.png"
     },
     {
-      "name": "Air Whisper",
+      "name": "Air",
       "manaValue": 1,
       "manaType": "Air",
-      "artwork": "/assets/artwork/mana.jpg"
+      "artwork": "/assets/manas/full-art/air.png"
     },
     {
-      "name": "Greater Earth Stone",
+      "name": "Light",
       "manaValue": 1,
-      "manaType": "Earth",
-      "artwork": "/assets/artwork/mana.jpg"
+      "manaType": "Light",
+      "artwork": "/assets/manas/full-art/light.png"
     },
     {
-      "name": "Greater Fire Spark",
+      "name": "Dark Shadow",
       "manaValue": 1,
-      "manaType": "Fire",
-      "artwork": "/assets/artwork/mana.jpg"
+      "manaType": "Dark",
+      "artwork": "/assets/manas/full-art/dark.png"
     },
     {
-      "name": "Greater Water Flow",
+      "name": "Crystal",
       "manaValue": 1,
-      "manaType": "Water",
-      "artwork": "/assets/artwork/mana.jpg"
+      "manaType": "Crystal",
+      "artwork": "/assets/manas/full-art/crystal.png"
     },
     {
-      "name": "Greater Air Breeze",
+      "name": "Void",
       "manaValue": 1,
-      "manaType": "Air",
-      "artwork": "/assets/artwork/mana.jpg"
+      "manaType": "Void",
+      "artwork": "/assets/manas/full-art/void.png"
     },
     {
-      "name": "Earth Gemstone",
+      "name": "Lightning",
       "manaValue": 1,
-      "manaType": "Earth",
-      "artwork": "/assets/artwork/mana.jpg"
+      "manaType": "Lightning",
+      "artwork": "/assets/manas/full-art/lightning.png"
     },
     {
-      "name": "Fire Flame",
+      "name": "Swamp",
       "manaValue": 1,
-      "manaType": "Fire",
-      "artwork": "/assets/artwork/mana.jpg"
+      "manaType": "Swamp",
+      "artwork": "/assets/manas/full-art/swamp.png"
     },
     {
-      "name": "Water Crystal",
+      "name": "Ice",
       "manaValue": 1,
-      "manaType": "Water",
-      "artwork": "/assets/artwork/mana.jpg"
-    },
-    {
-      "name": "Air Gust",
-      "manaValue": 1,
-      "manaType": "Air",
-      "artwork": "/assets/artwork/mana.jpg"
-    },
-    {
-      "name": "Earth Core",
-      "manaValue": 1,
-      "manaType": "Earth",
-      "artwork": "/assets/artwork/mana.jpg"
-    },
-    {
-      "name": "Inferno Shard",
-      "manaValue": 1,
-      "manaType": "Fire",
-      "artwork": "/assets/artwork/mana.jpg"
-    },
-    {
-      "name": "Tidal Essence",
-      "manaValue": 1,
-      "manaType": "Water",
-      "artwork": "/assets/artwork/mana.jpg"
-    },
-    {
-      "name": "Storm Feather",
-      "manaValue": 1,
-      "manaType": "Air",
-      "artwork": "/assets/artwork/mana.jpg"
+      "manaType": "Ice",
+      "artwork": "/assets/manas/full-art/ice.png"
     }
   ]
 }

@@ -82,7 +82,7 @@
                   class="w-12 h-12 mb-1"
                 >
                   <img
-                    :src="`/assets/manas/${cards[
+                    :src="`/assets/manas/symbols/${cards[
                       hoveredCard
                     ].manaType.toLowerCase()}-mana.png`"
                     alt="Mana"
