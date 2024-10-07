@@ -70,7 +70,7 @@
               cards[hoveredCard].toughness
             }}</span>
           </div>
-
+          {{ console.log(cards[hoveredCard]) }}
           <div class="mt-[270px] flex flex-col gap-4 w-full items-start px-3">
             <div class="flex gap-4">
               <div class="flex flex-col gap-2">
