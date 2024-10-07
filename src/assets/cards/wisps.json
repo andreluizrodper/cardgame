@@ -7,8 +7,8 @@
             "manaNeeded": 2,
             "type": "Creature - Wisp",
             "manaType": "Air",
-            "power": 2,
-            "toughness": 1,
+            "power": 12,
+            "toughness": 10,
             "ability": "Wind Walker: Air Wisp can't be blocked by creatures with power 2 or greater.",
             "lore": "Air Wisps are elusive spirits that slip past powerful foes and create chaos on the battlefield.",
             "artwork": "/assets/artwork/wisps/air.png"

@@ -26,26 +26,17 @@
         :style="{ backgroundImage: 'url(/assets/deck/card-front-values.png)' }"
       />
       <div
-        class="text-center absolute top-[50%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex justify-between w-[82%]"
-        :style="{ fontSize: `${dimensions.height * 0.06}px` }"
+        class="text-center absolute top-[50%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex justify-between"
+        :style="{
+          fontSize: `${dimensions.height * 0.06}px`,
+          width: card.power < 10 ? '82%' : '88%',
+        }"
       >
-        <span
-          class="font-bold font-mono w-[3%]"
-          :class="{
-            'text-right': card.power < 10,
-            'text-left': card.power >= 10,
-          }"
-        >
-          {{ card.power.toString().padStart(2, " ") }}
+        <span class="font-bold font-mono">
+          {{ card.power }}
         </span>
-        <span
-          class="font-bold font-mono w-[8%]"
-          :class="{
-            'text-left': card.toughness < 10,
-            'text-right': card.toughness >= 10,
-          }"
-        >
-          {{ card.toughness.toString().padStart(2, " ") }}
+        <span class="font-bold font-mono">
+          {{ card.toughness }}
         </span>
       </div>
       <div
