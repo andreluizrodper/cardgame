@@ -52,7 +52,7 @@
               <img
                 :src="`/assets/manas/symbols/${card.manaType.toLowerCase()}-mana.png`"
                 alt="Mana"
-                class="absolute inset-0 w-12 h-12 object-contain"
+                class="absolute inset-0 w-[95%] h-[95%] object-contain"
               />
             </div>
           </div>
