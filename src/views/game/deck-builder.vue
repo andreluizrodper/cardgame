@@ -133,7 +133,12 @@
     class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
   >
     <div class="bg-white p-4 rounded-lg max-w-sm w-full">
-      <Card :card="selectedCardForModal" @toggleCard="toggleCard" />
+      <CardDetail
+        :card="selectedCardForModal"
+        @toggleCard="toggleCard"
+        :width="250"
+        :height="350"
+      />
       <Button class="mt-4 w-full" @click="closeModal">Close</Button>
     </div>
   </div>

@@ -3,6 +3,18 @@
     ref="cardContainer"
     class="text-stone-200 rounded-xl shadow-md cursor-pointer transition-all duration-200 bg-cover bg-center"
     :style="containerStyle"
+    @click="doAction"
+    :class="[
+      !cardList
+        ? (!isGame && card.isAvailable ? 'opacity-100' : 'opacity-50',
+          isGame && card.turnActive ? 'rotate-90' : '',
+          isGame && card.manaNeeded && card.turnCount === 0 ? 'opacity-40' : '')
+        : '',
+      isOpponent ? 'cursor-none' : '',
+      isHand && !isOpponent
+        ? 'hover:-translate-y-5 transition-transform duration-300'
+        : '',
+    ]"
   >
     <div v-if="!isOpponent" class="flex flex-col w-full h-full relative">
       <div
@@ -101,7 +113,24 @@ export default {
       type: Boolean,
       default: false,
     },
+    cardList: {
+      type: Boolean,
+      default: false,
+    },
+    isGame: {
+      type: Boolean,
+      default: false,
+    },
+    isHand: {
+      type: Boolean,
+      default: false,
+    },
+    isTurn: {
+      type: Boolean,
+      default: false,
+    },
   },
+  emits: ["toggleCard", "toggleMana", "toggleCardTable", "toggleCardCemetary"],
   computed: {
     dimensions() {
       const aspectRatio = 3 / 5;
@@ -135,6 +164,33 @@ export default {
   methods: {
     forceUpdate() {
       this.$forceUpdate();
+    },
+    doAction() {
+      if (this.isHand) this.toggleCardTable();
+      else if (this.isGame) {
+        this.activateCard();
+      } else {
+        this.toggleCard();
+      }
+    },
+    toggleCard() {
+      this.$emit("toggleCard", this.card);
+    },
+    activateCard() {
+      if (!this.isTurn) return;
+      if (this.card.turnActive) return;
+      if (this.card.manaValue) {
+        this.$emit("toggleMana", this.card);
+      }
+    },
+    toggleCardTable() {
+      this.card.turnCount = 0;
+      this.$emit("toggleCardTable", this.card);
+    },
+    goToCemetary() {
+      if (!this.isOpponent) {
+        this.$emit("toggleCardCemetary", this.card);
+      }
     },
   },
 };

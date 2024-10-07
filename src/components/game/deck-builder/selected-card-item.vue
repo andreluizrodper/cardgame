@@ -16,7 +16,7 @@
           </Button>
         </PopoverTrigger>
         <PopoverContent align="end" class="w-auto p-0">
-          <Card :card="card" />
+          <CardDetail :card="card" :width="300" :height="500" />
         </PopoverContent>
       </Popover>
     </div>
@@ -29,7 +29,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import Card from "@/components/game/decks/card.vue";
+import CardDetail from "@/components/game/match/table-top/CardDetail.vue";
 import { Button } from "@/components/ui/button";
 import { Trash, Eye } from "lucide-vue-next";
 
@@ -41,7 +41,7 @@ export default {
     Popover,
     PopoverContent,
     PopoverTrigger,
-    Card,
+    CardDetail,
   },
   props: {
     card: {
