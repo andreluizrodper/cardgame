@@ -1,4 +1,3 @@
-import Card from '@/components/ui/card/Card.vue';
 <template>
   <img
     class="object-cover object-center fixed h-[100vh] w-[100vw]"

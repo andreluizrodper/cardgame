@@ -8,7 +8,7 @@
     :class="isSpectator ? 'pointer-events-none' : ''"
     :style="{ 'background-image': 'url(/assets/bg/battlefield_1.png)' }"
   >
-    <OpponentTable :player="player" :opponent="opponent" />
+    <!-- <OpponentTable :player="player" :opponent="opponent" /> -->
     <PlayerTable
       :isSpectator="isSpectator"
       :player="player"

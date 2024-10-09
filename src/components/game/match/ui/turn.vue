@@ -36,7 +36,6 @@
 <script>
 import { Button } from "@/components/ui/button";
 import { updateMatch } from "@/utils/match";
-import Card from "@/components/game/match/ui/card-hand.vue";
 import Loading from "@/components/ui/loading.vue";
 import Battle from "@/components/game/match/battle.vue";
 
@@ -45,7 +44,6 @@ export default {
     Loading,
     Button,
     Battle,
-    Card,
   },
   computed: {
     onBattle() {

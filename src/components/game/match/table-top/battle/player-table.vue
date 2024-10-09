@@ -1,113 +1,8 @@
 <template>
   <div class="absolute z-40 left-0 right-0 bottom-0">
     <div class="flex">
-      <div class="text-sm w-56 left-0 flex flex-col gap-2">
-        <Steps
-          :currentStep="player.currentStep"
-          @updateStep="updateStep"
-          @endTurn="endTurn"
-        />
-        <div class="flex flex-col gap-2 mx-2">
-          <div class="flex justify-between text-stone-200 items-center">
-            <p class="text-sm">Spell deck</p>
-            <p class="flex gap-2 items-center">
-              <Layers3 size="16" /> {{ spellCardsCount }}
-            </p>
-          </div>
-          <img
-            src="/assets/deck/back-2-90-deg.png"
-            class="h-42 object-center rounded"
-          />
-        </div>
-        <div class="flex flex-col gap-2 mx-2">
-          <div class="flex justify-between text-stone-200 items-center">
-            <p class="text-sm">Mana deck</p>
-            <p class="flex gap-2 items-center">
-              <Layers3 size="16" /> {{ manaCardsCount }}
-            </p>
-          </div>
-          <img
-            src="/assets/deck/back-3-90-deg.png"
-            class="h-42 object-center rounded"
-          />
-        </div>
-        <div
-          class="bg-stone-600 text-stone-200 p-2 rounded shadow-md flex flex-col items-start gap-1"
-        >
-          <div>
-            {{ player.data.name }}
-          </div>
-          <div class="flex gap-4">
-            <span
-              class="flex gap-1 items-center"
-              :class="!player.mana || player.mana <= 0 ? 'opacity-40' : ''"
-            >
-              <Gem size="16" /> {{ player.mana }}
-            </span>
-            <span class="flex gap-1 items-center">
-              <Heart size="16" /> {{ player.health }}
-            </span>
-            <span class="flex gap-1 items-center">
-              <Layers3 size="16" />
-              {{ player.deck.length }}
-            </span>
-            <button
-              v-if="player.cemetary"
-              class="border bg-gray-50 rounded flex gap-2 items-center px-2 py-1 relative"
-              @click="cemetarySheet = true"
-            >
-              <span
-                class="absolute -top-1 -right-2 px-2 rounded-full text-xs bg-red-300 text-white"
-                >{{ player.cemetary.length }}</span
-              >
-              <Skull size="16" />
-            </button>
-          </div>
-          <button
-            v-if="!isSpectator"
-            class="px-2 rounded bg-stone-400 text-stone-700 hover:bg-stone-900 hover:text-red-300"
-            @click="quit"
-          >
-            Quit match
-          </button>
-        </div>
-      </div>
+      <Info :player="player" :isSpectator="isSpectator" />
       <div class="flex-1 flex items-end">
-        <div class="flex mb-12 w-full justify-center">
-          <div
-            class="px-1 scale-0 -mx-32 flex max-h-96 justify-center items-end flex-wrap"
-          >
-            <div
-              v-for="(card, index) in cards"
-              :key="index"
-              class="mx-1 drop-shadow flex justify-center my-1 min-h-36"
-            >
-              <Card
-                :card="card"
-                :isGame="true"
-                :isTurn="player.turn"
-                @toggleMana="toggleMana"
-              />
-            </div>
-          </div>
-        </div>
-        <!-- <div
-          v-if="!isSpectator"
-          class="flex group justify-center absolute h-16 overflow-hidden hover:h-auto hover:overflow-auto bottom-0 left-0 right-0 z-30 hover:ml-0 duration-300 hover:bottom-2 pt-6"
-        >
-          <Card
-            v-for="(card, index) in player.hand"
-            :key="index"
-            :card="card"
-            :mana="player.mana"
-            :isTurn="player.turn"
-            @toggleCardTable="toggleCardTable"
-            @toggleCardCemetary="toggleCardCemetary"
-            :isGame="true"
-            :isHand="true"
-            :isOpponent="false"
-          />
-        </div> -->
         <Hand
           :cards="player.hand"
           :isOpponent="false"
@@ -117,141 +12,44 @@
       </div>
     </div>
   </div>
-  <Dialog :open="player.turn && !player.hand && player.currentStep === 'Draw'">
-    <DialogContent>
-      <DialogHeader>
-        <DialogTitle>Initial Draw</DialogTitle>
-        <DialogDescription>Select up to 7 cards to draw:</DialogDescription>
-      </DialogHeader>
-      <div class="flex flex-col gap-6">
-        <div class="grid grid-cols-2 gap-4">
-          <div>
-            <Label>Spell Cards:</Label>
-            <Input
-              class="w-full"
-              v-model="amountSpell"
-              :max="7 - amountMana"
-              :min="0"
-              type="number"
-            />
-          </div>
-          <div>
-            <Label>Mana Cards:</Label>
-            <Input
-              class="w-full"
-              v-model="amountMana"
-              :max="7 - amountSpell"
-              :min="0"
-              type="number"
-            />
-          </div>
-        </div>
-        <Button :disabled="!drawAvailable" @click="firstDraw">Draw</Button>
-      </div>
-    </DialogContent>
-  </Dialog>
-  <Dialog
-    :open="
+  <InitialDrawDialog
+    :isOpen="player.turn && !player.hand && player.currentStep === 'Draw'"
+    :amountSpell="amountSpell"
+    :amountMana="amountMana"
+    @draw="handleInitialDraw"
+  />
+  <DrawCardDialog
+    :isOpen="
       player.turn &&
       player.hand &&
       !player.hasDrawn &&
       player.currentStep === 'Draw'
     "
-  >
-    <DialogContent>
-      <DialogHeader>
-        <DialogTitle>Draw a Card</DialogTitle>
-        <DialogDescription>Choose which deck to draw from:</DialogDescription>
-      </DialogHeader>
-      <div class="flex gap-4">
-        <Button @click="drawSpell">Draw Spell Card</Button>
-        <Button @click="drawMana">Draw Mana Card</Button>
-      </div>
-    </DialogContent>
-  </Dialog>
-  <Sheet
-    class="max-w-md"
-    :open="cemetarySheet"
+    @drawSpell="drawSpell"
+    @drawMana="drawMana"
+  />
+  <CemeterySheet
+    :isOpen="cemetarySheet"
+    :cards="player.cemetary"
     @update:open="toggleCemetarySheet"
-  >
-    <SheetContent>
-      <SheetHeader>
-        <SheetTitle> Cemetary </SheetTitle>
-        <SheetDescription> </SheetDescription>
-      </SheetHeader>
-      <div class="grid gap-2 grid-cols-2 overflow-y-auto">
-        <Card
-          v-for="(card, index) in player.cemetary"
-          :key="index"
-          :card="card"
-          @toggleCard="toggleCard"
-        />
-      </div>
-    </SheetContent>
-  </Sheet>
+    @toggleCard="toggleCard"
+  />
 </template>
 
 <script>
-import {
-  Sheet,
-  SheetClose,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
-import {
-  ChevronDown,
-  ChevronUp,
-  Heart,
-  Layers3,
-  RefreshCcw,
-  Skull,
-  Gem,
-} from "lucide-vue-next";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import Card from "@/components/game/ui/card.vue";
-import { updateMatch } from "@/utils/match";
-import { Button } from "@/components/ui/button";
-import { updateAccount } from "@/utils/account";
-import {
-  Dialog,
-  DialogTitle,
-  DialogDescription,
-  DialogContent,
-  DialogHeader,
-} from "@/components/ui/dialog";
-import Steps from "@/components/game/match/table-top/battle/ui/steps.vue";
+import DrawCardDialog from "@/components/game/match/table-top/battle/ui/draw-card-dialog.vue";
+import InitialDrawDialog from "@/components/game/match/table-top/battle/ui/initial-draw-dialog.vue";
+import Info from "@/components/game/match/table-top/battle/ui/info.vue";
 import Hand from "@/components/game/match/table-top/hand.vue";
+import CemeterySheet from "@/components/game/match/table-top/battle/ui/cemetery.vue";
+
 export default {
   components: {
-    Steps,
+    DrawCardDialog,
+    InitialDrawDialog,
+    Info,
     Hand,
-    Dialog,
-    DialogHeader,
-    DialogTitle,
-    DialogDescription,
-    DialogContent,
-    Label,
-    Input,
-    Sheet,
-    SheetClose,
-    SheetContent,
-    SheetDescription,
-    SheetHeader,
-    SheetTitle,
-    SheetTrigger,
-    Button,
-    Card,
-    Gem,
-    ChevronDown,
-    Skull,
-    ChevronUp,
-    Heart,
-    Layers3,
-    RefreshCcw,
+    CemeterySheet,
   },
   props: {
     isSpectator: {
@@ -414,6 +212,11 @@ export default {
         this.player.mana = this.player.mana - card.manaNeeded;
       }
       this.doUpdateMatch();
+    },
+    handleInitialDraw({ amountSpell, amountMana }) {
+      this.amountSpell = amountSpell;
+      this.amountMana = amountMana;
+      this.firstDraw();
     },
   },
 };
