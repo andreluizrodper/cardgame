@@ -6,67 +6,78 @@
       "name": "Earth",
       "manaValue": 1,
       "manaType": "Earth",
-      "artwork": "/assets/manas/full-art/earth.png"
+      "artwork": "/assets/manas/full-art/earth.png",
+      "isMana": true
     },
     {
       "name": "Fire",
       "manaValue": 1,
       "manaType": "Fire",
-      "artwork": "/assets/manas/full-art/fire.png"
+      "artwork": "/assets/manas/full-art/fire.png",
+      "isMana": true
     },
     {
       "name": "Water",
       "manaValue": 1,
       "manaType": "Water",
-      "artwork": "/assets/manas/full-art/water.png"
+      "artwork": "/assets/manas/full-art/water.png",
+      "isMana": true
     },
     {
       "name": "Air",
       "manaValue": 1,
       "manaType": "Air",
-      "artwork": "/assets/manas/full-art/air.png"
+      "artwork": "/assets/manas/full-art/air.png",
+      "isMana": true
     },
     {
       "name": "Light",
       "manaValue": 1,
       "manaType": "Light",
-      "artwork": "/assets/manas/full-art/light.png"
+      "artwork": "/assets/manas/full-art/light.png",
+      "isMana": true
     },
     {
       "name": "Dark Shadow",
       "manaValue": 1,
       "manaType": "Dark",
-      "artwork": "/assets/manas/full-art/dark.png"
+      "artwork": "/assets/manas/full-art/dark.png",
+      "isMana": true
     },
     {
       "name": "Crystal",
       "manaValue": 1,
       "manaType": "Crystal",
-      "artwork": "/assets/manas/full-art/crystal.png"
+      "artwork": "/assets/manas/full-art/crystal.png",
+      "isMana": true
     },
     {
       "name": "Void",
       "manaValue": 1,
       "manaType": "Void",
-      "artwork": "/assets/manas/full-art/void.png"
+      "artwork": "/assets/manas/full-art/void.png",
+      "isMana": true
     },
     {
       "name": "Lightning",
       "manaValue": 1,
       "manaType": "Lightning",
-      "artwork": "/assets/manas/full-art/lightning.png"
+      "artwork": "/assets/manas/full-art/lightning.png",
+      "isMana": true
     },
     {
       "name": "Swamp",
       "manaValue": 1,
       "manaType": "Swamp",
-      "artwork": "/assets/manas/full-art/swamp.png"
+      "artwork": "/assets/manas/full-art/swamp.png",
+      "isMana": true
     },
     {
       "name": "Ice",
       "manaValue": 1,
       "manaType": "Ice",
-      "artwork": "/assets/manas/full-art/ice.png"
+      "artwork": "/assets/manas/full-art/ice.png",
+      "isMana": true
     }
   ]
 }

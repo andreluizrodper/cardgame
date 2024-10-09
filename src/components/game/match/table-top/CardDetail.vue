@@ -22,10 +22,12 @@
         :style="{ backgroundImage: `url(${card.artwork})` }"
       />
       <div
+        v-if="!card.isMana"
         class="w-full h-[12%] bg-cover bg-center absolute top-[50%] left-1/2 transform -translate-x-1/2 -translate-y-1/2"
         :style="{ backgroundImage: 'url(/assets/deck/card-front-values.png)' }"
       />
       <div
+        v-if="!card.isMana"
         class="text-center absolute top-[50%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex justify-between"
         :style="{
           fontSize: `${dimensions.height * 0.06}px`,
@@ -40,6 +42,7 @@
         </span>
       </div>
       <div
+        v-if="!card.isMana"
         class="absolute top-[57%] flex flex-col gap-[2%] w-full items-start px-[2%]"
       >
         <div class="flex gap-[4%] ml-[2%]">

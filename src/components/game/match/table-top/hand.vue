@@ -1,13 +1,13 @@
 <template>
   <div
-    class="absolute"
+    class="fixed -bottom-[100px] left-1/2 transform -translate-x-1/2"
     :class="
       isOpponent
         ? 'top-0 right-1/3 rotate-180'
         : 'bottom-0 left-1/3 transform -translate-x-1/2'
     "
   >
-    <div class="flex justify-center items-end relative">
+    <div class="flex justify-center items-end relative h-full">
       <transition-group name="hover-card">
         <div
           v-for="(card, index) in cards"
@@ -17,7 +17,7 @@
           :style="{
             '--rotation': `${getRotation(index)}deg`,
             '--translateY': `${getTranslateY(index)}px`,
-            transform: `rotate(var(--rotation)) translateY(calc(var(--translateY) + 100px))`,
+            transform: `rotate(var(--rotation)) translateY(var(--translateY))`,
             left: `${index * 60}px`,
             zIndex: index,
           }"
@@ -36,13 +36,13 @@
         v-if="hoveredCard !== null"
         :card="cards[hoveredCard]"
         :width="300"
-        :height="500"
+        :height="400"
         :is-opponent="isOpponent"
         class="absolute"
         :style="{
           '--rotation': `${getRotation(hoveredCard)}deg`,
-          transform: `translateY(-140px)`,
-          left: `${hoveredCard * 60}px`,
+          transform: `translateY(-250px)`,
+          left: `${hoveredCard * 60 - 75}px`,
           zIndex: cards.length + 1,
         }"
       />
@@ -103,15 +103,14 @@ export default {
 
 <style scoped>
 .hover-card {
-  transition: transform 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 .hover-card.is-hovered {
-  transform: rotate(var(--rotation))
-    translateY(calc(var(--translateY) * 0.7 + 70px)) !important;
+  transform: rotate(var(--rotation)) translateY(calc(var(--translateY) - 30px)) !important;
 }
 
 .hover-card-move {
-  transition: transform 0.3s ease;
+  transition: all 0.3s ease;
 }
 </style>
